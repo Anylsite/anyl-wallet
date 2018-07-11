@@ -4,9 +4,9 @@
 
 #include "transaction.h"
 
-#include "byte_converter.h"
-#include "rlp_encoder.h"
-#include "crypto_helper.h"
+#include "helpers/byte_converter.h"
+#include "helpers/rlp_encoder.h"
+#include "helpers/crypto_helper.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"

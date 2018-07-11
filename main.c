@@ -15,7 +15,7 @@
 #include "nrf_crypto_error.h"
 #include "nrf_crypto_ecdsa.h"
 #include "mem_manager.h"
-#include "crypto_helper.h"
+#include "helpers/crypto_helper.h"
 #include "transaction.h"
 
 static nrf_crypto_ecc_secp256k1_private_key_t private_key;

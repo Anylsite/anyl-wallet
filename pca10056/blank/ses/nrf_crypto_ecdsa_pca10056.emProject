@@ -118,16 +118,20 @@
     <folder Name="Application">
       <file file_name="../../../main.c" />
       <file file_name="../config/sdk_config.h" />
-      <file file_name="../../../crypto_helper.h" />
-      <file file_name="../../../keccak256.h" />
-      <file file_name="../../../crypto_helper.c" />
-      <file file_name="../../../keccak256.c" />
-      <file file_name="../../../byte_converter.c" />
-      <file file_name="../../../byte_converter.h" />
-      <file file_name="../../../rlp_encoder.c" />
-      <file file_name="../../../rlp_encoder.h" />
-      <file file_name="../../../transaction.c" />
+      <folder Name="helpers">
+        <file file_name="../../../helpers/byte_converter.c" />
+        <file file_name="../../../helpers/byte_converter.h" />
+        <file file_name="../../../helpers/crypto_helper.c" />
+        <file file_name="../../../helpers/crypto_helper.h" />
+        <file file_name="../../../helpers/rlp_encoder.c" />
+        <file file_name="../../../helpers/rlp_encoder.h" />
+      </folder>
+      <folder Name="crypto">
+        <file file_name="../../../crypto/keccak256.c" />
+        <file file_name="../../../crypto/keccak256.h" />
+      </folder>
       <file file_name="../../../transaction.h" />
+      <file file_name="../../../transaction.c" />
     </folder>
     <folder Name="nRF_micro-ecc">
       <file file_name="../../../../../../../external/micro-ecc/nrf52hf_armgcc/armgcc/micro_ecc_lib_nrf52.a" />

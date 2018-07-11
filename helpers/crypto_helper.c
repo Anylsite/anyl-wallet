@@ -3,8 +3,8 @@
 * Inspired by Okada Takahiro, https://github.com/kopanitsa/web3-arduino.
 */
 
-#include "crypto_helper.h"
-#include "keccak256.h"
+#include "helpers/crypto_helper.h"
+#include "crypto/keccak256.h"
 
 #include <string.h>
 #include <stdint.h>
