@@ -1,2 +1,2 @@
 # anyledger-wallet
-🏦 Hardware wallet for Internet of Things
+🏦 AnyLedger Embedded Hardware wallet for Internet of Things
