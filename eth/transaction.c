@@ -4,16 +4,21 @@
 
 #include "transaction.h"
 
+#include <assert.h>
+
 #include "helpers/byte_converter.h"
-#include "helpers/rlp_encoder.h"
 #include "helpers/crypto_helper.h"
+#include "helpers/rlp_encoder.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
 void encode_transaction(Transaction transaction, Signature signature, uint8_t *result, uint32_t *result_size) {
-    
+    assert(result != NULL);
+    assert(result_size != NULL);
+    assert(*result_size > 100); // minimal realistic tx size is 100 bytes
+
     // Getting raw bytes from transaction properties
 
     // Nonce
@@ -34,7 +39,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     char_to_bytes(to_bytes_raw, transaction.to);
 
     // Value
-    uint8_t value_bytes_raw[sizeof(transaction.value)]; 
+    uint8_t value_bytes_raw[sizeof(transaction.value)];
     memset(value_bytes_raw, 0, sizeof(transaction.value));
     char_to_bytes(value_bytes_raw, transaction.value);
 
@@ -85,7 +90,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     // R part of the signature, 1 bytes header + 32 bytes for content
     uint8_t r_rlp_output[33] = {0};
     uint8_t encoded_r_length = 0;
-    
+
     if (signature.r) {
         encoded_r_length = encode_item(r_rlp_output, signature.r, SIGNATURE_LENGTH / 2);
         NRF_LOG_DEBUG("r:");
@@ -105,7 +110,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     // V part of the signature
     uint8_t v_rlp_output[5] = {0};
     uint8_t encoded_v_length = 0;
-    
+
     if (signature.v) {
         encoded_v_length = encode_item(v_rlp_output, &signature.v, sizeof(signature.v));
         NRF_LOG_DEBUG("v:");
@@ -113,13 +118,13 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     }
 
     // Getting RLP encoding for header
-    uint32_t encoded_properties_length = encoded_nonce_length + 
-                                         encoded_gas_price_length + 
+    uint32_t encoded_properties_length = encoded_nonce_length +
+                                         encoded_gas_price_length +
                                          encoded_gas_limit_length +
                                          encoded_to_length +
                                          encoded_value_length +
                                          encoded_data_length;
-    
+
     if (signature.r && signature.s && signature.v) {
         encoded_properties_length += encoded_r_length + encoded_s_length + encoded_v_length;
     }
@@ -135,13 +140,13 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     uint16_t offset = 0;
 
     memcpy(result, header_rlp_output, encoded_header_length);
-    
+
     offset += encoded_header_length;
     memcpy(result + offset, nonce_rlp_output, encoded_nonce_length);
-    
+
     offset += encoded_nonce_length;
     memcpy(result + offset, gas_price_rlp_output, encoded_gas_price_length);
-    
+
     offset += encoded_gas_price_length;
     memcpy(result + offset, gas_limit_rlp_output, encoded_gas_limit_length);
 
@@ -164,4 +169,5 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
         offset += encoded_s_length;
         memcpy(result + encoded_s_length, v_rlp_output, encoded_v_length);
     }
+    assert(offset > 0);
 }

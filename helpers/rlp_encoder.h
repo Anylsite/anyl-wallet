@@ -12,3 +12,4 @@ uint32_t encode_item(uint8_t* output, const uint8_t* input, uint32_t input_len);
 uint32_t encode_whole_header(uint8_t *header_output, uint32_t total_len);
 
 #endif  /* RLP_ENCODER_H__ */
+

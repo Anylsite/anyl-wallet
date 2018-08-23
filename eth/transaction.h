@@ -27,3 +27,4 @@ typedef struct {
 void encode_transaction(Transaction transaction, Signature signature, uint8_t *result, uint32_t *result_size);
 
 #endif  /* TRANSACTION_H__ */
+

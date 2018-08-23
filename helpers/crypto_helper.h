@@ -16,3 +16,4 @@ void generate_checksum_address(const uint8_t *public_address, char *checksum_add
 void keccak256(const uint8_t *data, uint8_t *hash, uint16_t length);
 
 #endif  /* CRYPTO_HELPER_H__ */
+
