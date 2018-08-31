@@ -12,6 +12,7 @@ include_directories(SYSTEM ../nRF5_SDK_15.0.0_a53641a/nRF5_SDK_15.0.0_a53641a/co
 include_directories(SYSTEM ../nRF5_SDK_15.0.0_a53641a/nRF5_SDK_15.0.0_a53641a/components/libraries/experimental_memobj/)
 include_directories(SYSTEM ../nRF5_SDK_15.0.0_a53641a/nRF5_SDK_15.0.0_a53641a/modules/nrfx/mdk/)
 include_directories(pca10056/blank/config/)
+add_subdirectory(crypto)
 add_subdirectory(eth)
 add_subdirectory(helpers)
 add_subdirectory(tests)
