@@ -1,0 +1,27 @@
+# Enable C++ support
+language: cpp
+
+#we are going to use containers
+sudo: false
+
+compiler:
+    - gcc
+
+before_install:
+    - sudo apt-get install libgtest-dev
+
+cache:
+  ccache: true
+  directories:
+    - $HOME/.ccache
+
+env:
+  global:
+    - USE_CCACHE=1
+    - CCACHE_COMPRESS=1
+    - CCACHE_MAXSIZE=200M
+    - CCACHE_CPP2=1
+
+
+script:
+   - cmake . && make
