@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 uint8_t number_to_bytes(uint8_t *raw_bytes, uint32_t number) {
     uint32_t ret = 0;
