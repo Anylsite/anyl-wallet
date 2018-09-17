@@ -18,67 +18,67 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
 
     // Nonce
     uint8_t nonce_bytes_raw[sizeof(transaction.nonce)] = {0};
-    number_to_bytes(&nonce_bytes_raw, transaction.nonce);
+    number_to_bytes(nonce_bytes_raw, transaction.nonce);
 
     // Gas price
     uint8_t gas_price_bytes_raw[sizeof(transaction.gas_price)] = {0};
-    number_to_bytes(&gas_price_bytes_raw, transaction.gas_price);
+    number_to_bytes(gas_price_bytes_raw, transaction.gas_price);
 
     // Gas limit
     uint8_t gas_limit_bytes_raw[sizeof(transaction.gas_limit)] = {0};
-    number_to_bytes(&gas_limit_bytes_raw, transaction.gas_limit);
+    number_to_bytes(gas_limit_bytes_raw, transaction.gas_limit);
 
     // To address
     uint8_t to_bytes_raw[sizeof(transaction.to)];
     memset(to_bytes_raw, 0, sizeof(transaction.to));
-    char_to_bytes(&to_bytes_raw, transaction.to);
+    char_to_bytes(to_bytes_raw, transaction.to);
 
     // Value
     uint8_t value_bytes_raw[sizeof(transaction.value)]; 
     memset(value_bytes_raw, 0, sizeof(transaction.value));
-    char_to_bytes(&value_bytes_raw, transaction.value);
+    char_to_bytes(value_bytes_raw, transaction.value);
 
     // Data
     uint8_t data_bytes_raw[sizeof(transaction.data)];
     memset(data_bytes_raw, 0, sizeof(transaction.data));
-    char_to_bytes((uint8_t*)data_bytes_raw, transaction.data);
+    char_to_bytes(data_bytes_raw, transaction.data);
 
     // Getting RLP encoding for transaction propoerties from raw bytes
 
     // Nonce
     uint8_t nonce_rlp_output[5] = {0};
-    uint8_t encoded_nonce_length = encode_item(&nonce_rlp_output, nonce_bytes_raw, sizeof(nonce_bytes_raw));
+    uint8_t encoded_nonce_length = encode_item(nonce_rlp_output, nonce_bytes_raw, sizeof(nonce_bytes_raw));
     NRF_LOG_DEBUG("nonce_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(nonce_rlp_output, encoded_nonce_length);
 
     // Gas price
     uint8_t gas_price_rlp_output[5] = {0};
-    uint8_t encoded_gas_price_length = encode_item(&gas_price_rlp_output, gas_price_bytes_raw, sizeof(gas_price_bytes_raw));
+    uint8_t encoded_gas_price_length = encode_item(gas_price_rlp_output, gas_price_bytes_raw, sizeof(gas_price_bytes_raw));
     NRF_LOG_DEBUG("gas_price_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(gas_price_rlp_output, encoded_gas_price_length);
 
     // Gas limit
     uint8_t gas_limit_rlp_output[5] = {0};
-    uint8_t encoded_gas_limit_length = encode_item(&gas_limit_rlp_output, gas_limit_bytes_raw, sizeof(gas_limit_bytes_raw));
+    uint8_t encoded_gas_limit_length = encode_item(gas_limit_rlp_output, gas_limit_bytes_raw, sizeof(gas_limit_bytes_raw));
     NRF_LOG_DEBUG("gas_limit_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(gas_limit_rlp_output, encoded_gas_limit_length);
 
     // To address
     // 4 bytes header + 20 bytes address content
     uint8_t to_rlp_output[24] = {0};
-    uint8_t encoded_to_length = encode_item(&to_rlp_output, to_bytes_raw, sizeof(to_bytes_raw));
+    uint8_t encoded_to_length = encode_item(to_rlp_output, to_bytes_raw, sizeof(to_bytes_raw));
     NRF_LOG_DEBUG("to_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(to_rlp_output, encoded_to_length);
 
     // Value
     uint8_t value_rlp_output[5] = {0};
-    uint8_t encoded_value_length = encode_item(&value_rlp_output, value_bytes_raw, sizeof(value_bytes_raw));
+    uint8_t encoded_value_length = encode_item(value_rlp_output, value_bytes_raw, sizeof(value_bytes_raw));
     NRF_LOG_DEBUG("value_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(value_rlp_output, encoded_value_length);
 
     // Data
     uint8_t data_rlp_output[1024] = {0};
-    uint8_t encoded_data_length = encode_item(&data_rlp_output, data_bytes_raw, sizeof(data_bytes_raw));
+    uint8_t encoded_data_length = encode_item(data_rlp_output, data_bytes_raw, sizeof(data_bytes_raw));
     NRF_LOG_DEBUG("data_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(data_rlp_output, encoded_data_length);
 
@@ -87,7 +87,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     uint8_t encoded_r_length = 0;
     
     if (signature.r) {
-        encoded_r_length = encode_item(&r_rlp_output, signature.r, SIGNATURE_LENGTH / 2);
+        encoded_r_length = encode_item(r_rlp_output, signature.r, SIGNATURE_LENGTH / 2);
         NRF_LOG_DEBUG("r:");
         NRF_LOG_HEXDUMP_DEBUG(r_rlp_output, encoded_r_length);
     }
@@ -97,7 +97,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     uint8_t encoded_s_length = 0;
 
     if (signature.s) {
-        encoded_s_length = encode_item(&s_rlp_output, signature.s, SIGNATURE_LENGTH / 2);
+        encoded_s_length = encode_item(s_rlp_output, signature.s, SIGNATURE_LENGTH / 2);
         NRF_LOG_DEBUG("s:");
         NRF_LOG_HEXDUMP_DEBUG(s_rlp_output, encoded_s_length);
     }
@@ -107,7 +107,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     uint8_t encoded_v_length = 0;
     
     if (signature.v) {
-        encoded_v_length = encode_item(&v_rlp_output, signature.v, sizeof(signature.v));
+        encoded_v_length = encode_item(v_rlp_output, &signature.v, sizeof(signature.v));
         NRF_LOG_DEBUG("v:");
         NRF_LOG_HEXDUMP_DEBUG(v_rlp_output, encoded_v_length);
     }
@@ -125,7 +125,7 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     }
 
     uint8_t header_rlp_output[5];
-    uint8_t encoded_header_length = encode_whole_header(&header_rlp_output, encoded_properties_length);
+    uint8_t encoded_header_length = encode_whole_header(header_rlp_output, encoded_properties_length);
     NRF_LOG_DEBUG("header_rlp_output:");
     NRF_LOG_HEXDUMP_DEBUG(header_rlp_output, encoded_header_length);
 
