@@ -4,6 +4,7 @@
 */
 
 #include "rlp_encoder.h"
+#include <string.h>
 
 uint32_t encode_item(uint8_t* output, const uint8_t* input, uint32_t input_len) {
     if (input_len == 1 && input[0] == 0x00) {
