@@ -85,7 +85,7 @@ static void sign_transaction()
     print_hex("Public key: ", public_key_raw, sizeof(public_key_raw));
     
     char public_checksum_key_row[CRYPTO_HELPER_CHECKSUM_ADDRESS_LENGTH];
-    generate_checksum_address(&public_key_raw, &public_checksum_key_row);
+    generate_checksum_address(public_key_raw, public_checksum_key_row);
     NRF_LOG_HEXDUMP_INFO(public_checksum_key_row, sizeof(public_checksum_key_row));
 
     // RLP encode
