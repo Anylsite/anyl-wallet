@@ -18,8 +18,8 @@
 #include "helpers/crypto_helper.h"
 #include "transaction.h"
 
-static nrf_crypto_ecc_secp256k1_private_key_t private_key;
-static nrf_crypto_ecc_secp256k1_public_key_t public_key;
+static nrf_crypto_ecc_private_key_t private_key;
+static nrf_crypto_ecc_public_key_t public_key;
 
 static nrf_crypto_ecdsa_secp256r1_signature_t signature;
 static size_t signature_size;
