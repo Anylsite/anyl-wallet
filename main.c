@@ -62,6 +62,7 @@ do                                  \
 static void sign_transaction()
 {
     ret_code_t err_code = NRF_SUCCESS;
+    size_t private_key_size, public_key_size;
 
     NRF_LOG_INFO("Signature generation");
     
@@ -75,10 +76,13 @@ static void sign_transaction()
     nrf_crypto_ecc_secp256k1_raw_private_key_t private_key_raw;
     nrf_crypto_ecc_secp256k1_raw_public_key_t public_key_raw;
 
-    err_code = nrf_crypto_ecc_public_key_to_raw(&public_key, public_key_raw, sizeof(public_key));
+    public_key_size = sizeof(public_key);
+    private_key_size = sizeof(private_key);
+
+    err_code = nrf_crypto_ecc_public_key_to_raw(&public_key, public_key_raw, &public_key_size);
     DEMO_ERROR_CHECK(err_code);
 
-    err_code = nrf_crypto_ecc_private_key_to_raw(&private_key, private_key_raw, sizeof(private_key));
+    err_code = nrf_crypto_ecc_private_key_to_raw(&private_key, private_key_raw, &private_key_size);
     DEMO_ERROR_CHECK(err_code);
 
     print_hex("Private key: ", private_key_raw, sizeof(private_key_raw));
