@@ -109,7 +109,7 @@ static void sign_transaction()
 
     // Hash
     uint8_t hash[KECCAK256_HASH_LENGTH];
-    keccak256(encoded_result, encoded_result_size, hash);
+    keccak256(encoded_result, hash, encoded_result_size);
     NRF_LOG_DEBUG("Keccak256 hash value:");
     NRF_LOG_HEXDUMP_DEBUG(hash, KECCAK256_HASH_LENGTH);
 
