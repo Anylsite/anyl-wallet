@@ -6,6 +6,7 @@
 #define TRANSACTION_H__
 
 #include <stdint.h>
+#include "helpers/uint256.h"
 
 #define SIGNATURE_LENGTH 64
 
@@ -25,6 +26,7 @@ typedef struct {
 } Signature;
 
 void encode_transaction(Transaction transaction, Signature signature, uint8_t *result, uint32_t *result_size);
+
 
 #endif  /* TRANSACTION_H__ */
 

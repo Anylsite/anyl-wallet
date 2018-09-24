@@ -1,8 +1,7 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.0)
 
 project(anyledger-wallet-helpers)
 include_directories(..)
-set (CMAKE_C_FLAGS "-g")
 
 file(GLOB SOURCES "*.c")
 

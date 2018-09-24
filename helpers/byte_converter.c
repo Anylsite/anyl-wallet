@@ -5,9 +5,9 @@
 
 #include "byte_converter.h"
 
-#include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 uint8_t number_to_bytes(uint8_t *raw_bytes, uint32_t number) {
     uint32_t ret = 0;
@@ -31,9 +31,10 @@ uint8_t number_to_bytes(uint8_t *raw_bytes, uint32_t number) {
 
 uint8_t char_to_bytes(uint8_t *raw_bytes, const char *text) {
     uint32_t ret = 0;
-    uint8_t tmp[256];
+#define BYTES_BUFSIZE 256
+    uint8_t tmp[BYTES_BUFSIZE];
 
-    strcpy((char *)tmp, text);
+    strncpy((char *)tmp, text, BYTES_BUFSIZE);
 
     // remove "0x"
     char * ptr = strtok((char*)tmp, "x");

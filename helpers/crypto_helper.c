@@ -6,8 +6,8 @@
 #include "helpers/crypto_helper.h"
 #include "crypto/keccak256.h"
 
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
 
 static char get_hex_nibble(uint8_t value) {
     value &= 0x0f;
