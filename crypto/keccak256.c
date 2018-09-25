@@ -21,8 +21,8 @@
 
 //#include <avr/pgmspace.h>
 
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
 
 #define BLOCK_SIZE     ((1600 - 256 * 2) / 8)
 
@@ -180,7 +180,7 @@ static void sha3_process_block(uint64_t hash[25], const uint64_t *block) {
  */
 void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size)
 {
-    uint16_t idx = (uint16_t)ctx->rest;
+    uint16_t idx = ctx->rest;
 
     //if (ctx->rest & SHA3_FINALIZED) return; /* too late for additional input */
     ctx->rest = (unsigned)((ctx->rest + size) % BLOCK_SIZE);
@@ -189,7 +189,9 @@ void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size)
     if (idx) {
         uint16_t left = BLOCK_SIZE - idx;
         memcpy((char*)ctx->message + idx, msg, (size < left ? size : left));
-        if (size < left) return;
+        if (size < left) {
+            return;
+        }
 
         /* process partial block */
         sha3_process_block(ctx->hash, ctx->message);
