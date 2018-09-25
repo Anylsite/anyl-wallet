@@ -11,8 +11,8 @@
 
 /* local includes */
 #include "data.h"
+#include "helpers/macros.h"
 
-#define MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
 
 // returns index in bytes
 static size_t compute_item_index(size_t index)

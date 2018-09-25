@@ -88,6 +88,7 @@ TEST_{contract.upper()}_{method['name'].upper()}
     uint16_t encoded_len = 0;
     data_block_t block = {{DATA_BUFSIZE, data_buf}};
     {method_call}
+    ASSERT_LE(encoded_len, MIN(sizeof(test_buf), DATA_BUFSIZE));
     {compare_call}
 }}
 """
@@ -98,6 +99,7 @@ def compile_contract_test(contract, abi):
 #include <gtest/gtest.h>
 #include "eth/data.h"
 #include "contracts.h"
+#include "helpers/macros.h"
 '''
     for method in abi['abi']:
         if method['type'] != 'function':

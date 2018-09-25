@@ -10,7 +10,7 @@
 
 
 // return header size for the data of @input_len
-static uint8_t header_len(size_t input_len)
+uint8_t header_len(size_t input_len)
 {
     if (input_len <= 55) {
         return 1;
