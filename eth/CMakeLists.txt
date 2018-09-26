@@ -5,4 +5,4 @@ include_directories(..)
 
 file(GLOB SOURCES "*.c")
 
-add_library(eth SHARED ${SOURCES})
+add_library(eth STATIC ${SOURCES})

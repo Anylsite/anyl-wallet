@@ -5,4 +5,5 @@ include_directories(..)
 
 file(GLOB SOURCES "*.c")
 
-add_library(helpers SHARED ${SOURCES})
+add_library(helpers STATIC ${SOURCES})
+install(TARGETS helpers ARCHIVE DESTINATION lib)
