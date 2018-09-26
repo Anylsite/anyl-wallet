@@ -18,8 +18,8 @@
 #include "helpers/crypto_helper.h"
 #include "transaction.h"
 
-static nrf_crypto_ecc_secp256k1_private_key_t private_key;
-static nrf_crypto_ecc_secp256k1_public_key_t public_key;
+static nrf_crypto_ecc_private_key_t private_key;
+static nrf_crypto_ecc_public_key_t public_key;
 
 static nrf_crypto_ecdsa_secp256r1_signature_t signature;
 static size_t signature_size;
@@ -27,24 +27,24 @@ static size_t signature_size;
 static void print_hex_array(uint8_t const * p_string, size_t size)
 {
     #if NRF_LOG_ENABLED
-    
+
     size_t i;
     NRF_LOG_RAW_INFO("    ");
-    
+
     for(i = 0; i < size; i++)
     {
         NRF_LOG_RAW_INFO("%02x", p_string[i]);
     }
-    
+
     #endif
 }
 
 static void print_hex(char const * p_msg, uint8_t const * p_data, size_t size)
 {
     NRF_LOG_INFO(p_msg);
-    
+
     print_hex_array(p_data, size);
-    
+
     NRF_LOG_RAW_INFO("\r\n");
 }
 
@@ -62,35 +62,39 @@ do                                  \
 static void sign_transaction()
 {
     ret_code_t err_code = NRF_SUCCESS;
+    size_t private_key_size, public_key_size;
 
     NRF_LOG_INFO("Signature generation");
-    
+
     err_code = nrf_crypto_ecc_key_pair_generate(
-                                                NULL, 
+                                                NULL,
                                                 &g_nrf_crypto_ecc_secp256k1_curve_info,
-                                                &private_key, 
+                                                &private_key,
                                                 &public_key);
     DEMO_ERROR_CHECK(err_code);
 
     nrf_crypto_ecc_secp256k1_raw_private_key_t private_key_raw;
     nrf_crypto_ecc_secp256k1_raw_public_key_t public_key_raw;
 
-    err_code = nrf_crypto_ecc_public_key_to_raw(&public_key, public_key_raw, sizeof(public_key));
+    public_key_size = sizeof(public_key);
+    private_key_size = sizeof(private_key);
+
+    err_code = nrf_crypto_ecc_public_key_to_raw(&public_key, public_key_raw, &public_key_size);
     DEMO_ERROR_CHECK(err_code);
 
-    err_code = nrf_crypto_ecc_private_key_to_raw(&private_key, private_key_raw, sizeof(private_key));
+    err_code = nrf_crypto_ecc_private_key_to_raw(&private_key, private_key_raw, &private_key_size);
     DEMO_ERROR_CHECK(err_code);
 
     print_hex("Private key: ", private_key_raw, sizeof(private_key_raw));
     print_hex("Public key: ", public_key_raw, sizeof(public_key_raw));
-    
+
     char public_checksum_key_row[CRYPTO_HELPER_CHECKSUM_ADDRESS_LENGTH];
-    generate_checksum_address(&public_key_raw, &public_checksum_key_row);
+    generate_checksum_address(public_key_raw, public_checksum_key_row);
     NRF_LOG_HEXDUMP_INFO(public_checksum_key_row, sizeof(public_checksum_key_row));
 
     // RLP encode
     uint8_t *encoded_result = malloc(2048);
-    uint32_t encoded_result_size;    
+    uint32_t encoded_result_size;
 
     Transaction transaction;
     transaction.nonce = 10;
@@ -101,7 +105,7 @@ static void sign_transaction()
     transaction.data = "0x112233";
 
     Signature transaction_signature;
-    
+
     encode_transaction(transaction, transaction_signature, encoded_result, &encoded_result_size);
     NRF_LOG_DEBUG("RLP encoded transaction:");
     NRF_LOG_HEXDUMP_DEBUG(encoded_result, encoded_result_size);
@@ -109,13 +113,13 @@ static void sign_transaction()
 
     // Hash
     uint8_t hash[KECCAK256_HASH_LENGTH];
-    keccak256(encoded_result, encoded_result_size, hash);
+    keccak256(encoded_result, hash, encoded_result_size);
     NRF_LOG_DEBUG("Keccak256 hash value:");
     NRF_LOG_HEXDUMP_DEBUG(hash, KECCAK256_HASH_LENGTH);
 
     // Sign
     signature_size = sizeof(signature);
-    
+
     err_code = nrf_crypto_ecdsa_sign(
                                      NULL,
                                      &private_key,

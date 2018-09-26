@@ -6,8 +6,8 @@
 #include "helpers/crypto_helper.h"
 #include "crypto/keccak256.h"
 
-#include <string.h>
 #include <stdint.h>
+#include <string.h>
 
 static char get_hex_nibble(uint8_t value) {
     value &= 0x0f;
@@ -34,11 +34,11 @@ void generate_checksum_address(const uint8_t *public_address, char *checksum_add
 
     uint8_t hashed[KECCAK256_HASH_LENGTH];
     SHA3_CTX keccakContext;
-    
+
     keccak_init(&keccakContext);
     keccak_update(&keccakContext, (const unsigned char*)&checksum_address[2], 40);
     keccak_final(&keccakContext, (unsigned char*)hashed);
-    
+
     memset((char*)&keccakContext, 0, sizeof(SHA3_CTX));
 
     for (uint8_t i = 0; i < 40; i += 2) {
@@ -61,3 +61,4 @@ void keccak256(const uint8_t *data, uint8_t *hash, uint16_t length) {
     // Clear out the contents of what we hashed (in case it was secret)
     memset((char*)&context, 0, sizeof(SHA3_CTX));
 }
+
