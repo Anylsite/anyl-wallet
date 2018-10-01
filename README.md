@@ -23,5 +23,13 @@ Install Python dependencies
 ```python
 pip3 install click eth-utils web3
 ```
+Standard CMake Instructions
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+
 ## Additional Info
 An older Ethereum implementation in C++ for Particle Photon can be found [here](https://github.com/AnyLedger/embedded-ethereum-wallet).
