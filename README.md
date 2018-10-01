@@ -12,7 +12,16 @@ The current implementation uses Ethereum, but the same architecture will be used
 
 Any IoT device flashing the embedded wallet can safely connect to a given blockchain. The connection itself is given by [AnyLedge Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
 
-
+## Build Instructions
+Install Solidity 
+```bash
+sudo add-apt-repository ppa:ethereum/ethereum
+sudo apt-get update
+sudo apt-get install solc
+```
+Install Python dependencies
+```python
+pip3 install click eth-utils web3
+```
 ## Additional Info
-
 An older Ethereum implementation in C++ for Particle Photon can be found [here](https://github.com/AnyLedger/embedded-ethereum-wallet).
