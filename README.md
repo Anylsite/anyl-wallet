@@ -21,7 +21,7 @@ sudo apt-get install solc
 ```
 Install Python dependencies
 ```python
-pip3 install click eth-utils web3
+pip3 install -r requirements.txt
 ```
 Standard CMake Instructions
 ```bash
