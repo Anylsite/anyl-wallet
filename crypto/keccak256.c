@@ -178,7 +178,7 @@ static void sha3_process_block(uint64_t hash[25], const uint64_t *block) {
  * @param msg message chunk
  * @param size length of the message chunk
  */
-void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint16_t size)
+void keccak_update(SHA3_CTX *ctx, const unsigned char *msg, uint32_t size)
 {
     uint16_t idx = ctx->rest;
 
