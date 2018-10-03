@@ -41,17 +41,17 @@ target_link_libraries(
     test_data
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
+    eth
     helpers
     crypto
-    eth
     )
 target_link_libraries(
     test_abi_compiler
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
+    eth
     helpers
     crypto
-    eth
     ${PC_JSON-C_LIBRARIES}
     )
 add_test(test_rlp test_rlp)
