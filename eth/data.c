@@ -8,6 +8,7 @@
 /* system includes */
 #include <assert.h>
 #include <string.h>
+#include <endian.h>
 
 /* local includes */
 #include "data.h"
@@ -61,7 +62,11 @@ int encode_uint(data_block_t *blk, size_t idx, uint64_t val)
     item_clear(blk, idx);
     size_t item_idx = compute_item_index(idx);
     uint64_t *u_p = (uint64_t*)(&blk->data[item_idx + (3 * sizeof(uint64_t))]);
-    *u_p = ENDIAN_SWAP_U64(val);
+    #if __BYTE_ORDER == __LITTLE_ENDIAN
+        *u_p = ENDIAN_SWAP_U64(val);
+    #else
+        *u_p = val;
+    #endif
     return 0;
 }
 
@@ -98,7 +103,11 @@ uint64_t decode_uint(data_block_t *blk, size_t idx)
     size_t item_idx = compute_item_index(idx);
     assert(item_idx < blk->data_len);
     uint128_t *u_p = (uint128_t*)(&blk->data[item_idx+sizeof(uint128_t)]);
-    return ENDIAN_SWAP_U64(LOWER_P(u_p));
+    uint64_t val = LOWER_P(u_p);
+    #if __BYTE_ORDER == __LITTLE_ENDIAN
+        val = ENDIAN_SWAP_U64(val);
+    #endif
+    return val ;
 }
 
 int decode_data(data_block_t *blk, size_t idx, uint8_t *data_out, size_t data_out_len)
