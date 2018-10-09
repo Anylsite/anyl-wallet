@@ -22,4 +22,5 @@ else()
     add_subdirectory(tests)
 
     include(cmake/wallet.cmake)
+    include(cmake/trezor-crypto.cmake)
 endif()
