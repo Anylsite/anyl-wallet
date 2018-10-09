@@ -53,3 +53,8 @@ dkms.conf
 
 pca10056/blank/ses/Output/**
 .build
+
+# vendor
+build
+.nvimrc
+abi_compiler/__pycache__
