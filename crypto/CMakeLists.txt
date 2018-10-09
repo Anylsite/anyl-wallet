@@ -5,4 +5,5 @@ include_directories(..)
 
 file(GLOB SOURCES "*.c")
 
-add_library(crypto SHARED ${SOURCES})
+add_library(crypto STATIC ${SOURCES})
+install(TARGETS crypto ARCHIVE DESTINATION lib)
