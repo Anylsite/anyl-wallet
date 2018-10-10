@@ -19,8 +19,9 @@ else()
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -pedantic -Wall -Wextra")
 # enable testing for x86 builds
     enable_testing()
-    add_subdirectory(tests)
 
     include(cmake/wallet.cmake)
     include(cmake/trezor-crypto.cmake)
+    add_subdirectory(tests)
+
 endif()
