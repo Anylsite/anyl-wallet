@@ -14,6 +14,14 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 
 ## compilation
 
+### Dependencies
+
+#### tests/x86 builds
+`apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
+
+#### Python (this is required for ABI compiler)
+`pip install --user -r requirements.txt`
+
 ### x86 build
 
 This build is used to develop and test the wallet library on your desktop
