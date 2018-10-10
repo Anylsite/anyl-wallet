@@ -12,7 +12,7 @@ The current implementation uses Ethereum, but the same architecture will be used
 
 Any IoT device flashing the embedded wallet can safely connect to a given blockchain. The connection itself is given by [AnyLedger Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
 
-## compilation
+## Compilation
 
 ### Dependencies
 
@@ -23,7 +23,7 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 `pip install --user -r requirements.txt`
 
 #### solidity compiler
-A working `solc` should be available in your `$PATH`. [Installation instructions](https://solidity.readthedocs.io/en/v0.4.21/installing-solidity.html)
+A working `solc` should be available in your `$PATH`. See the [Installation instructions](https://solidity.readthedocs.io/en/v0.4.21/installing-solidity.html).
 
 ### x86 build
 
@@ -40,7 +40,7 @@ This build is used to develop and test the wallet library on your desktop
 
 ### zephyr build
 
-Prerequisites: a working zephyr SDK. Please make sure you can compile and flash at least blinky example before building the wallet.
+Prerequisites: a working zephyr SDK, see [here](https://docs.zephyrproject.org/latest/getting_started/getting_started.html#building-and-running-an-application) for instructions. Please make sure you can compile and flash at least blinky example before building the wallet.
 
 1) clone wallet repo to the zephyr's `samples` directory
 `mkdir samples/anyledger/ && git clone git@github.com:AnyLedger/anyledger-wallet.git`
