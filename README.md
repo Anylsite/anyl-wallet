@@ -6,7 +6,7 @@
 
 C crypto libraries to safely manage, generate and store private keys, to generate blockchain addresses and to sign transactions.
 
-Additionally, it will contain a RTOS app ([Zephyr](https://github.com/AnyLedger/zephyr)) and a support for Trusted Execution Environment.
+Additionally, it will contain a RTOS app (for instance [Zephyr](https://github.com/AnyLedger/zephyr)) and support for Trusted Execution Environment.
 
 The current implementation uses Ethereum, but the same architecture will be used for HyperLedger and other chains in the future. The current implementation is using Nordic nRF52840.
 
