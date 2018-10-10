@@ -8,7 +8,7 @@ ExternalProject_Add(
   trezor-crypto
 
   PREFIX     ${mylib_build_dir} # Root dir for entire project
-  GIT_REPOSITORY "git@github.com:trezor/trezor-crypto.git"
+  GIT_REPOSITORY "https://github.com/trezor/trezor-crypto.git"
   GIT_TAG "master"
   
   UPDATE_COMMAND ""

@@ -5,7 +5,7 @@ add_subdirectory(crypto)
 add_subdirectory(eth)
 add_subdirectory(helpers)
 
-add_library(wallet STATIC)
+add_library(wallet STATIC wallet/wallet.c)
 set_target_properties(wallet PROPERTIES LINKER_LANGUAGE C)
 target_link_libraries(wallet crypto eth helpers)
 install(TARGETS wallet ARCHIVE DESTINATION lib)
