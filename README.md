@@ -40,7 +40,7 @@ This build is used to develop and test the wallet library on your desktop
 
 ### zephyr build
 
-Prerequisites: a working zephyr SDK, see [here](https://docs.zephyrproject.org/latest/getting_started/getting_started.html#building-and-running-an-application) for instructions. Please make sure you can compile and flash at least blinky example before building the wallet.
+Prerequisites: a working zephyr SDK, see [here](https://docs.zephyrproject.org/latest/getting_started/getting_started.html) for instructions. Please make sure you can compile and flash at least blinky example before building the wallet.
 
 1) clone wallet repo to the zephyr's `samples` directory
 `mkdir samples/anyledger/ && git clone git@github.com:AnyLedger/anyledger-wallet.git`
