@@ -22,6 +22,9 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 #### Python (this is required for ABI compiler)
 `pip install --user -r requirements.txt`
 
+#### solidity compiler
+A working `solc` should be available in your `$PATH`. [Installation instructions](https://solidity.readthedocs.io/en/v0.4.21/installing-solidity.html)
+
 ### x86 build
 
 This build is used to develop and test the wallet library on your desktop
