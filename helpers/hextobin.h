@@ -8,7 +8,12 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
-void hextobin(const char * str, uint8_t * bytes, size_t blen);
+
+#define E_EMPTY_STRING          (-1)
+#define E_INVALID_STRING_LEN    (-2)
+#define E_INVALID_CHAR          (-3)
+
+int hextobin(const char * str, uint8_t * bytes, size_t blen);
 
 #ifdef __cplusplus
 }

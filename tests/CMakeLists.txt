@@ -25,6 +25,7 @@ add_executable(
     )
 add_executable(test_data test_data.cpp)
 add_executable(test_rlp test_rlp.cpp)
+add_executable(test_helpers test_helpers.cpp)
 target_compile_definitions(
     test_abi_compiler
     PRIVATE
@@ -54,6 +55,13 @@ target_link_libraries(
     eth
     ${PC_JSON-C_LIBRARIES}
     )
+target_link_libraries(
+    test_helpers
+    ${GTEST_BOTH_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    helpers
+    )
 add_test(test_rlp test_rlp)
 add_test(test_data test_data)
 add_test(test_abi test_abi_compiler)
+add_test(test_helpers test_helpers)

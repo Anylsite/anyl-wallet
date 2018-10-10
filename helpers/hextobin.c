@@ -12,28 +12,33 @@
 /* local includes */
 #include "hextobin.h"
 
+static int16_t map_hex(char c)
+{
+    if((c >= '0') && (c <= '9')) { return c - '0'; }
+    if((c >= 'A') && (c <= 'F')) { return (c - 'A') + 10; }
+    if((c >= 'a') && (c <= 'f')) { return (c - 'a') + 10; }
+    return -1;
+}
 
-void hextobin(const char * str, uint8_t * bytes, size_t blen)
+int hextobin(const char * str, uint8_t * bytes, size_t blen)
 {
    uint8_t  pos;
-   uint8_t  idx0;
-   uint8_t  idx1;
+   int16_t  b0;
+   int16_t  b1;
    assert(strlen(str) <= (blen * 2));
-
-   // mapping of ASCII characters to hex values
-   const uint8_t hashmap[] =
-   {
-     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, // 01234567
-     0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // 89:;<=>?
-     0x00, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x00, // @ABCDEFG
-     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // HIJKLMNO
-   };
+   if(strlen(str) == 0) { return E_EMPTY_STRING; }
+   if((strlen(str) % 2) != 0) { return E_INVALID_STRING_LEN; }
 
    memset(bytes, 0, blen);
    for (pos = 0; ((pos < (blen*2)) && (pos < strlen(str))); pos += 2)
    {
-      idx0 = ((uint8_t)str[pos+0] & 0x1F) ^ 0x10;
-      idx1 = ((uint8_t)str[pos+1] & 0x1F) ^ 0x10;
-      bytes[pos/2] = (uint8_t)(hashmap[idx0] << 4) | hashmap[idx1];
+      b0 = map_hex(str[pos]);
+      assert((b0 >= -1) && (b0 <= 0xf));
+      if(b0 < 0)  { return E_INVALID_CHAR; }
+      b1 = map_hex(str[pos+1]);
+      assert((b1 >= -1) && (b1 <= 0xf));
+      if(b1 < 0)  { return E_INVALID_CHAR; }
+      bytes[pos/2] = (uint8_t)(b0 << 4) | b1;
    };
+   return strlen(str) / 2;
 }
