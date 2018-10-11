@@ -16,6 +16,8 @@ set(external_project_cflags
 # extend global cflags with zephyr includes etc.
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${external_project_cflags}")
 
-set_target_properties(app PROPERTIES COMPILE_FLAGS "-pedantic -Wall -Wextra")
+set_target_properties(app PROPERTIES COMPILE_FLAGS "-Wall -Wextra")
 
-target_link_libraries(app PUBLIC wallet)
+add_dependencies(app trezor-crypto-lib)
+add_dependencies(app wallet)
+target_link_libraries(app PUBLIC wallet trezor-crypto)

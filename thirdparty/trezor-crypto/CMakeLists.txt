@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
-project("wallet-x86")
+project("trezor-crypto-lib")
 include_directories(.)
-
 
 file(GLOB SOURCES "*.c")
 file(GLOB HEADERS "*.h")
@@ -10,6 +9,7 @@ file(GLOB HEADERS_CHACHA "chacha20poly1305/*.h")
 file(GLOB HEADERS_DONNA "ed25519-donna/*.h")
 
 add_library(trezor-crypto STATIC ${SOURCES})
+set_target_properties(trezor-crypto PROPERTIES LINKER_LANGUAGE C)
 
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 target_compile_definitions(trezor-crypto PRIVATE USE_ETHEREUM=1)
