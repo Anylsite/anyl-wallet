@@ -67,7 +67,7 @@ static int shell_cmd_pk2addr(int argc, char *argv[])
         return 0;
     }
     for (size_t i = 0; i < sizeof(addr); i++) {
-        printk("%x", addr[i]);
+        printk("%02x", addr[i]);
     }
     printk("\n");
 

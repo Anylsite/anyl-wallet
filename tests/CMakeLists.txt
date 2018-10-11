@@ -27,6 +27,7 @@ add_executable(test_data test_data.cpp)
 add_executable(test_rlp test_rlp.cpp)
 add_executable(test_helpers test_helpers.cpp)
 add_executable(test_crypto test_crypto.cpp)
+add_executable(test_tx test_tx.cpp)
 
 target_compile_definitions(
     test_abi_compiler
@@ -71,6 +72,13 @@ target_link_libraries(
     eth
     trezor-crypto
     )
+target_link_libraries(
+    test_tx
+    ${GTEST_BOTH_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    wallet
+    trezor-crypto
+    )
 
 
 add_test(test_rlp test_rlp)
@@ -78,3 +86,4 @@ add_test(test_data test_data)
 add_test(test_abi test_abi_compiler)
 add_test(test_helpers test_helpers)
 add_test(test_crypto test_helpers)
+add_test(test_tx test_tx)

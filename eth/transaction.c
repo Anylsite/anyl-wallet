@@ -9,10 +9,15 @@
 #include "helpers/byte_converter.h"
 #include "helpers/crypto_helper.h"
 #include "helpers/rlp_encoder.h"
+#include "helpers/hextobin.h"
 
 #include <string.h>
 
-void encode_transaction(Transaction transaction, Signature signature, uint8_t *result, uint32_t *result_size) {
+void encode_transaction(
+        const transaction_t *transaction,
+        uint8_t *result, uint32_t *result_size)
+{
+#if 0
     assert(result != NULL);
     assert(result_size != NULL);
     assert(*result_size > 100); // minimal realistic tx size is 100 bytes
@@ -20,31 +25,31 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
     // Getting raw bytes from transaction properties
 
     // Nonce
-    uint8_t nonce_bytes_raw[sizeof(transaction.nonce)] = {0};
-    number_to_bytes(nonce_bytes_raw, transaction.nonce);
+    uint8_t nonce_bytes_raw[sizeof(transaction->nonce)] = {0};
+    number_to_bytes(nonce_bytes_raw, transaction->nonce);
 
     // Gas price
-    uint8_t gas_price_bytes_raw[sizeof(transaction.gas_price)] = {0};
-    number_to_bytes(gas_price_bytes_raw, transaction.gas_price);
+    uint8_t gas_price_bytes_raw[sizeof(transaction->gas_price)] = {0};
+    number_to_bytes(gas_price_bytes_raw, transaction->gas_price);
 
     // Gas limit
-    uint8_t gas_limit_bytes_raw[sizeof(transaction.gas_limit)] = {0};
-    number_to_bytes(gas_limit_bytes_raw, transaction.gas_limit);
+    uint8_t gas_limit_bytes_raw[sizeof(transaction->gas_limit)] = {0};
+    number_to_bytes(gas_limit_bytes_raw, transaction->gas_limit);
 
     // To address
-    uint8_t to_bytes_raw[sizeof(transaction.to)];
-    memset(to_bytes_raw, 0, sizeof(transaction.to));
-    char_to_bytes(to_bytes_raw, transaction.to);
+    uint8_t to_bytes_raw[sizeof(transaction->to)];
+    memset(to_bytes_raw, 0, sizeof(transaction->to));
+    char_to_bytes(to_bytes_raw, transaction->to);
 
     // Value
-    uint8_t value_bytes_raw[sizeof(transaction.value)];
-    memset(value_bytes_raw, 0, sizeof(transaction.value));
-    char_to_bytes(value_bytes_raw, transaction.value);
+    uint8_t value_bytes_raw[sizeof(transaction->value)];
+    memset(value_bytes_raw, 0, sizeof(transaction->value));
+    char_to_bytes(value_bytes_raw, transaction->value);
 
     // Data
-    uint8_t data_bytes_raw[sizeof(transaction.data)];
-    memset(data_bytes_raw, 0, sizeof(transaction.data));
-    char_to_bytes(data_bytes_raw, transaction.data);
+    uint8_t data_bytes_raw[sizeof(transaction->data)];
+    memset(data_bytes_raw, 0, sizeof(transaction->data));
+    char_to_bytes(data_bytes_raw, transaction->data);
 
     // Getting RLP encoding for transaction propoerties from raw bytes
 
@@ -148,4 +153,31 @@ void encode_transaction(Transaction transaction, Signature signature, uint8_t *r
         memcpy(result + encoded_s_length, v_rlp_output, encoded_v_length);
     }
     assert(offset > 0);
+#endif
+}
+
+int tx_encode(const transaction_t *tx, uint8_t *buf, size_t buf_size)
+{
+    // 0) nonce
+/*    uint8_t encoded_nonce_length = encode_item(tx->nonce, nonce_bytes_raw, sizeof(nonce_bytes_raw));*/
+    // 1) gas_price
+    // 2) gas_limit
+    // 3) to
+    // 4) value
+    // 5) data
+}
+
+int tx_set_to(transaction_t *tx, const char *to_hex)
+{
+    assert(tx != NULL);
+    assert(to_hex != NULL);
+    int ret = hextobin(to_hex, tx->to, 20);
+    if(ret < 0)     { return -1; }
+    if(ret != 20)   { return -1; }
+    return 0;
+}
+
+void tx_set_value_u64(transaction_t *tx, uint64_t val)
+{
+    set256_uint64(&tx->value, val);
 }
