@@ -7,9 +7,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if(BUILD_XCOMPILE)
     # this is a zephyr build
     cmake_minimum_required(VERSION 3.8.2)
+    set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS "")
+    set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "")
+    link_directories(${CMAKE_CURRENT_BINARY_DIR}/install/lib/)
     include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
     project(NONE)
     include(cmake/zephyr.cmake)
+    include(cmake/trezor-crypto.cmake)
     include(cmake/wallet.cmake)
 else()
     # generic x86 build - CI etc
