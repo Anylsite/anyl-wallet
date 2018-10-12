@@ -578,3 +578,9 @@ bool tostring256(const uint256_t *number, uint32_t baseParam, char *out,
     reverseString(out, offset);
     return true;
 }
+
+void set256_uint64(uint256_t *target, uint64_t val)
+{
+    clear256(target);
+    LOWER(LOWER_P(target)) = val;
+}

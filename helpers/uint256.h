@@ -17,8 +17,14 @@
 
 // Adapted from https://github.com/calccrypto/uint256_t
 
+#ifndef UINT256_H_
+#define UINT256_H_
 #include <stdbool.h>
 #include <stdint.h>
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 #define U64 uint64_t
 #define ENDIAN_SWAP_U64(val) ((U64) ( \
@@ -48,6 +54,8 @@ void readu256BE(const uint8_t *buffer, uint256_t *target);
 // write 256 or 128 bits uint to a buffer, encoded as Big endian
 void writeu256BE(const uint256_t *number, uint8_t *buffer);
 void writeu128BE(const uint128_t *number, uint8_t *buffer);
+
+void set256_uint64(uint256_t *target, uint64_t val);
 
 bool zero128(const uint128_t *number);
 bool zero256(const uint256_t *number);
@@ -81,3 +89,7 @@ bool tostring128(const uint128_t *number, uint32_t baseParam, char *out,
                  uint32_t outLength);
 bool tostring256(const uint256_t *number, uint32_t baseParam, char *out,
                  uint32_t outLength);
+#ifdef __cplusplus
+}
+#endif
+#endif

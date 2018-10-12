@@ -6,27 +6,37 @@
 #define TRANSACTION_H__
 
 #include <stdint.h>
+#include <stddef.h>
 #include "helpers/uint256.h"
+#include "eth/sign.h"
 
+#ifdef  __cplusplus
+extern "C" {
+#endif
 #define SIGNATURE_LENGTH 64
+
+typedef uint8_t address_t[20];
 
 typedef struct {
     uint32_t nonce;
     uint32_t gas_price;
     uint32_t gas_limit;
-    char *to;
-    char *value;
-    char *data;
-} Transaction;
+    address_t to;
+    uint256_t value;
+    uint8_t *data;
+    size_t data_len;
+} transaction_t;
 
-typedef struct {
-    uint8_t *r;
-    uint8_t *s;
-    uint8_t v;
-} Signature;
+int tx_set_to(transaction_t *tx, const char *to_hex);
+void tx_set_value_u64(transaction_t *tx, uint64_t val);
 
-void encode_transaction(Transaction transaction, Signature signature, uint8_t *result, uint32_t *result_size);
+int tx_encode(const transaction_t *tx, const signature_t *sig, uint8_t *buf, size_t buf_size);
+// create pre-EIP155 tx
+int tx_encode_sign(const transaction_t *tx, const uint8_t *privkey, uint8_t *buf, size_t buf_size);
 
 
+#ifdef __cplusplus
+}
+#endif
 #endif  /* TRANSACTION_H__ */
 

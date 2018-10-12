@@ -10,6 +10,7 @@
 /* system includes C */
 
 /* system includes C++ */
+#include <list>
 #include "gtest/gtest.h"
 
 
@@ -32,7 +33,7 @@ static bool test_encode(
     
     assert(output_len <= OUT_BUF_LEN);
 
-    encoded_len = encode_item(output_buf, input, input_len);
+    encoded_len = rlp_encode_item(output_buf, input, input_len);
     assert(encoded_len > 0);
     assert(encoded_len == output_len);
     return memcmp(output_buf, output, output_len) == 0;
@@ -102,8 +103,30 @@ TEST(TEST_RLP, TEST_RLP_LISTS)
 {
     for (auto &pair: test_data_headers) {
         uint8_t header_output[HEADER_LEN];
-        uint8_t output_len = encode_whole_header(header_output, pair.input_len);
+        uint8_t output_len = rlp_encode_array_header(header_output, pair.input_len);
         ASSERT_EQ(output_len, pair.output_len);
         ASSERT_TRUE(memcmp(header_output, pair.output, pair.output_len) == 0);
+    }
+}
+
+
+
+
+
+TEST(TEST_RLP, TEST_RLP_INTEGER) 
+{
+    const std::list<std::pair<uint64_t, const char *>> _test_data = {
+        {0, "\x80"},
+        {100, "\x64"},
+        {128, "\x81\x80"},
+        {0xff, "\x81\xff"},
+        {0xffff, "\x82\xff\xff"},
+        {UINT64_MAX-1, "\x88\xff\xff\xff\xff\xff\xff\xff\xff"}
+    };
+    uint8_t output_buf[OUT_BUF_LEN] = {0};
+    uint32_t output_len;
+    for(auto pair: _test_data) {
+        output_len = rlp_encode_integer(output_buf, pair.first);
+        ASSERT_EQ(output_len, strlen(pair.second));
     }
 }
