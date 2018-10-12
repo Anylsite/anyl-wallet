@@ -581,5 +581,6 @@ bool tostring256(const uint256_t *number, uint32_t baseParam, char *out,
 
 void set256_uint64(uint256_t *target, uint64_t val)
 {
-    LOWER(target->elements[1]) = val;
+    clear256(target);
+    LOWER(LOWER_P(target)) = val;
 }
