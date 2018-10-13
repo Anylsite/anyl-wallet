@@ -20,7 +20,7 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 `apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
 
 #### Python (this is required for ABI compiler)
-`pip install --user -r requirements.txt`
+`pip3 install --user -r requirements.txt`
 
 #### solidity compiler
 A working `solc` should be available in your `$PATH`. See the [Installation instructions](https://solidity.readthedocs.io/en/v0.4.21/installing-solidity.html).
