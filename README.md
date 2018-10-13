@@ -38,7 +38,7 @@ make install
 
 Additional dependencies (installed using [Homebrew](https://brew.sh)):
 
-`brew install gcc make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
+`brew install gcc make cmake wget ninja`
 
 #### Python (this is required for ABI compiler)
 `pip3 install --user -r requirements.txt`
