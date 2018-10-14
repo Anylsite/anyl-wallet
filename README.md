@@ -17,7 +17,28 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 ### Dependencies
 
 #### tests/x86 builds
+
+##### Linux
+
 `apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
+
+##### macOS
+
+GTest:
+
+```
+git clone https://github.com/google/googletest 
+cd googletest  
+mkdir build  
+cd build  
+cmake ..  
+make  
+make install
+```
+
+Additional dependencies (installed using [Homebrew](https://brew.sh)):
+
+`brew install gcc make cmake wget ninja`
 
 #### Python (this is required for ABI compiler)
 `pip3 install --user -r requirements.txt`
