@@ -13,8 +13,11 @@
 #include <eth/address.h>
 #include <helpers/hextobin.h>
 #include <time.h>
+#include <string.h>
 
 // #include "helpers/uint256.h"
+//
+#include "zephyr/wallet.h"
 
 /* Change this if you have an LED connected to a custom port */
 #ifndef LED0_GPIO_CONTROLLER
@@ -29,18 +32,6 @@
 /* 1000 msec = 1 sec */
 #define SLEEP_TIME 	1000
 
-void srand(unsigned int seed)
-{}
-
-int rand()
-{
-    return sys_rand32_get();
-}
-
-uint32_t time()
-{
-    return 0;
-}
 
 static int shell_cmd_pk2addr(int argc, char *argv[])
 {
@@ -75,17 +66,17 @@ static int shell_cmd_pk2addr(int argc, char *argv[])
 }
 
 static struct shell_cmd commands[] = {
-	{ "pk2addr", shell_cmd_pk2addr, NULL },
-	{ NULL, NULL, NULL }
+	{ "pk2addr", shell_cmd_pk2addr, NULL, NULL },
+	{ NULL, NULL, NULL, NULL }
 };
 
-#define MY_SHELL_MODULE "crypto_eth"
+#define MY_SHELL_MODULE_CRYPTO "crypto_eth"
 void main(void)
 {
 	int cnt = 0;
 	struct device *dev;
 
-	SHELL_REGISTER(MY_SHELL_MODULE, commands);
+    SHELL_REGISTER(MY_SHELL_MODULE_CRYPTO, commands);
 
 	dev = device_get_binding(LED_PORT);
 	/* Set LED pin as output */

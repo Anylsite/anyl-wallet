@@ -4,7 +4,8 @@
 set_property(GLOBAL PROPERTY CSTD c11)
 include(ExternalProject)
 # this is zephyr app
-target_sources(app PRIVATE zephyr/main.c)
+file(GLOB SOURCES "zephyr/*.c")
+target_sources(app PRIVATE ${SOURCES})
 zephyr_get_include_directories_for_lang_as_string(       C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
 zephyr_get_compile_definitions_for_lang_as_string(       C definitions)
@@ -17,6 +18,7 @@ set(external_project_cflags
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${external_project_cflags}")
 
 set_target_properties(app PROPERTIES COMPILE_FLAGS "-Wall -Wextra")
+include_directories(zephyr/)
 
 add_dependencies(app trezor-crypto-lib)
 add_dependencies(app wallet)
