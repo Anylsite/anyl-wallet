@@ -8,5 +8,5 @@ file(GLOB SOURCES "*.c")
 add_library(helpers STATIC ${SOURCES})
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    include_directories(helpers/macos)
+    include_directories(macos)
 endif()
