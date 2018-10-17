@@ -9,12 +9,14 @@
 #include <zephyr.h>
 #include <helpers/hextobin.h>
 #include <string.h>
+#include <stdlib.h>
 
 /* local includes */
 #include "wallet.h"
 #include "zephyr/utils.h"
 
 #include "eth/transaction.h"
+#include "eth/address.h"
 
 typedef struct {
     uint8_t k[32];
@@ -28,8 +30,9 @@ typedef struct {
 
 static account_t _account;
 
-static int wallet_set_pk(int argc, char *argv[])
+static int wallet_set_pk(const struct shell *shell, size_t argc, char *argv[])
 {
+    ARG_UNUSED(shell);
     int ret;
     if(argc <= 1) {
         printk_hex_nl(_account.privkey.k, sizeof(_account.privkey.k));
@@ -50,8 +53,9 @@ static int wallet_set_pk(int argc, char *argv[])
     return 0;
 }
 
-static int wallet_set_nonce(int argc, char *argv[])
+static int wallet_set_nonce(const struct shell *shell, size_t argc, char *argv[])
 {
+    ARG_UNUSED(shell);
     if(argc <= 1) {
         printk("%d\n", _account.nonce);
         return 0;
@@ -66,8 +70,9 @@ static int wallet_set_nonce(int argc, char *argv[])
     return 0;
 }
 
-static int wallet_tx(int argc, char *argv[])
+static int wallet_tx(const struct shell *shell, size_t argc, char *argv[])
 {
+    ARG_UNUSED(shell);
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
     transaction_t tx;
@@ -88,9 +93,10 @@ static int wallet_tx(int argc, char *argv[])
     return 0;
 }
 
-static int wallet_pk2addr(int argc, char *argv[])
+static int wallet_pk2addr(const struct shell *shell, size_t argc, char *argv[])
 {
     int ret;
+    ARG_UNUSED(shell);
     if(argc <= 1) {
         printk("usage: %s <hex_privkey>\n", argv[0]);
         return 0;

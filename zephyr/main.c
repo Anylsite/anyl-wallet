@@ -9,6 +9,17 @@
 #include <device.h>
 #include <gpio.h>
 
+/* 1000 msec = 1 sec */
+#define SLEEP_TIME 	1000
+
+#ifdef BUILD_QEMU
+void main(void)
+{
+    while(1) {
+        k_sleep(SLEEP_TIME);
+    }
+}
+#else
 /* Change this if you have an LED connected to a custom port */
 #ifndef LED0_GPIO_CONTROLLER
 #define LED0_GPIO_CONTROLLER 	LED0_GPIO_PORT
@@ -18,9 +29,6 @@
 
 /* Change this if you have an LED connected to a custom pin */
 #define LED	LED0_GPIO_PIN
-
-/* 1000 msec = 1 sec */
-#define SLEEP_TIME 	1000
 
 void main(void)
 {
@@ -38,3 +46,4 @@ void main(void)
 		k_sleep(SLEEP_TIME);
 	}
 }
+#endif
