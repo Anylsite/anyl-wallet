@@ -12,10 +12,19 @@
 
 /* local includes */
 #include "wallet.h"
-#include "eth/account.h"
 #include "zephyr/utils.h"
 
 #include "eth/transaction.h"
+
+typedef struct {
+    uint8_t k[32];
+} privkey_t;
+typedef uint32_t nonce_t;
+
+typedef struct {
+    privkey_t privkey;
+    nonce_t nonce;
+} account_t;
 
 static account_t _account;
 
