@@ -28,7 +28,7 @@ typedef struct {
 
 static account_t _account;
 
-int wallet_set_pk(int argc, char *argv[])
+static int wallet_set_pk(int argc, char *argv[])
 {
     int ret;
     if(argc <= 1) {
@@ -50,7 +50,7 @@ int wallet_set_pk(int argc, char *argv[])
     return 0;
 }
 
-int wallet_set_nonce(int argc, char *argv[])
+static int wallet_set_nonce(int argc, char *argv[])
 {
     if(argc <= 1) {
         printk("%d\n", _account.nonce);
@@ -66,7 +66,7 @@ int wallet_set_nonce(int argc, char *argv[])
     return 0;
 }
 
-int wallet_tx(int argc, char *argv[])
+static int wallet_tx(int argc, char *argv[])
 {
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
@@ -88,10 +88,44 @@ int wallet_tx(int argc, char *argv[])
     return 0;
 }
 
-static struct shell_cmd wallet_commands[] = {
-	{ "pk", wallet_set_pk, NULL, NULL },
-	{ "nonce", wallet_set_nonce, NULL, NULL },
-	{ "tx", wallet_tx, NULL, NULL },
-	{ NULL, NULL, NULL, NULL }
+static int wallet_pk2addr(int argc, char *argv[])
+{
+    int ret;
+    if(argc <= 1) {
+        printk("usage: %s <hex_privkey>\n", argv[0]);
+        return 0;
+    }
+    if(strlen(argv[1]) != 64) {
+        printk("invalid private key: invalid length (64 chars expected)\n");
+        return 0;
+    }
+    char pk[32] = {0};
+    ret = hextobin(argv[1], pk, sizeof(pk));
+    if(ret < 0) {
+        printk("Invalid private key.\n");
+        return 0;
+    }
+
+    char addr[20] = {0};
+    ret = privkey_to_ethereum_address(pk, addr);
+    if(ret < 0) {
+        printk("Error while converting private key.\n");
+        return 0;
+    }
+    for (size_t i = 0; i < sizeof(addr); i++) {
+        printk("%02x", addr[i]);
+    }
+    printk("\n");
+
+	return 0;
+}
+
+SHELL_CREATE_STATIC_SUBCMD_SET(sub_crypto) {
+    SHELL_CMD(nonce, NULL, "nonce", wallet_set_nonce),
+    SHELL_CMD(pk, NULL, "pk", wallet_set_pk),
+    SHELL_CMD(pk2addr, NULL, "pk2addr", wallet_pk2addr),
+    SHELL_CMD(tx, NULL, "tx", wallet_tx),
+	SHELL_SUBCMD_SET_END
 };
-SHELL_REGISTER("wallet", wallet_commands);
+SHELL_CMD_REGISTER(crypto, &sub_crypto, "crypto eth", NULL);
+
