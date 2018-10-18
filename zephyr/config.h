@@ -18,3 +18,10 @@
 #else
 #define SERVER_ADDR CONFIG_NET_CONFIG_PEER_IPV4_ADDR
 #endif
+
+#define CLIENT_MANUFACTURER	    "AnyLedger"
+#define CLIENT_MODEL_NUMBER	    "AnyLedger Wallet 0.1"
+#define CLIENT_SERIAL_NUMBER	"0001"
+#define CLIENT_FIRMWARE_VER	    "0.1"
+#define CLIENT_DEVICE_TYPE	    "OMA-LWM2M Client"
+#define CLIENT_HW_VER		    "0.0.1"

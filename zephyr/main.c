@@ -1,14 +1,18 @@
 /*
- * Copyright (c) 2016 Intel Corporation
+ * Copyright (c) 2018 AnyLedger
  *
  * SPDX-License-Identifier: Apache-2.0
  */
 
+/* system includes */
 #include <zephyr.h>
 #include <board.h>
 #include <device.h>
 #include <gpio.h>
 
+/* local includes */
+
+#include "lwm2m_client.h"
 /* 1000 msec = 1 sec */
 #define SLEEP_TIME 	1000
 
@@ -47,6 +51,7 @@ void main(void)
 {
 	int cnt = 0;
     struct device *dev = init_led();
+    lwm2m_init();
 
 	while (1) {
 		/* Set pin to HIGH/LOW every 1 second */
