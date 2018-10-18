@@ -5,6 +5,7 @@
  */
 
 #define APP_REQ_TIMEOUT K_SECONDS(10)
+#define APP_STARTUP_TIME K_SECONDS(20)
 
 #if defined(CONFIG_HTTPS)
 #define SERVER_PORT  4443

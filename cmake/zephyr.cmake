@@ -5,10 +5,6 @@ set_property(GLOBAL PROPERTY CSTD c11)
 include(ExternalProject)
 # this is zephyr app
 file(GLOB SOURCES "zephyr/*.c")
-# if building for QEMU, we need to add define to skip building hw layer
-if("${BOARD}" MATCHES "qemu_x86")
-    target_compile_definitions(app PRIVATE BUILD_QEMU=1)
-endif()
 
 target_sources(app PRIVATE ${SOURCES})
 zephyr_get_include_directories_for_lang_as_string(       C includes)
