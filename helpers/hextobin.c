@@ -42,3 +42,26 @@ int hextobin(const char * str, uint8_t * bytes, size_t blen)
    };
    return strlen(str) / 2;
 }
+
+int bintohex_nonull(const uint8_t * bytes, size_t blen, char *out, size_t out_len)
+{
+    if (bytes == NULL || blen == 0) { return E_EMPTY_STRING; }
+    if(out_len < (2*blen)) { return E_INVALID_STRING_LEN; }
+
+    for(size_t i=0; i<blen; i++) {
+        out[i*2]   = "0123456789ABCDEF"[bytes[i] >> 4];
+        out[i*2+1] = "0123456789ABCDEF"[bytes[i] & 0x0F];
+    }
+
+    return (2*blen);
+}
+
+int bintohex(const uint8_t * bytes, size_t blen, char *out, size_t out_len)
+{
+    if (bytes == NULL || blen == 0) { return E_EMPTY_STRING; }
+    if(out_len < ((2*blen)+1)) { return E_INVALID_STRING_LEN; }
+    int ret = bintohex_nonull(bytes, blen, out, out_len);
+    if(ret < 0) { return ret; }
+    out[blen*2] = '\0';
+    return ret+1;
+}

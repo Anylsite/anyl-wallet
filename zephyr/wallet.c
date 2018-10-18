@@ -10,6 +10,7 @@
 #include <helpers/hextobin.h>
 #include <string.h>
 #include <stdlib.h>
+#include <shell/shell.h>
 
 /* local includes */
 #include "wallet.h"
@@ -18,9 +19,6 @@
 #include "eth/transaction.h"
 #include "eth/address.h"
 
-typedef struct {
-    uint8_t k[32];
-} privkey_t;
 typedef uint32_t nonce_t;
 
 typedef struct {

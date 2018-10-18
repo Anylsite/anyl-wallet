@@ -18,11 +18,31 @@
 #include "upload.h"
 #include "config.h"
 #include "http_utils.h"
+#include "eth/sign.h"
+#include "wallet.h"
+#include "helpers/hextobin.h"
 /*
  * Note that the http_ctx is quite large so be careful if that is
  * allocated from stack.
  */
 static struct http_ctx http_ctx;
+
+// header that contains the data signature
+#define X_ANYLEDGER_SIG "X-Anyledger-Sig"
+typedef struct {
+    uint8_t field_name[sizeof(X_ANYLEDGER_SIG)-1];
+    uint8_t separator[sizeof(": ")-1];
+    uint8_t signature[130];
+    uint8_t terminator[sizeof("\n")];
+} anyledger_signature_hdr_t;
+
+static anyledger_signature_hdr_t _sig_hdr = {
+    .field_name = X_ANYLEDGER_SIG,
+    .separator = {':', ' '},
+    .signature = {0},
+    .terminator ="\n"
+};
+
 #if defined(CONFIG_NET_CONTEXT_NET_PKT_POOL)
 NET_PKT_TX_SLAB_DEFINE(http_cli_tx, 15);
 NET_PKT_DATA_POOL_DEFINE(http_cli_data, 30);
@@ -98,10 +118,10 @@ static int _get_test_json(const struct float32_value *temperature, uint8_t *buf,
             );
 }
 
-static int _send_record(const struct float32_value *temperature)
+
+static int _send_data_http(const uint8_t *headers, const uint8_t *payload, size_t payload_size)
 {
-#define JSON_BUF_SIZE 128
-    uint8_t buf[JSON_BUF_SIZE] = {0};
+    ARG_UNUSED(payload_size);
 	int ret = http_client_init(&http_ctx, SERVER_ADDR, SERVER_PORT, NULL,
 			       K_FOREVER);
     if(ret < 0) {
@@ -113,12 +133,11 @@ static int _send_record(const struct float32_value *temperature)
 #endif
 
 	http_set_cb(&http_ctx, NULL, http_received, NULL, NULL);
-    if(_get_test_json(temperature, buf, JSON_BUF_SIZE) < 0) {
-        NET_ERR("get json failed");
-        goto out;
-    }
-    ret = do_sync_http_req(&http_ctx, HTTP_POST, "/data",
-                   "application/json", buf, result, RESULT_BUF_SIZE);
+    ret = do_sync_http_req(
+            &http_ctx, HTTP_POST, "/data",
+            headers,
+            "application/json", payload,
+            result, RESULT_BUF_SIZE);
     if (ret < 0) {
         NET_ERR("Send failed: %d", ret);
         goto out;
@@ -128,6 +147,26 @@ out:
     http_release(&http_ctx);
 
     return 0;
+}
+
+static int _send_record(const struct float32_value *temperature)
+{
+#define JSON_BUF_SIZE 128
+    uint8_t buf[JSON_BUF_SIZE] = {0};
+    uint8_t signature[65] = {0};
+    privkey_t priv = {0};
+
+    if(_get_test_json(temperature, buf, JSON_BUF_SIZE) < 0) {
+        NET_ERR("get json failed");
+        return -1;
+    }
+    if(eth_sign(priv.k, (uint8_t*)buf, strlen(buf), signature) < 0) {
+        return -1;
+    }
+    if(bintohex_nonull(signature, 65, _sig_hdr.signature, sizeof(_sig_hdr.signature))) {
+        return -1;
+    }
+    return _send_data_http((uint8_t*)&_sig_hdr, buf, strlen(buf));
 }
 
 static int upload_data(const struct shell *shell, int argc, char *argv[])
@@ -167,7 +206,7 @@ void upload_main(void)
         k_sleep(1000);
     }
 }
-K_THREAD_DEFINE(upload_main_id, 2048, upload_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
+K_THREAD_DEFINE(upload_main_id, 4096, upload_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
 
 static int upload_stop(const struct shell *shell, size_t argc, char *argv[])
 {
