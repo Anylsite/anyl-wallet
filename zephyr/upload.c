@@ -163,7 +163,7 @@ static int _send_record(const struct float32_value *temperature)
     if(eth_sign(priv.k, (uint8_t*)buf, strlen(buf), signature) < 0) {
         return -1;
     }
-    if(bintohex_nonull(signature, 65, _sig_hdr.signature, sizeof(_sig_hdr.signature))) {
+    if(bintohex_nonull(signature, 65, _sig_hdr.signature, sizeof(_sig_hdr.signature)) < 0) {
         return -1;
     }
     return _send_data_http((uint8_t*)&_sig_hdr, buf, strlen(buf));
