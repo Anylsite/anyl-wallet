@@ -22,4 +22,4 @@ RUN sudo curl -L ${SOLC_URL} > /tmp/solc-${SOLC_VERSION} && \
 	sudo mv /tmp/solc-${SOLC_VERSION} /usr/local/bin/ && \
     sudo ln -s /usr/local/bin/solc-${SOLC_VERSION} /usr/local/bin/solc
 
-run sudo pip3 install --no-cache-dir web3 eth_abi eth_utils click
+RUN sudo pip3 install --no-cache-dir web3 eth_abi eth_utils click
