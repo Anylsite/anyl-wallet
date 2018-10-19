@@ -1,4 +1,4 @@
-FROM circleci/python:3.6.6-jessie-browsers
+FROM circleci/python
 
 MAINTAINER WonJong Shin "shinonejong@gmail.com"
 
