@@ -1,0 +1,98 @@
+/**
+* @brief 
+* @file test_tx.cpp
+* @author J.H. 
+* @date 2018-10-11
+* @edited by Vishav
+* @date 2018-10-20
+*/
+
+/* module header */
+
+/* system includes C */
+
+/* system includes C++ */
+#include <gtest/gtest.h>
+
+
+/* local includes */
+#include "eth/transaction.h"
+#include "eth/sign.h"
+#include "helpers/hextobin.h"
+
+TEST(TEST_TX, TEST_TX_SET)
+{
+    transaction_t tx;
+
+    ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF12345678"),0);
+    ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF123456"),-1);
+    ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF123456xx"),-1);
+    ASSERT_EQ(tx_set_to(&tx,"xx"),-1);
+    ASSERT_EQ(tx_set_to(&tx,""),-1);
+}
+
+
+TEST(TEST_TX, TEST_TX_ENCODE)
+{
+    transaction_t tx;
+    const uint32_t ENCODED_TX_BUFSIZE = 100;
+    uint8_t buf[ENCODED_TX_BUFSIZE] = {0};
+
+    tx.nonce = 1;
+    tx.gas_price = 1;
+    tx.gas_limit = 1;
+    tx_set_to(&tx, "7e5f4552091a69125d5dfcb7b8c2659029395bdf");
+    tx_set_value_u64(&tx, 1);
+    tx.data = NULL;
+    tx.data_len = 0;
+
+    uint32_t data_len = tx_encode(&tx, NULL, buf, ENCODED_TX_BUFSIZE);
+
+    for (int i = 0; i < data_len; i++) {
+        printf("%02x", buf[i]);
+    }
+    printf("\n");
+
+}
+TEST(TEST_TX, TEST_TX_ENCODE_AND_SIGN)
+{
+    transaction_t tx;
+    const uint32_t ENCODED_TX_BUFSIZE = 200;
+    uint8_t buf[ENCODED_TX_BUFSIZE] = {0};
+	uint8_t priv[32];
+    hextobin("0000000000000000000000000000000000000000000000000xx00000000011", priv, sizeof(priv));
+
+    tx.nonce = 4294967295;
+    tx.gas_price = 4294967295;
+    tx.gas_limit = 4294967295;
+//    tx_set_to(&tx, "7e5f4552091a69125d5dfcb7b8c2659029395bdf");
+    tx_set_to(&tx, "2e83b5ae698e1f1ab5b6f4bb0732d72f0c74d049");
+    tx_set_value_u64(&tx, 4294967295);
+    tx.data = (uint8_t*)"ThiscodeismodifiedbyVishavbyreplacingENCODED_TX_BUFSIZEto200";
+    tx.data_len = strlen((const char*)tx.data);
+
+    uint64_t data_len = tx_encode(&tx, NULL, buf, ENCODED_TX_BUFSIZE);
+
+    for (size_t i = 0; i < data_len; i++) {
+        printf("%02x", buf[i]);
+    }
+    printf("\n");
+
+    signature_t tx_sig;
+
+    eth_sign_data(priv, (uint8_t*)buf, data_len, &tx_sig);
+    for (size_t i = 0; i < (sizeof(uint256_t)*2); i++) {
+        printf("%02x", ((uint8_t*)&tx_sig)[i]);
+    }
+    printf("\n");
+    printf("%02x", tx_sig.v);
+    printf("\n");
+
+    data_len = tx_encode(&tx, &tx_sig, buf, ENCODED_TX_BUFSIZE);
+    for (size_t i = 0; i < data_len; i++) {
+        printf("%02x", buf[i]);
+    }
+    printf("\n");
+    printf("%ul",data_len);
+
+}
