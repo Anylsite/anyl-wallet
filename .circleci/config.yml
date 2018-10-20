@@ -6,9 +6,18 @@ jobs:
     steps:
       - checkout
       - run: .circleci/run_test.sh
-
+  build_ios:
+    macos:
+      xcode: "9.3.0"
+    steps:
+      - checkout
+      - run: brew install --HEAD https://gist.githubusercontent.com/Kronuz/96ac10fbd8472eb1e7566d740c4034f8/raw/gtest.rb
+      - run: brew install gcc python make cmake wget ninja  && brew tap ethereum/ethereum && brew install solidity && brew linkapps solidity
+      - run: pip3 install --user -r requirements.txt
+      - run: .circleci/run_test.sh
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build_gcc_6
+      - build_ios
