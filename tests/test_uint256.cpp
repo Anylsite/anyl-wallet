@@ -243,3 +243,49 @@ TEST(TEST_UINT256, SHIFTR256)
 	ASSERT_EQ(LOWER(LOWER(reply)), 0x8);
 }
 
+TEST(TEST_UINT256, BITS128)
+{
+	uint128_t number;
+	uint32_t reply;
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x3;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 2);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x2;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 2);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x20;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 6);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x00;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 0);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x80;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 8);
+	UPPER(number) = 0x1;
+	LOWER(number) = 0x0;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 65);
+	UPPER(number) = 0x3;
+	LOWER(number) = 0x0;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 66);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0xFFFFFFFFFFFFFFFF;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 64);
+	UPPER(number) = 0x20;
+	LOWER(number) = 0x0;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 70);
+	UPPER(number) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(number) = 0x0;
+	reply = bits128(&number);
+	ASSERT_EQ(reply, 128);
+}
+
