@@ -15,9 +15,52 @@
 
 /* local includes */
 #include "helpers/uint256.h"
-#include <string.h>
+#include "stdio.h"
 
-TEST(ZERO128, ZERO128_SET)
+// TODO: Check if the logic implemented in writeu128BE is correct
+TEST(TEST_UINT256, WRITEU128BE)
+{
+	uint128_t number;
+	uint8_t buffer;
+
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x123456789abcde;
+	writeu128BE(&number, &buffer);
+	ASSERT_EQ(UPPER(number), 0xdebc9a78563412);
+	ASSERT_EQ(LOWER(number), LOWER(number));
+	ASSERT_EQ(buffer, 0);
+
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x123456789abcdef;
+	writeu128BE(&number, &buffer);
+	ASSERT_EQ(UPPER(number), 0xefcdab89674523);
+	ASSERT_EQ(LOWER(number), LOWER(number));
+	ASSERT_EQ(buffer, 1);
+
+	UPPER(number) = 0x123456789abcde;
+	LOWER(number) = 0x0;
+	writeu128BE(&number, &buffer);
+	ASSERT_EQ(UPPER(number), 0x0);
+	ASSERT_EQ(LOWER(number), LOWER(number));
+	ASSERT_EQ(buffer, 0);
+}
+
+TEST(TEST_UINT256, SET256_UINT64)
+{
+	uint256_t n256;
+	uint64_t n64 = 123456;
+	UPPER(LOWER(n256)) = 1;
+	UPPER(UPPER(n256)) = 2;
+	LOWER(LOWER(n256)) = 3;
+	LOWER(UPPER(n256)) = 4;
+	set256_uint64(&n256, n64);
+	ASSERT_EQ(UPPER(UPPER(n256)), 0);
+	ASSERT_EQ(UPPER(LOWER(n256)), 0);
+	ASSERT_EQ(LOWER(UPPER(n256)), 0);
+	ASSERT_EQ(LOWER(LOWER(n256)), n64);
+}
+
+TEST(TEST_UINT256, ZERO128)
 {
 	uint128_t n1, n2;
 	UPPER(n1) = 123;
@@ -28,7 +71,7 @@ TEST(ZERO128, ZERO128_SET)
 	ASSERT_TRUE(zero128(&n2));
 }
 
-TEST(ZERO256, ZERO256_SET)
+TEST(TEST_UINT256, ZERO256)
 {
 	uint256_t n1, n2;
 	LOWER(UPPER(n1)) = 123;
@@ -45,7 +88,7 @@ TEST(ZERO256, ZERO256_SET)
 	ASSERT_TRUE(zero256(&n2));
 }
 
-TEST(COPY128, COPY128_SET)
+TEST(TEST_UINT256, COPY128)
 {
 	uint128_t number, result;
 	UPPER(number) = 123;
@@ -55,7 +98,7 @@ TEST(COPY128, COPY128_SET)
 	ASSERT_EQ(LOWER(number), LOWER(result));
 }
 
-TEST(COPY256, COPY256_SET)
+TEST(TEST_UINT256, COPY256)
 {
 	uint256_t number, result;
 	UPPER(LOWER(number)) = 1;
@@ -69,20 +112,20 @@ TEST(COPY256, COPY256_SET)
 	ASSERT_EQ(LOWER(LOWER(number)), LOWER(LOWER(result)));
 }
 
-TEST(CLEAR256, CLEAR256_SET)
-{
-	uint256_t number;
-	UPPER(LOWER(number)) = 0;
-	LOWER(LOWER(number)) = 1;
-	clear256(&number);
-	ASSERT_EQ(LOWER(LOWER(number)), 0);
-}
-
-TEST(CLEAR128, CLEAR128_SET)
+TEST(TEST_UINT256, CLEAR128)
 {
 	uint128_t number;
 	UPPER(number) = 0;
 	LOWER(number) = 1;
 	clear128(&number);
 	ASSERT_EQ(LOWER(number), 0);
+}
+
+TEST(TEST_UINT256, CLEAR256)
+{
+	uint256_t number;
+	UPPER(LOWER(number)) = 0;
+	LOWER(LOWER(number)) = 1;
+	clear256(&number);
+	ASSERT_EQ(LOWER(LOWER(number)), 0);
 }
