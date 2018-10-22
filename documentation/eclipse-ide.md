@@ -13,7 +13,7 @@ Download [GNU MCU Eclipse IDE for C/C++ Developers](https://github.com/gnu-mcu-e
 * Go to the Eclipse menu → Help → Eclipse Marketplace…, find GNU MCU Eclipse and install
 * If anything go bad in the Eclipse instalation, this [link](https://gnu-mcu-eclipse.github.io/plugins/install/) will give you more details.
 * To get a more comfortable IDE experience: Eclipse Menu → Window →  Preferences, General →  Appearance, Theme: Dark.
-* Configure the path to the pyOCD GDB server by opening the menu Window->Preferences, navigating to MCU, and setting the Global pyOCD Path, in linux should be /usr/bin, to check it run: ```$ find / -name pyocd-gdbserver```
+* Configure the path to the pyOCD GDB server by opening the menu Window->Preferences, navigating to MCU, and setting the Global pyOCD Path, in linux should be /usr/bin, to check it run: ```$ whereis pyocd-gdbserver```
 
 ### Importing Any Ledger Wallet to Eclipse IDE
 * Set CONFIG_OPENOCD_SUPPORT=y in the configuration file (Usually: prj.conf)
