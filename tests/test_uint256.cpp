@@ -396,3 +396,252 @@ TEST(TEST_UINT256, EQUAL256)
 	ASSERT_TRUE(!equal256(&n1, &n2));
 }
 
+TEST(TEST_UINT256, GT128)
+{
+	uint128_t n1, n2;
+	UPPER(n1) = 1;
+	LOWER(n1) = 2;
+	UPPER(n2) = 1;
+	LOWER(n2) = 2;
+	ASSERT_TRUE(!gt128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 1;
+	UPPER(n2) = 0;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(gt128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 0;
+	UPPER(n2) = 1;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(!gt128(&n1, &n2));
+}
+
+TEST(TEST_UINT256, GT256)
+{
+	uint256_t n1, n2;
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(!gt256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 0;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(gt256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 0;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(!gt256(&n1, &n2));
+}
+
+
+TEST(TEST_UINT256, GTE128)
+{
+	uint128_t n1, n2;
+	UPPER(n1) = 1;
+	LOWER(n1) = 2;
+	UPPER(n2) = 1;
+	LOWER(n2) = 2;
+	ASSERT_TRUE(gte128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 1;
+	UPPER(n2) = 0;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(gte128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 0;
+	UPPER(n2) = 1;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(!gte128(&n1, &n2));
+}
+
+TEST(TEST_UINT256, GTE256)
+{
+	uint256_t n1, n2;
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(gte256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 0;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(gte256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 0;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(!gte256(&n1, &n2));
+}
+
+TEST(TEST_UINT256, ADD128)
+{
+	uint128_t n1, n2, result;
+	UPPER(n1) = 1;
+	LOWER(n1) = 2;
+	UPPER(n2) = 1;
+	LOWER(n2) = 2;
+	add128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 2);
+	ASSERT_EQ(LOWER(result), 4);
+	UPPER(n1) = 0;
+	LOWER(n1) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(n2) = 0;
+	LOWER(n2) = 1;
+	add128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 1);
+	ASSERT_EQ(LOWER(result), 0);
+	UPPER(n1) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(n1) = 0;
+	UPPER(n2) = 1;
+	LOWER(n2) = 0;
+	add128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0);
+	ASSERT_EQ(LOWER(result), 0);
+}
+
+
+TEST(TEST_UINT256, add256)
+{
+	uint256_t n1, n2, result;
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	add256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),2);
+	ASSERT_EQ(LOWER(UPPER(result)),4);
+	ASSERT_EQ(UPPER(LOWER(result)),6);
+	ASSERT_EQ(LOWER(LOWER(result)),8);
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 0;
+	UPPER(LOWER(n1)) = 0;
+	LOWER(LOWER(n1)) = 0;
+	UPPER(UPPER(n2)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(UPPER(n2)) = 0;
+	UPPER(LOWER(n2)) = 0;
+	LOWER(LOWER(n2)) = 0;
+	add256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0);
+	ASSERT_EQ(LOWER(UPPER(result)),0);
+	ASSERT_EQ(UPPER(LOWER(result)),0);
+	ASSERT_EQ(LOWER(LOWER(result)),0);
+	UPPER(UPPER(n1)) = 0;
+	LOWER(UPPER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(UPPER(n2)) = 0;
+	LOWER(UPPER(n2)) = 0;
+	UPPER(LOWER(n2)) = 0;
+	LOWER(LOWER(n2)) = 1;
+	add256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),1);
+	ASSERT_EQ(LOWER(UPPER(result)),0);
+	ASSERT_EQ(UPPER(LOWER(result)),0);
+	ASSERT_EQ(LOWER(LOWER(result)),0);
+}
+
+TEST(TEST_UINT256, MINUS128)
+{
+	uint128_t n1, n2, result;
+	UPPER(n1) = 1;
+	LOWER(n1) = 2;
+	UPPER(n2) = 1;
+	LOWER(n2) = 2;
+	minus128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0);
+	ASSERT_EQ(LOWER(result), 0);
+	UPPER(n1) = 0x1;
+	LOWER(n1) = 0;
+	UPPER(n2) = 0;
+	LOWER(n2) = 0xFFFFFFFFFFFFFFFF;
+	minus128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0);
+	ASSERT_EQ(LOWER(result), 1);
+	UPPER(n1) = 0;
+	LOWER(n1) = 0;
+	UPPER(n2) = 0;
+	LOWER(n2) = 1;
+	// TODO: same as minus256: because is unsigned int, check if this result is ok, or if the correct return is zero
+	minus128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0xFFFFFFFFFFFFFFFF);
+	ASSERT_EQ(LOWER(result), 0xFFFFFFFFFFFFFFFF);
+}
+
+
+TEST(TEST_UINT256, MINUS256)
+{
+	uint256_t n1, n2, result;
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	minus256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0);
+	ASSERT_EQ(LOWER(UPPER(result)),0);
+	ASSERT_EQ(UPPER(LOWER(result)),0);
+	ASSERT_EQ(LOWER(LOWER(result)),0);
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 0;
+	UPPER(LOWER(n1)) = 0;
+	LOWER(LOWER(n1)) = 0;
+	UPPER(UPPER(n2)) = 0;
+	LOWER(UPPER(n2)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(LOWER(n2)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(n2)) = 0xFFFFFFFFFFFFFFFF;
+	minus256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0);
+	ASSERT_EQ(LOWER(UPPER(result)),0);
+	ASSERT_EQ(UPPER(LOWER(result)),0);
+	ASSERT_EQ(LOWER(LOWER(result)),1);
+	UPPER(UPPER(n1)) = 0;
+	LOWER(UPPER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 0;
+	UPPER(LOWER(n2)) = 0;
+	LOWER(LOWER(n2)) = 0;
+	minus256(&n1, &n2, &result);
+	// TODO: same as minus128: because is unsigned int, check if this result is ok, or if the correct return is zero
+	ASSERT_EQ(UPPER(UPPER(result)),0xFFFFFFFFFFFFFFFF);
+	ASSERT_EQ(LOWER(UPPER(result)),0xFFFFFFFFFFFFFFFF);
+	ASSERT_EQ(UPPER(LOWER(result)),0xFFFFFFFFFFFFFFFF);
+	ASSERT_EQ(LOWER(LOWER(result)),0xFFFFFFFFFFFFFFFF);
+}
+
