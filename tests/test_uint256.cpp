@@ -645,3 +645,135 @@ TEST(TEST_UINT256, MINUS256)
 	ASSERT_EQ(LOWER(LOWER(result)),0xFFFFFFFFFFFFFFFF);
 }
 
+TEST(TEST_UINT256, OR128)
+{
+	uint128_t n1, n2, result;
+	UPPER(n1) = 0xF0F0;
+	LOWER(n1) = 0xA0A0;
+	UPPER(n2) = 0xA0A;
+	LOWER(n2) = 0xF0F;
+	or128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0xFAFA);
+	ASSERT_EQ(LOWER(result), 0xAFAF);
+}
+
+TEST(TEST_UINT256, OR256)
+{
+	uint256_t n1, n2, result;
+	UPPER(UPPER(n1)) = 0x1010101010;
+	LOWER(UPPER(n1)) = 0x2020202020;
+	UPPER(LOWER(n1)) = 0x3030303030;
+	LOWER(LOWER(n1)) = 0x4040404040;
+	UPPER(UPPER(n2)) = 0xA0A0A0A0A;
+	LOWER(UPPER(n2)) = 0xB0B0B0B0B;
+	UPPER(LOWER(n2)) = 0xC0C0C0C0C;
+	LOWER(LOWER(n2)) = 0xD0D0D0D0D;
+	or256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x1A1A1A1A1A);
+	ASSERT_EQ(LOWER(UPPER(result)),0x2B2B2B2B2B);
+	ASSERT_EQ(UPPER(LOWER(result)),0x3C3C3C3C3C);
+	ASSERT_EQ(LOWER(LOWER(result)),0x4D4D4D4D4D);
+}
+
+TEST(TEST_UINT256, MUL128)
+{
+	uint128_t n1, n2, result;
+	UPPER(n1) = 0x0;
+	LOWER(n1) = 0x0;
+	UPPER(n2) = 0xDADA;
+	LOWER(n2) = 0xB4B4;
+	mul128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0x0);
+	ASSERT_EQ(LOWER(result), 0x0);
+	UPPER(n1) = 0x0;
+	LOWER(n1) = 0x1;
+	UPPER(n2) = 0xDADA;
+	LOWER(n2) = 0xB4B4;
+	mul128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0xDADA);
+	ASSERT_EQ(LOWER(result), 0xB4B4);
+	UPPER(n1) = 0x1234;
+	LOWER(n1) = 0x4321;
+	UPPER(n2) = 0x0;
+	LOWER(n2) = 0x1;
+	mul128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0x1234);
+	ASSERT_EQ(LOWER(result), 0x4321);
+	UPPER(n1) = 0x0;
+	LOWER(n1) = 0xAAAAAAAAAAAAAAA1;
+	UPPER(n2) = 0x0;
+	LOWER(n2) = 0x3;
+	mul128(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(result), 0x1);
+	ASSERT_EQ(LOWER(result), 0xFFFFFFFFFFFFFFE3);
+}
+
+TEST(TEST_UINT256, MUL256)
+{
+	uint256_t n1, n2, result;
+	UPPER(UPPER(n1)) = 0x0;
+	LOWER(UPPER(n1)) = 0x0;
+	UPPER(LOWER(n1)) = 0x0;
+	LOWER(LOWER(n1)) = 0x0;
+	UPPER(UPPER(n2)) = 0x1231230;
+	LOWER(UPPER(n2)) = 0xB0B0B0B0B;
+	UPPER(LOWER(n2)) = 0xC0C0C0C0C;
+	LOWER(LOWER(n2)) = 0xD0D0D0D0D;
+	mul256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x0);
+	ASSERT_EQ(LOWER(UPPER(result)),0x0);
+	ASSERT_EQ(UPPER(LOWER(result)),0x0);
+	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+	UPPER(UPPER(n1)) = 0x1231230;
+	LOWER(UPPER(n1)) = 0xB0B0B0B0B;
+	UPPER(LOWER(n1)) = 0xC0C0C0C0C;
+	LOWER(LOWER(n1)) = 0xD0D0D0D0D;
+	UPPER(UPPER(n2)) = 0x0;
+	LOWER(UPPER(n2)) = 0x0;
+	UPPER(LOWER(n2)) = 0x0;
+	LOWER(LOWER(n2)) = 0x0;
+    mul256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x0);
+	ASSERT_EQ(LOWER(UPPER(result)),0x0);
+	ASSERT_EQ(UPPER(LOWER(result)),0x0);
+	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+    UPPER(UPPER(n1)) = 0x1;
+	LOWER(UPPER(n1)) = 0x2;
+	UPPER(LOWER(n1)) = 0x4;
+	LOWER(LOWER(n1)) = 0x8;
+	UPPER(UPPER(n2)) = 0x0;
+	LOWER(UPPER(n2)) = 0x0;
+	UPPER(LOWER(n2)) = 0x0;
+	LOWER(LOWER(n2)) = 0x2;
+	mul256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x2);
+	ASSERT_EQ(LOWER(UPPER(result)),0x4);
+	ASSERT_EQ(UPPER(LOWER(result)),0x8);
+	ASSERT_EQ(LOWER(LOWER(result)),0x10);
+    UPPER(UPPER(n1)) = 0x0;
+	LOWER(UPPER(n1)) = 0x0;
+	UPPER(LOWER(n1)) = 0x0;
+	LOWER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(UPPER(n2)) = 0x0;
+	LOWER(UPPER(n2)) = 0x0;
+	UPPER(LOWER(n2)) = 0x0;
+	LOWER(LOWER(n2)) = 0x2;
+	mul256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x0);
+	ASSERT_EQ(LOWER(UPPER(result)),0x0);
+	ASSERT_EQ(UPPER(LOWER(result)),0x1);
+	ASSERT_EQ(LOWER(LOWER(result)),0xFFFFFFFFFFFFFFFE);
+    UPPER(UPPER(n1)) = 0x0;
+	LOWER(UPPER(n1)) = 0x0;
+	UPPER(LOWER(n1)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(n1)) = 0x0;
+	UPPER(UPPER(n2)) = 0x0;
+	LOWER(UPPER(n2)) = 0x0;
+	UPPER(LOWER(n2)) = 0x0;
+	LOWER(LOWER(n2)) = 0x2;
+	mul256(&n1, &n2, &result);
+	ASSERT_EQ(UPPER(UPPER(result)),0x0);
+	ASSERT_EQ(LOWER(UPPER(result)),0x1);
+	ASSERT_EQ(UPPER(LOWER(result)),0xFFFFFFFFFFFFFFFE);
+	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+}
