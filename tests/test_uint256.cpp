@@ -15,7 +15,6 @@
 
 /* local includes */
 #include "helpers/uint256.h"
-#include "stdio.h"
 
 // TODO: Check if the logic implemented in writeu128BE is correct
 TEST(TEST_UINT256, WRITEU128BE)
@@ -129,3 +128,29 @@ TEST(TEST_UINT256, CLEAR256)
 	clear256(&number);
 	ASSERT_EQ(LOWER(LOWER(number)), 0);
 }
+
+TEST(TEST_UINT256, SHIFTL128)
+{
+	uint128_t number, reply;
+    UPPER(reply) = 0x0;
+	LOWER(reply) = 0x0;
+	UPPER(number) = 0x1;
+	LOWER(number) = 0x8;
+	shiftl128(&number, 0, &reply);
+	ASSERT_EQ(UPPER(reply), UPPER(number));
+	ASSERT_EQ(LOWER(reply), LOWER(number));
+	shiftl128(&number, 1, &reply);
+	ASSERT_EQ(UPPER(reply), 0x2);
+	ASSERT_EQ(LOWER(reply), 0x10);
+	shiftl128(&number, 64, &reply);
+	ASSERT_EQ(UPPER(reply), LOWER(number));
+	ASSERT_EQ(LOWER(reply), 0x0);
+	shiftl128(&number, 65, &reply);
+	ASSERT_EQ(UPPER(reply), 0x10);
+	ASSERT_EQ(LOWER(reply), 0x0);
+	shiftl128(&number, 128, &reply);
+	ASSERT_EQ(UPPER(reply), 0x0);
+	ASSERT_EQ(LOWER(reply), 0x0);
+}
+
+
