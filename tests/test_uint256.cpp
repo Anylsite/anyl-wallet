@@ -344,3 +344,55 @@ TEST(TEST_UINT256, BITS256)
 	ASSERT_EQ(reply, 256);
 }
 
+TEST(TEST_UINT256, EQUAL128)
+{
+	uint128_t n1, n2;
+	UPPER(n1) = 1;
+	LOWER(n1) = 2;
+	UPPER(n2) = 1;
+	LOWER(n2) = 2;
+	ASSERT_TRUE(equal128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 1;
+	UPPER(n2) = 0;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(!equal128(&n1, &n2));
+	UPPER(n1) = 0;
+	LOWER(n1) = 0;
+	UPPER(n2) = 1;
+	LOWER(n2) = 0;
+	ASSERT_TRUE(!equal128(&n1, &n2));
+}
+
+TEST(TEST_UINT256, EQUAL256)
+{
+	uint256_t n1, n2;
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(equal256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 2;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 0;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(!equal256(&n1, &n2));
+	UPPER(UPPER(n1)) = 1;
+	LOWER(UPPER(n1)) = 0;
+	UPPER(LOWER(n1)) = 3;
+	LOWER(LOWER(n1)) = 4;
+	UPPER(UPPER(n2)) = 1;
+	LOWER(UPPER(n2)) = 2;
+	UPPER(LOWER(n2)) = 3;
+	LOWER(LOWER(n2)) = 4;
+	ASSERT_TRUE(!equal256(&n1, &n2));
+}
+
