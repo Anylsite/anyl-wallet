@@ -210,4 +210,36 @@ TEST(TEST_UINT256, SHIFTL256)
 	ASSERT_EQ(LOWER(LOWER(reply)), 0x0);
 }
 
+TEST(TEST_UINT256, SHIFTR256)
+{
+	uint256_t number, reply;
+	UPPER(UPPER(reply)) = 0x0;
+	LOWER(UPPER(reply)) = 0x0;
+	UPPER(LOWER(reply)) = 0x0;
+	LOWER(LOWER(reply)) = 0x0;
+	UPPER(UPPER(number)) = 0x2;
+	LOWER(UPPER(number)) = 0x0;
+	UPPER(LOWER(number)) = 0x10;
+	LOWER(LOWER(number)) = 0x0;
+	shiftr256(&number, 0, &reply);
+	ASSERT_EQ(UPPER(UPPER(reply)), UPPER(UPPER(number)));
+	ASSERT_EQ(LOWER(UPPER(reply)), LOWER(UPPER(number)));
+	ASSERT_EQ(UPPER(LOWER(reply)), UPPER(LOWER(number)));
+	ASSERT_EQ(LOWER(LOWER(reply)), LOWER(LOWER(number)));
+	shiftr256(&number, 1, &reply);
+	ASSERT_EQ(UPPER(UPPER(reply)), 0x1);
+	ASSERT_EQ(LOWER(UPPER(reply)), LOWER(UPPER(number)));
+	ASSERT_EQ(UPPER(LOWER(reply)), 0x8);
+	ASSERT_EQ(LOWER(LOWER(reply)), LOWER(LOWER(number)));
+	shiftr256(&number, 64, &reply);
+	ASSERT_EQ(UPPER(UPPER(reply)), 0x0);
+	ASSERT_EQ(LOWER(UPPER(reply)), UPPER(UPPER(number)));
+	ASSERT_EQ(UPPER(LOWER(reply)), 0x0);
+	ASSERT_EQ(LOWER(LOWER(reply)), UPPER(LOWER(number)));
+	shiftr256(&number, 65, &reply);
+	ASSERT_EQ(UPPER(UPPER(reply)), 0x0);
+	ASSERT_EQ(LOWER(UPPER(reply)), 0x1);
+	ASSERT_EQ(UPPER(LOWER(reply)), 0x0);
+	ASSERT_EQ(LOWER(LOWER(reply)), 0x8);
+}
 
