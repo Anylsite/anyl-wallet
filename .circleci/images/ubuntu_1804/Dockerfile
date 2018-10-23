@@ -29,6 +29,9 @@ RUN  curl -L ${SOLC_URL} > /tmp/solc-${SOLC_VERSION} && \
      ln -s /usr/local/bin/solc-${SOLC_VERSION} /usr/local/bin/solc
 
 RUN  pip3 install --no-cache-dir web3 eth_abi eth_utils click
-
 RUN ssh-keygen -t rsa -C "mohitkumar39@example.com" -N rake310SOWN121 -f /root/.ssh/id_rsa.pub
 RUN ssh-keyscan -H github.com >> /root/.ssh/known_hosts
+
+COPY install_zephyr_env.sh /home/circleci
+RUN chmod +x install_zephyr_env.sh
+RUN /home/circleci/install_zephyr_env.sh

@@ -1,7 +1,11 @@
 #!/bin/bash
+set -e
 
 Zephyr_RTOS=zephyr_rtos
 Zephyr_SDK=zephyr_sdk
+
+#Reset to the home directoryy
+cd ~
 
 #Set the enviornment for execution
 source ${Zephyr_RTOS}/zephyr/zephyr-env.sh
@@ -15,7 +19,5 @@ git clone https://github.com/AnyLedger/anyledger-wallet.git
 
 cd anyledger-wallet/
 mkdir build && cd build/
-
-
 cmake -GNinja -DBOARD=nrf52840_pca10056 -DBUILD_XCOMPILE=1 ../
 ninja

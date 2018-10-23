@@ -2,18 +2,15 @@ version: 2.0
 jobs:
   build_gcc_6:
     docker:
-      - image: circleci/python:3.6.6-jessie-browsers
+      - image: gpresean/anyledger-wallet
     steps:
       - checkout
-      - run: sudo .circleci/install_deps.sh
-      - run: sudo .circleci/download_solc.sh
       - run: .circleci/run_test.sh
   build_zephyr:
     docker:
-      - image: mohitagnihotri/anyledger
+      - image: mohitagnihotri/anyledger:latest
     steps:
       - checkout
-      - run: .circleci/install_zephyr_env.sh
       - run: .circleci/build_zephyr_nrf52840_pca10056.sh
 
 workflows:
