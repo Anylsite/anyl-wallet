@@ -724,10 +724,7 @@ TEST(TEST_UINT256, MUL256)
 	UPPER(LOWER(n2)) = 0xC0C0C0C0C;
 	LOWER(LOWER(n2)) = 0xD0D0D0D0D;
 	mul256(&n1, &n2, &result);
-	ASSERT_EQ(UPPER(UPPER(result)),0x0);
-	ASSERT_EQ(LOWER(UPPER(result)),0x0);
-	ASSERT_EQ(UPPER(LOWER(result)),0x0);
-	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+	ASSERT_TRUE(zero256(&result));
 	UPPER(UPPER(n1)) = 0x1231230;
 	LOWER(UPPER(n1)) = 0xB0B0B0B0B;
 	UPPER(LOWER(n1)) = 0xC0C0C0C0C;
@@ -737,10 +734,7 @@ TEST(TEST_UINT256, MUL256)
 	UPPER(LOWER(n2)) = 0x0;
 	LOWER(LOWER(n2)) = 0x0;
     mul256(&n1, &n2, &result);
-	ASSERT_EQ(UPPER(UPPER(result)),0x0);
-	ASSERT_EQ(LOWER(UPPER(result)),0x0);
-	ASSERT_EQ(UPPER(LOWER(result)),0x0);
-	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+    ASSERT_TRUE(zero256(&result));
     UPPER(UPPER(n1)) = 0x1;
 	LOWER(UPPER(n1)) = 0x2;
 	UPPER(LOWER(n1)) = 0x4;
@@ -780,4 +774,98 @@ TEST(TEST_UINT256, MUL256)
 	ASSERT_EQ(LOWER(UPPER(result)),0x1);
 	ASSERT_EQ(UPPER(LOWER(result)),0xFFFFFFFFFFFFFFFE);
 	ASSERT_EQ(LOWER(LOWER(result)),0x0);
+}
+
+TEST(TEST_UINT256, DIVMOD128)
+{
+	uint128_t n1, n2, retDiv, retMod;
+	UPPER(n1) = 0x0;
+	LOWER(n1) = 0x8;
+	UPPER(n2) = 0x0;
+	LOWER(n2) = 0x2;
+	clear128(&retDiv);
+	clear128(&retMod);
+	divmod128(&n1, &n2, &retDiv, &retMod);
+	ASSERT_EQ(LOWER(retDiv), 4);
+	ASSERT_TRUE(zero128(&retMod));
+	UPPER(n1) = 0x0;
+	LOWER(n1) = 0x9;
+	UPPER(n2) = 0x0;
+	LOWER(n2) = 0x2;
+	clear128(&retDiv);
+	clear128(&retMod);
+	divmod128(&n1, &n2, &retDiv, &retMod);
+	ASSERT_EQ(LOWER(retDiv), 4);
+	ASSERT_EQ(LOWER(retMod), 1);
+	UPPER(n1) = 0x4;
+	LOWER(n1) = 0x0;
+	UPPER(n2) = 0x0;
+	LOWER(n2) = 0x2;
+	clear128(&retDiv);
+	clear128(&retMod);
+	divmod128(&n1, &n2, &retDiv, &retMod);
+	ASSERT_EQ(UPPER(retDiv), 2);
+	ASSERT_EQ(LOWER(retDiv), 0);
+	ASSERT_TRUE(zero128(&retMod));
+	UPPER(n1) = 5;
+	LOWER(n1) = 0;
+	UPPER(n2) = 0;
+	LOWER(n2) = 2;
+	clear128(&retDiv);
+	clear128(&retMod);
+
+	divmod128(&n1, &n2, &retDiv, &retMod);
+	ASSERT_EQ(UPPER(retDiv), 2);
+	// TODO: Is zero the correct value to LOWER(retDiv) in this case?
+	ASSERT_TRUE(LOWER(retDiv) != 0);
+	//TODO: why retMod is zero in 5 / 1, should be 1, right?
+	ASSERT_TRUE(zero128(&retMod));
+}
+
+TEST(TEST_UINT256, TOSTRING128)
+{
+	uint128_t number;
+	char text[128];
+	UPPER(number) = 0x1;
+	LOWER(number) = 0x8;
+	tostring128(&number, 16, text, 128);
+	ASSERT_EQ(strcmp(text, "10000000000000008"), 0);
+	UPPER(number) = 0x1;
+	LOWER(number) = 0x0;
+	tostring128(&number, 16, text, 128);
+	ASSERT_EQ(strcmp(text, "10000000000000000"), 0);
+	UPPER(number) = 0x0;
+	LOWER(number) = 0x8;
+	tostring128(&number, 16, text, 128);
+	ASSERT_EQ(strcmp(text, "8"), 0);
+}
+
+TEST(TEST_UINT256, TOSTRING256)
+{
+	uint256_t number;
+	char text[256];
+    UPPER(UPPER(number)) = 0x1;
+	LOWER(UPPER(number)) = 0x2;
+	UPPER(LOWER(number)) = 0x4;
+	LOWER(LOWER(number)) = 0x8;
+	tostring256(&number, 16, text, 256);
+	ASSERT_EQ(strcmp(text, "1000000000000000200000000000000040000000000000008"), 0);
+    UPPER(UPPER(number)) = 0x0;
+	LOWER(UPPER(number)) = 0x0;
+	UPPER(LOWER(number)) = 0x4;
+	LOWER(LOWER(number)) = 0x8;
+	tostring256(&number, 16, text, 256);
+	ASSERT_EQ(strcmp(text, "40000000000000008"), 0);
+    UPPER(UPPER(number)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(UPPER(number)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(LOWER(number)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(number)) = 0xFFFFFFFFFFFFFFFF;
+	tostring256(&number, 16, text, 256);
+	ASSERT_EQ(strcmp(text, "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"), 0);
+    UPPER(UPPER(number)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(UPPER(number)) = 0xFFFFFFFFFFFFFFFF;
+	UPPER(LOWER(number)) = 0xFFFFFFFFFFFFFFFF;
+	LOWER(LOWER(number)) = 0xFFFFFFFFFFFFFFFF;
+	tostring256(&number, 2, text, 256);
+	ASSERT_EQ(strcmp(text, "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"), 0);
 }
