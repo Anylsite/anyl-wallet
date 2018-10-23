@@ -20,6 +20,8 @@ ExternalProject_Add(
   TEST_COMMAND ""
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/install
              -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+             -DCMAKE_RANLIB=${CMAKE_RANLIB}
+             -DCMAKE_AR=${CMAKE_AR}
              -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
              -DCMAKE_EXE_LINKER_FLAGS=${options}
              -DCMAKE_C_COMPILER_WORKS=1
