@@ -16,13 +16,13 @@
 
 static const ecdsa_curve *curve = &secp256k1;
 
-int privkey_to_ethereum_address(const uint8_t *privkey, uint8_t *addr)
+int privkey_to_ethereum_address(const uint8_t *privkey, address_t *addr_out)
 {
     uint8_t pubkey[65];
     uint8_t hash[32];
     ecdsa_get_public_key65(curve, privkey, pubkey);
     keccak_256(pubkey+1, 64, hash);
-    memcpy(addr, hash+12, 20);
+    memcpy(addr_out, hash+12, 20);
     return 0;
 }
 
