@@ -6,16 +6,31 @@ include(ExternalProject)
 # this is zephyr app
 file(GLOB SOURCES "zephyr/*.c")
 
-target_sources(app PRIVATE ${SOURCES})
+# keyfile generator
+file(GLOB KEYFILE_GEN_SOURCES "tools/pk_gen.py")
+function(generate_zephyr_keyfile input output)
+add_custom_command(
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/
+    COMMAND ${PYTHON_EXECUTABLE} -m tools.pk_gen --auto --keyfile ${input} > ${output}
+    DEPENDS ${KEYFILE_GEN_SOURCES} ${input}
+    OUTPUT ${output}
+    COMMENT "Generating private key file"
+)
+endfunction()
+set(APP_KEYFILE "${CMAKE_CURRENT_BINARY_DIR}/zephyr/keyfile.c")
+generate_zephyr_keyfile(${CMAKE_CURRENT_SOURCE_DIR}/pk.txt ${APP_KEYFILE})
+
+target_sources(app PRIVATE ${SOURCES} ${APP_KEYFILE})
 zephyr_get_include_directories_for_lang_as_string(       C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
 zephyr_get_compile_definitions_for_lang_as_string(       C definitions)
 zephyr_get_compile_options_for_lang_as_string(           C options)
 
+
+# extend global cflags with zephyr includes etc.
 set(external_project_cflags
   "${includes} ${definitions} ${options} ${system_includes}"
   )
-# extend global cflags with zephyr includes etc.
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${external_project_cflags}")
 
 set_target_properties(app PROPERTIES COMPILE_FLAGS "-Wall -Wextra")

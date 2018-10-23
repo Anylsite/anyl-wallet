@@ -9,8 +9,10 @@
 #include <board.h>
 #include <device.h>
 #include <gpio.h>
+#include <string.h>
 
 /* local includes */
+#include "wallet.h"
 
 #include "lwm2m_client.h"
 /* 1000 msec = 1 sec */
@@ -26,10 +28,11 @@
 #endif
 #endif
 
-
 /* Change this if you have an LED connected to a custom pin */
 #define LED	LED0_GPIO_PIN
 #define LED_PORT LED0_GPIO_CONTROLLER
+
+extern uint8_t g_zephyr_private_key[32];
 
 static struct device *init_led()
 {
@@ -52,6 +55,10 @@ void main(void)
 	int cnt = 0;
     struct device *dev = init_led();
     lwm2m_init();
+    privkey_t pk;
+    memcpy(&pk.k, g_zephyr_private_key, 32);
+
+    wallet_set_global_privkey(&pk);
 
 	while (1) {
 		/* Set pin to HIGH/LOW every 1 second */

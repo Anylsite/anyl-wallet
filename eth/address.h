@@ -8,7 +8,8 @@
 extern "C" {
 #endif
 
-int privkey_to_ethereum_address(const uint8_t *privkey, uint8_t *addr);
+typedef uint8_t address_t[20];
+int privkey_to_ethereum_address(const uint8_t *privkey, address_t *addr_out);
 
 #ifdef __cplusplus
 }
