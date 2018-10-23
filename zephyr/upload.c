@@ -25,6 +25,7 @@
  * Note that the http_ctx is quite large so be careful if that is
  * allocated from stack.
  */
+#if 0
 static struct http_ctx http_ctx;
 
 // header that contains the data signature
@@ -154,7 +155,8 @@ static int _send_record(const struct float32_value *temperature)
 #define JSON_BUF_SIZE 128
     uint8_t buf[JSON_BUF_SIZE] = {0};
     uint8_t signature[65] = {0};
-    privkey_t priv = {0};
+    privkey_t priv;
+    hextobin("0000000000000000000000000000000000000000000000000000000000000001", priv.k, sizeof(priv));
 
     if(_get_test_json(temperature, buf, JSON_BUF_SIZE) < 0) {
         NET_ERR("get json failed");
@@ -206,14 +208,14 @@ void upload_main(void)
         k_sleep(1000);
     }
 }
-K_THREAD_DEFINE(upload_main_id, 4096, upload_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
+/*K_THREAD_DEFINE(upload_main_id, 4096, upload_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);*/
 
 static int upload_stop(const struct shell *shell, size_t argc, char *argv[])
 {
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
     ARG_UNUSED(shell);
-    k_thread_suspend(upload_main_id);
+/*    k_thread_suspend(upload_main_id);*/
     return 0;
 }
 
@@ -222,7 +224,7 @@ static int upload_start(const struct shell *shell, size_t argc, char *argv[])
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
     ARG_UNUSED(shell);
-    k_thread_resume(upload_main_id);
+/*    k_thread_resume(upload_main_id);*/
     return 0;
 }
 
@@ -232,3 +234,4 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_upload) {
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(upload, &sub_upload, "http upload service", NULL);
+#endif

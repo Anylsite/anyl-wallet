@@ -4,6 +4,8 @@
 * @author J.H. 
 * @date 2018-10-16
 */
+#define LOG_MODULE_NAME net_http_utils
+#define NET_LOG_LEVEL LOG_LEVEL_DBG
 
 /* system includes */
 #include <net/net_app.h>
@@ -55,8 +57,6 @@ int do_sync_http_req(struct http_ctx *ctx,
     req.payload = payload;
     req.payload_size = strlen(payload);
 
-	NET_INFO("Send %s %x %d", url, (void*)result, sizeof(result));
-
 	ret = http_client_send_req(ctx, &req, NULL, result, result_size,
 				   NULL, APP_REQ_TIMEOUT);
 	if (ret < 0) {
@@ -65,9 +65,9 @@ int do_sync_http_req(struct http_ctx *ctx,
 		goto out;
 	}
 
-	if (ctx->http.rsp.data_len > sizeof(result)) {
+	if (ctx->http.rsp.data_len > result_size) {
 		NET_ERR("Result buffer overflow by %zd bytes",
-		       ctx->http.rsp.data_len - sizeof(result));
+		       ctx->http.rsp.data_len - result_size);
 
 		ret = -E2BIG;
 	} else {

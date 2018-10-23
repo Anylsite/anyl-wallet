@@ -28,6 +28,9 @@ int hextobin(const char * str, uint8_t * bytes, size_t blen)
    assert(strlen(str) <= (blen * 2));
    if(strlen(str) == 0) { return E_EMPTY_STRING; }
    if((strlen(str) % 2) != 0) { return E_INVALID_STRING_LEN; }
+   if((strlen(str) > 2) && (str[0] == '0') && (str[1] == 'x')) {
+       str += 2;
+    }
 
    memset(bytes, 0, blen);
    for (pos = 0; ((pos < (blen*2)) && (pos < strlen(str))); pos += 2)
