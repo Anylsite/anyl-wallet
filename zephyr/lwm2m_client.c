@@ -133,7 +133,7 @@ int lwm2m_init()
 }
 
 
-void lwm2m_main(void)
+static void lwm2m_main(void)
 {
 	struct float32_value float_temp = {0,0}, float_humidity = {0,0};
     while(1) {

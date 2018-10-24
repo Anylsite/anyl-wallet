@@ -6,7 +6,11 @@
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include <zephyr.h>
+#pragma GCC diagnostic pop
 #include <stdint.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -118,10 +122,10 @@ static int web3_eth_address_block_hex(const char *method, const address_t *addre
     }
     assert((strlen(res.result)) > 2 && (strlen(result) < 64 + 2));
 
-    if(strlen(res.result) < (32 + 2)) {
+    clear256(out);
+    if(strlen(res.result) < (16 + 2)) {
         uint64_t x = strtol(res.result, NULL, 16);
         if(errno != 0) { return -1; }
-        clear256(out);
         readu64LE((uint8_t*)&x, &LOWER_P(out));
     } else {
         // convert ASCII to bin

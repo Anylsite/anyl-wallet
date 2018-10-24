@@ -7,6 +7,7 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+int lwm2m_init();
 
 #ifdef __cplusplus
 }
