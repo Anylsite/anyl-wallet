@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-int get_sensor_data(uint8_t *temperature, uint8_t *humidity);
+int get_sensor_data(int32_t *temperature, int32_t *humidity);
 
 #ifdef __cplusplus
 }
