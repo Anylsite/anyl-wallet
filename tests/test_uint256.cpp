@@ -27,9 +27,9 @@ TEST(TEST_UINT256, WRITEU128BE)
 	LOWER(number) = 0x123456;
 	printf("Is this the correct logic for writeu128be?\n");
 	printf("writeu128BE(&number, &buffer);\n");
-	printf("before) UPPER: %x LOWER: %x BUFFER: %x \n", UPPER(number), LOWER(number), buffer);
+	// printf("before) UPPER: %x LOWER: %x BUFFER: %x \n", UPPER(number), LOWER(number), buffer);
 	writeu128BE(&number, &buffer);
-	printf("after) UPPER: %x LOWER: %x BUFFER: %x \n", UPPER(number), LOWER(number), buffer);
+	// printf("after) UPPER: %x LOWER: %x BUFFER: %x \n", UPPER(number), LOWER(number), buffer);
 	// 1) 89abcd 123456 0
 	// 2) 0 123456 0
 	// TODO: Is this the correct logic for writeu128BE?
