@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 Zephyr_RTOS=zephyr_rtos
 Zephyr_SDK=zephyr_sdk
