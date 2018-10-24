@@ -6,9 +6,12 @@
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
 #include <sensor.h>
 #include <shell/shell.h>
+#pragma GCC diagnostic pop
 
 /* local includes */
 #include "sensor_service.h"
@@ -21,7 +24,7 @@ static int _last_err = 0;
 
 #define SLEEP_TIME  1000
 
-int get_sensor_data(uint8_t *temperature, uint8_t *humidity)
+int get_sensor_data(int32_t *temperature, int32_t *humidity)
 {
     *temperature = _temp.val1;
     *humidity = _humidity.val1;
@@ -55,7 +58,7 @@ void temperature_main(void)
 
 
 // start the temperature polling thread
-K_THREAD_DEFINE(_temperature_main_id, 4096, temperature_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
+K_THREAD_DEFINE(_temperature_main_id, 1024, temperature_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
 
 static int sensor_get(const struct shell *shell, size_t argc, char *argv[])
 {
