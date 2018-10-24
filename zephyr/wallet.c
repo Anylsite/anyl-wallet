@@ -20,18 +20,16 @@
 #include "eth/transaction.h"
 #include "eth/address.h"
 
-typedef uint32_t nonce_t;
-
-typedef struct {
-    privkey_t privkey;
-    nonce_t nonce;
-} account_t;
-
 static account_t _account;
 
 void wallet_set_global_privkey(const privkey_t *pk)
 {
     _account.privkey = *pk;
+}
+
+account_t *wallet_get_account()
+{
+    return &_account;
 }
 
 static int wallet_set_pk(const struct shell *shell, size_t argc, char *argv[])

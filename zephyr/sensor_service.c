@@ -26,6 +26,7 @@ static int _last_err = 0;
 
 int get_sensor_data(int32_t *temperature, int32_t *humidity)
 {
+    // TODO maybe add a mutex here
     *temperature = _temp.val1;
     *humidity = _humidity.val1;
     return _last_err;

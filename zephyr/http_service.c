@@ -1,5 +1,5 @@
 /**
-* @brief 
+* @brief eth node connection
 * @file http_service.c
 * @author J.H. 
 * @date 2018-10-23
