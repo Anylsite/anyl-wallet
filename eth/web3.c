@@ -138,7 +138,7 @@ int eth_blockNumber(web3_ctx_t *web3)
 //
 // returns: '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[@data],"id":1}'
 //
-int eth_sendRawTransaction(web3_ctx_t *web3, uint8_t *data, size_t data_len)
+int eth_sendRawTransaction(web3_ctx_t *web3, const uint8_t *data, size_t data_len)
 {
     WEB3_PREAMBLE()
 
