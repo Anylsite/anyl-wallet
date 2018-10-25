@@ -1,3 +1,5 @@
+<meta charset="utf-8"> 
+
 # Contributing to Anyledger wallet
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
@@ -110,6 +112,7 @@ func CompactToBig(compact uint32) *big.Int {
 - Comments in the body of the code are highly encouraged, but they should
   explain the intention of the code as opposed to just calling out the
   obvious
+  
 **WRONG**
 ```Go
 // return err if amt is less than 5460
