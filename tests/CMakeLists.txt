@@ -40,14 +40,12 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     )
 target_link_libraries(
     test_data
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     eth
     )
 target_link_libraries(
@@ -55,7 +53,6 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     eth
     ${PC_JSON-C_LIBRARIES}
     )
