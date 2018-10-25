@@ -1,6 +1,6 @@
 <meta charset="utf-8"> 
 
-# Contributing to Anyledger wallet
+# Contributing to AnyLedger wallet
 We love your input! We want to make contributing to this project as easy and transparent as possible, whether it's:
 
 - Reporting a bug
@@ -187,8 +187,7 @@ Please do not change the build/CI configuration without discussing the issue wit
 
 
 ## Any contributions you make will be under the Apache-2.0 Software License
-In short, when you submit code changes, your submissions are understood to be under the same [Apache-2.0 License](https://choosealicense.com/licenses/apache-2.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
-
+In short, when you submit code changes, your submissions are understood to be under the [Apache-2.0 License](https://choosealicense.com/licenses/apache-2.0/).
 
 ## References
 This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
