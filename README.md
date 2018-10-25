@@ -12,6 +12,10 @@ The current implementation uses Ethereum, but the same architecture will be used
 
 Any IoT device flashing the embedded wallet can safely connect to a given blockchain. The connection itself is given by [AnyLedger Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
 
+## Contributing
+
+Have a look at our [contribution guidelines](https://github.com/Anyledger/anyledger-wallet/blob/contributions/CONTRIBUTING.md).
+
 ## Compilation
 
 ### Dependencies
