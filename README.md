@@ -14,7 +14,7 @@ Any IoT device flashing the embedded wallet can safely connect to a given blockc
 
 ## Contributing
 
-Have a look at our [contribution guidelines](https://github.com/Anyledger/anyledger-wallet/blob/contributions/CONTRIBUTING.md).
+Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyledger-wallet/blob/master/CONTRIBUTING.md).
 
 ## Compilation
 
