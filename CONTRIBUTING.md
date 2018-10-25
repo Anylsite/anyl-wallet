@@ -192,8 +192,8 @@ In short, when you submit code changes, your submissions are understood to be un
 
 ## References
 This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
-[JPL Coding standard](https://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf)
+[JPL Coding standard](https://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf) and from [Decred Repo](https://github.com/decred/dcrd/blob/master/docs/code_contribution_guidelines.md)
 
 [1]: https://lars-lab.jpl.nasa.gov/JPL_Coding_Standard_C.pdf
 [2]: https://web.cecs.pdx.edu/~kimchris/cs201/handouts/The%20Power%20of%2010%20-%20Rules%20for%20Developing%20Safety%20Critical%20Code.pdf
-[3]: https://github.com/decred/dcrd/blob/master/docs/code_contribution_guidelines.md#43-code-documentation-and-commenting
+[3]: https://github.com/decred/dcrd/blob/master/docs/code_contribution_guidelines.md
