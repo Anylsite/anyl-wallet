@@ -9,7 +9,7 @@ We love your input! We want to make contributing to this project as easy and tra
 - Proposing new features
 
 ## We Develop with Github
-We use github to host code, to track issues and feature requests, as well as accept pull requests.
+We use github to host code, to track issues and feature requests, as well as accept pull requests. Please report bugs using Github's issues.
 
 ## We Use [Github Flow](https://guides.github.com/introduction/flow/index.html), So All Code Changes Happen Through Pull Requests
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests.
@@ -22,14 +22,8 @@ Before you start writing the code, please make yourself familiar with [JPL Codin
 5. Make sure your code lints.
 6. Issue that pull request!
 
-All pull requests require the code to be reviewed and approved by other person on the team.
+All pull requests require the code to be reviewed and approved by another person in the team.
 
-
-## Any contributions you make will be under the Apache-2.0 Software License
-In short, when you submit code changes, your submissions are understood to be under the same [Apache-2.0 License](https://choosealicense.com/licenses/apache-2.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
-
-## Report bugs using Github's issues.
-We use GitHub issues to track public bugs. 
 
 ## Write bug reports with detail, background, and sample code
 [This is an example](http://stackoverflow.com/q/12488905/180626). Here's [another example](http://www.openradar.me/11905408).
@@ -192,8 +186,9 @@ Use static and dynamic asserts as a sanity checks. It's always better to fail ea
 Please do not change the build/CI configuration without discussing the issue with the team. This also applies to any requirements or additional libraries.
 
 
-## License
-By contributing, you agree that your contributions will be licensed under its Apache-2.0 License.
+## Any contributions you make will be under the Apache-2.0 Software License
+In short, when you submit code changes, your submissions are understood to be under the same [Apache-2.0 License](https://choosealicense.com/licenses/apache-2.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
+
 
 ## References
 This document was adapted from the open-source contribution guidelines for [Facebook's Draft](https://github.com/facebook/draft-js/blob/a9316a723f9e918afde44dea68b5f9f39b7d9b00/CONTRIBUTING.md)
