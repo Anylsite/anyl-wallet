@@ -9,8 +9,8 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
-#include <net/lwm2m.h>
 #include <zephyr.h>
+#include <net/lwm2m.h>
 #include <board.h>
 #include <gpio.h>
 #pragma GCC diagnostic pop
