@@ -22,20 +22,6 @@ Before you start writing the code, please make yourself familiar with [JPL Codin
 
 All pull requests require the code to be reviewed and approved by other person on the team.
 
-## Red flags
-
-### Compiler warnings
-The CI compiler has all warnings enabled and will fail if there is one. Do not silence the warnings with `#pragma` or similar. If you feel there's a reason to supress the warning, please discuss the issue with project maintainer. (Also see: JPL-LOC1.2)
-
-### Dynamic memory allocation
-As we are targeting embedded platforms, there shall be no dynamic memory allocation after the task is initialized. (Also see: JPL-LOC2.5)
-
-### No asserts in your code
-Use static and dynamic asserts as a sanity checks. It's always better to fail early. (Also see: JPL-LOC3.16)
-
-### Changes to the build subsystem
-Please do not change the build/CI configuration without discussing the issue with the team. This also applies to any requirements or additional libraries.
-
 
 ## Any contributions you make will be under the Apache-2.0 Software License
 In short, when you submit code changes, your submissions are understood to be under the same [Apache-2.0 License](https://choosealicense.com/licenses/apache-2.0/) that covers the project. Feel free to contact the maintainers if that's a concern.
@@ -89,8 +75,7 @@ This approach has several benefits:
 - Exported functions should also include detailed information the caller of the
   function will likely need to know and/or understand:
   
-  <br /><br />
-**WRONG**
+ **WRONG**
 ```Go
 // convert a compact uint32 to big.Int
 func CompactToBig(compact uint32) *big.Int {
@@ -124,7 +109,7 @@ func CompactToBig(compact uint32) *big.Int {
 ```
 - Comments in the body of the code are highly encouraged, but they should
   explain the intention of the code as opposed to just calling out the
-  obvious<br /><br />
+  obvious
 **WRONG**
 ```Go
 // return err if amt is less than 5460
@@ -189,18 +174,20 @@ Here is how the right prefix for a commit is chosen.
 - If a commit modifies components in multiple packages use the word `multi`
   as the commit prefix.
 
-Here are some of the reasons why wrapping your commit messages to 72 columns is
-a good thing.
+## Red flags
 
-- git log doesn?t do any special special wrapping of the commit messages. With
-  the default pager of less -S, this means your paragraphs flow far off the edge
-  of the screen, making them difficult to read. On an 80 column terminal, if we
-  subtract 4 columns for the indent on the left and 4 more for symmetry on the
-  right, we?re left with 72 columns.
-- git format-patch --stdout converts a series of commits to a series of emails,
-  using the messages for the message body.  Good email netiquette dictates we
-  wrap our plain text emails such that there?s room for a few levels of nested
-  reply indicators without overflow in an 80 column terminal.
+### Compiler warnings
+The CI compiler has all warnings enabled and will fail if there is one. Do not silence the warnings with `#pragma` or similar. If you feel there's a reason to supress the warning, please discuss the issue with project maintainer. (Also see: JPL-LOC1.2)
+
+### Dynamic memory allocation
+As we are targeting embedded platforms, there shall be no dynamic memory allocation after the task is initialized. (Also see: JPL-LOC2.5)
+
+### No asserts in your code
+Use static and dynamic asserts as a sanity checks. It's always better to fail early. (Also see: JPL-LOC3.16)
+
+### Changes to the build subsystem
+Please do not change the build/CI configuration without discussing the issue with the team. This also applies to any requirements or additional libraries.
+
 
 ## License
 By contributing, you agree that your contributions will be licensed under its Apache-2.0 License.
