@@ -2,6 +2,7 @@
 #define _ADDRESS_H_
 /* system includes */
 /* local includes */
+#include "sign.h"
 
 
 #ifdef  __cplusplus
@@ -10,6 +11,7 @@ extern "C" {
 
 typedef uint8_t address_t[20];
 int privkey_to_ethereum_address(const uint8_t *privkey, address_t *addr_out);
+int address_from_signature(const uint8_t *data, size_t data_len, const signature_t *signature, address_t *addr_out);
 
 #ifdef __cplusplus
 }
