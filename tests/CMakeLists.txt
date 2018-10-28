@@ -29,6 +29,7 @@ add_executable(test_helpers test_helpers.cpp)
 add_executable(test_crypto test_crypto.cpp)
 add_executable(test_tx test_tx.cpp)
 add_executable(test_web3 test_web3.cpp)
+add_executable(test_address test_address.cpp)
 
 target_compile_definitions(
     test_abi_compiler
@@ -86,6 +87,14 @@ target_link_libraries(
     helpers
     trezor-crypto
     )
+target_link_libraries(
+    test_address
+    ${GTEST_BOTH_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    eth
+    helpers
+    trezor-crypto
+    )
 
 
 add_test(test_rlp test_rlp)
@@ -95,3 +104,4 @@ add_test(test_helpers test_helpers)
 add_test(test_crypto test_helpers)
 add_test(test_tx test_tx)
 add_test(test_web3 test_tx)
+add_test(test_address test_address)

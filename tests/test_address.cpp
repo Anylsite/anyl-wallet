@@ -22,7 +22,7 @@ TEST(TEST_ADDRESS, TEST_ADDRESS_RECOVERY)
 {
     address_t _expected_addr;
     address_t _addr;
-	uint8_t signature[65];
+    uint8_t signature[65];
     const char* _data_to_sign = "Hello world";
     hextobin("30755ed65396facf86c53e6217c52b4daebe72aa4941d89635409de4c9c7f9466d4e9aaec7977f05e923889b33c0d0dd27d7226b6e6f56ce737465c5cfd04be400", signature, sizeof(signature));
     hextobin("11f4d0A3c12e86B4b5F39B213F7E19D048276DAe", _expected_addr, sizeof(_expected_addr));
