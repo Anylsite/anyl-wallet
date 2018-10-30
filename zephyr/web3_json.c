@@ -7,6 +7,7 @@
 
 /* system includes */
 #include <json.h>
+#include <string.h>
 
 /* local includes */
 #include "web3_json.h"
@@ -29,15 +30,16 @@ static const struct json_obj_descr tx_receipt_desc[] = {
     JSON_OBJ_DESCR_PRIM(tx_receipt_result_t, status, JSON_TOK_STRING),
 };
 
-static int __init_jsonrpc_result(jsonrpc_result_t *res)
+static void __init_jsonrpc_result(jsonrpc_result_t *res)
 {
     memset(res, 0, sizeof(jsonrpc_result_t));
 }
 
 int jsonrpc_decode_hexencoded(const uint8_t *buf, size_t buf_size, jsonrpc_result_t *result)
 {
+    __init_jsonrpc_result(result);
     return json_obj_parse(
-            buf, buf_size,
+            (char*)buf, buf_size,
             jsonrpc_hexstring_descr, ARRAY_SIZE(jsonrpc_hexstring_descr),
             result);
 }

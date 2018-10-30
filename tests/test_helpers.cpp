@@ -49,6 +49,20 @@ TEST(TEST_HELPERS, TEST_HEXTOBIN)
     }
 }
 
+
+TEST(TEST_HELPERS, TEST_HEXTOBIN_2)
+{
+    const std::list<std::pair<const char*, const char*>> _test_data = {
+        { "ffa", "\x0f\xfa" },
+    };
+
+    uint8_t buf[TEST_BUF_LEN];
+    for (auto dta_p : _test_data) {
+        int retlen = hextobin_2(dta_p.first, buf, TEST_BUF_LEN);
+        ASSERT_GT(retlen, 0);
+        ASSERT_EQ(memcmp(buf, dta_p.second, retlen), 0);
+    }
+}
 TEST(TEST_HELPERS, TEST_FP2STR)
 {
     struct test_data {
@@ -90,6 +104,7 @@ TEST(TEST_HELPERS, TEST_STR2UINT256)
 {
     uint256_t test_uint = {0,0,0,0};
     const std::list<std::pair<const char *, uint256_t>> _test_data = {
+        { "0x1100", {0, 0, 0, 0x1100}},
         { "0x1111", {0, 0, 0, 0x1111}},
         { "0x11112222", {0, 0, 0x0, 0x11112222}},
         { "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",

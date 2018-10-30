@@ -6,9 +6,11 @@
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
-#include <net/http.h>
 #include <shell/shell.h>
+#pragma GCC diagnostic pop
 
 /* local includes */
 #include "web3_shell.h"
@@ -35,12 +37,13 @@ static int web3_shell_blockNumber(const struct shell *shell, size_t argc, char *
 
 static int web3_shell_getBalance(const struct shell *shell, size_t argc, char *argv[])
 {
+    ARG_UNUSED(shell);
     if(argc < 1) {
         printk("missing argument: address\n");
         return 0;
     }
     address_t address = {0};
-    if(hextobin(argv[1], address, sizeof(address)) < 0) {
+    if(hextobin(argv[1], address.a, sizeof(address.a)) < 0) {
         printk("invalid argument: address\n");
         return 0;
     }
@@ -58,7 +61,7 @@ static int web3_shell_getTransactionCount(const struct shell *shell, size_t argc
         return 0;
     }
     address_t address = {0};
-    if(hextobin(argv[1], address, sizeof(address)) < 0) {
+    if(hextobin(argv[1], address.a, sizeof(address.a)) < 0) {
         printk("invalid argument: address\n");
         return 0;
     }
@@ -84,7 +87,12 @@ static int web3_shell_sendRawTransaction(const struct shell *shell, size_t argc,
         printk("invalid argument: data\n");
         return 0;
     }
-    web3_eth_sendRawTransaction(databuf, data_len);
+    uint256_t tx_hash;
+    if(web3_eth_sendRawTransaction(databuf, data_len, &tx_hash) < 0) {
+        printk("eth_sendRawTransaction failed\n");
+        return 0;
+    }
+    printk_uint256(&tx_hash);
 
     return 0;
 }

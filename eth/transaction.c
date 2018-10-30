@@ -32,7 +32,7 @@ int tx_encode(const transaction_t *tx, const signature_t *sig, uint8_t *buf, siz
     data_p += data_len;
     total_data_len += data_len;
     // 3) to
-    data_len = rlp_encode_item(data_p, tx->to, sizeof(tx->to));
+    data_len = rlp_encode_item(data_p, tx->to.a, sizeof(tx->to.a));
     data_p += data_len;
     total_data_len += data_len;
     // 4) value
@@ -72,7 +72,7 @@ int tx_set_to(transaction_t *tx, const char *to_hex)
 {
     assert(tx != NULL);
     assert(to_hex != NULL);
-    int ret = hextobin(to_hex, tx->to, 20);
+    int ret = hextobin(to_hex, tx->to.a, sizeof(tx->to.a));
     if(ret < 0)     { return -1; }
     if(ret != 20)   { return -1; }
     return 0;
