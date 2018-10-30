@@ -32,7 +32,7 @@ def main(keyfile, auto):
             else:
                 raise
     if k is None:
-        k = "%x" % (random.randrange(1, 2**256))
+        k = "%064x" % (random.randrange(1, 2**256))
         print(KEY_WARNING)
 
     x = encode_bytes(decode_hex(k))
