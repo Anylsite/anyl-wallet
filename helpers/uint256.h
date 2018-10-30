@@ -89,6 +89,7 @@ bool tostring128(const uint128_t *number, uint32_t baseParam, char *out,
                  uint32_t outLength);
 bool tostring256(const uint256_t *number, uint32_t baseParam, char *out,
                  uint32_t outLength);
+int fromstring256(const char *hexencoded, uint256_t *out);
 #ifdef __cplusplus
 }
 #endif
