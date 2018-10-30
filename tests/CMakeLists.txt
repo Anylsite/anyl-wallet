@@ -87,7 +87,6 @@ target_link_libraries(
     trezor-crypto
     )
 
-
 add_test(test_rlp test_rlp)
 add_test(test_data test_data)
 add_test(test_abi test_abi_compiler)
