@@ -3,6 +3,10 @@ find_package( PythonInterp 3 REQUIRED )
 include(cmake/solc.cmake)
 # export compile commands for linter
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if ((${CMAKE_BUILD_TYPE} MATCHES "Debug") AND (NOT ${BUILD_XCOMPILE}))
+    SET(CMAKE_CXX_FLAGS_DEBUG "-O0")
+    SET(CMAKE_C_FLAGS_DEBUG "-O0")
+endif()
 
 if(BUILD_XCOMPILE)
     # this is a zephyr build

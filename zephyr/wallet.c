@@ -6,11 +6,14 @@
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
 #include <helpers/hextobin.h>
 #include <string.h>
 #include <stdlib.h>
 #include <shell/shell.h>
+#pragma GCC diagnostic pop
 
 /* local includes */
 #include "wallet.h"
@@ -97,10 +100,12 @@ static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
     uint8_t buf[BUFSIZE];
     size_t txlen = tx_encode_sign(&tx, _account.privkey.k, buf, BUFSIZE);
 
-    if(web3_eth_sendRawTransaction(buf, txlen) < 0) {
-        printk("Error: eth_sendRawTransaction()");
+    uint256_t tx_hash;
+    if(web3_eth_sendRawTransaction(buf, txlen, &tx_hash) < 0) {
+        printk("Error: eth_sendRawTransaction()\n");
         return -1;
     }
+    printk_uint256(&tx_hash);
 
     return 0;
 }
@@ -130,7 +135,7 @@ static int wallet_pk2addr(const struct shell *shell, size_t argc, char *argv[])
         printk("Error while converting private key.\n");
         return 0;
     }
-    printk_hex_nl(addr, sizeof(addr));
+    printk_hex_nl(addr.a, sizeof(addr.a));
 
 	return 0;
 }

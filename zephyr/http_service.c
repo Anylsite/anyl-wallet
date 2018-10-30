@@ -6,8 +6,11 @@
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
 #include <net/http.h>
+#pragma GCC diagnostic pop
 #include <stdint.h>
 
 /* local includes */

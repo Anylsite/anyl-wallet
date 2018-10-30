@@ -5,11 +5,15 @@
 * @date 2018-10-16
 */
 #define LOG_MODULE_NAME net_http_utils
-#define NET_LOG_LEVEL LOG_LEVEL_DBG
+#define NET_LOG_LEVEL LOG_LEVEL_WRN
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include <net/net_app.h>
 #include <net/http.h>
+#pragma GCC diagnostic pop
 
 /* local includes */
 #include "http_utils.h"
@@ -22,6 +26,11 @@ void http_received(struct http_ctx *ctx,
 			  const struct sockaddr *dst,
 			  void *user_data)
 {
+    ARG_UNUSED(ctx);
+    ARG_UNUSED(flags);
+    ARG_UNUSED(dst);
+    ARG_UNUSED(user_data);
+
 	if (!status) {
 		if (pkt) {
 			NET_DBG("Received %d bytes data",
