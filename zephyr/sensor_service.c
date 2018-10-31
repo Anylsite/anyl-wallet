@@ -11,7 +11,8 @@
 #include <zephyr.h>
 #include <sensor.h>
 #include <shell/shell.h>
-#include <logging/sys_log.h>
+#include <logging/log.h>
+LOG_MODULE_REGISTER(sensor_service); /* One per given log_module_name */
 #pragma GCC diagnostic pop
 
 /* local includes */
@@ -69,10 +70,10 @@ static int sensor_get(const struct shell *shell, size_t argc, char *argv[])
     ARG_UNUSED(shell);
 
     if(_last_err < 0) {
-        SYS_LOG_WRN("error getting data from the sensor (%d)", _last_err);
+        LOG_WRN("error getting data from the sensor (%d)", _last_err);
         return 0;
     }
-    SYS_LOG_DBG("%d C %d%%\n", _temp.val1, _humidity.val1);
+    LOG_INF("%d C %d%%\n", _temp.val1, _humidity.val1);
     return 0;
 }
 
