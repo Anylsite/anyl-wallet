@@ -3,15 +3,21 @@
 /* system includes */
 /* local includes */
 #include "helpers/uint256.h"
+#include <shell/shell.h>
 
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-void printk_hex(const uint8_t *data, size_t data_len);
-#define printk_hex_nl(data, len) printk_hex(data, len); printk("\n");
-void printk_uint256(const uint256_t *v);
+#define FMT_EMPTY           0
+#define FMT_FIXED           1 << 0   // use fixed integer length (0 is used as a prefix)
+#define FMT_NO_TRAIL_ZERO   1 << 1   // remove trailing zeros
+
+void printk_hex(const struct shell *shell, const uint8_t *data, size_t data_len);
+#define printk_hex_nl(shell, data, len) printk_hex(shell, data, len); shell_fprintf(shell, SHELL_NORMAL, "\n");
+void printk_uint256(const struct shell *shell, const uint256_t *v);
+void printk_uint256_int(const struct shell *shell, const uint256_t *v, uint8_t decimals, uint8_t fmt);
 #ifdef __cplusplus
 }
 #endif
