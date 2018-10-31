@@ -33,6 +33,7 @@ static account_t _account = {
 void wallet_set_global_privkey(const privkey_t *pk)
 {
     _account.privkey = *pk;
+    privkey_to_ethereum_address(_account.privkey.k, &_account.address);
 }
 
 account_t *wallet_get_account()
@@ -42,23 +43,22 @@ account_t *wallet_get_account()
 
 static int wallet_set_pk(const struct shell *shell, size_t argc, char *argv[])
 {
-    ARG_UNUSED(shell);
     int ret;
     if(argc <= 1) {
-        printk_hex_nl(_account.privkey.k, sizeof(_account.privkey.k));
+        printk_hex_nl(shell, _account.privkey.k, sizeof(_account.privkey.k));
         return 0;
     }
     if(strlen(argv[1]) != 64) {
         printk("invalid private key: invalid length (64 chars expected)\n");
         return 0;
     }
-    char pk[32] = {0};
-    ret = hextobin(argv[1], pk, sizeof(pk));
+    privkey_t pk = {0};
+    ret = hextobin(argv[1], (uint8_t*)&pk, sizeof(pk));
     if(ret < 0) {
         printk("Invalid private key.\n");
         return 0;
     }
-    memcpy(_account.privkey.k, pk, 32);
+    wallet_set_global_privkey(&pk);
 
     return 0;
 }
@@ -111,7 +111,6 @@ static int wallet_set_gas_limit(const struct shell *shell, size_t argc, char *ar
 
 static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
 {
-    ARG_UNUSED(shell);
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
     transaction_t tx;
@@ -152,7 +151,7 @@ static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
         printk("Error: eth_sendRawTransaction()\n");
         return -1;
     }
-    printk_uint256(&tx_hash);
+    printk_uint256(shell, &tx_hash);
 
     return 0;
 }
@@ -160,7 +159,6 @@ static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
 static int wallet_pk2addr(const struct shell *shell, size_t argc, char *argv[])
 {
     int ret;
-    ARG_UNUSED(shell);
     if(argc <= 1) {
         printk("usage: %s <hex_privkey>\n", argv[0]);
         return 0;
@@ -182,7 +180,7 @@ static int wallet_pk2addr(const struct shell *shell, size_t argc, char *argv[])
         printk("Error while converting private key.\n");
         return 0;
     }
-    printk_hex_nl(addr.a, sizeof(addr.a));
+    printk_hex_nl(shell, addr.a, sizeof(addr.a));
 
 	return 0;
 }
@@ -192,18 +190,35 @@ static int wallet_sync(const struct shell *shell, size_t argc, char *argv[])
     ARG_UNUSED(shell);
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
-    address_t addr;
-    int ret = privkey_to_ethereum_address(_account.privkey.k, &addr);
-    if(ret < 0) {
-        printk("Error while converting private key.\n");
-        return 0;
-    }
     uint256_t tx_count;
-    if(web3_eth_getTransactionCount(&addr, &tx_count) < 0) {
+    if(web3_eth_getTransactionCount(&_account.address, &tx_count) < 0) {
         printk("Error: eth_getTransactionCount failed\n");
         return 0;
     }
     _account.nonce = LOWER(LOWER(tx_count));
+    return 0;
+}
+
+static int wallet_balance(const struct shell *shell, size_t argc, char *argv[])
+{
+    ARG_UNUSED(argv);
+    ARG_UNUSED(argc);
+    uint256_t out = {0};
+    uint256_t decimals;
+    uint256_t div, mod;
+    clear256(&decimals);
+    clear256(&div);
+    clear256(&mod);
+    LOWER(LOWER(decimals)) = 1000000000000000000;
+    if(web3_eth_getBalance(&_account.address, &out) < 0) {
+        printk("Error: eth_getBalance failed");
+        return -1;
+    }
+    divmod256(&out, &decimals, &div, &mod);
+    printk_uint256_int(shell, &div, 0, FMT_EMPTY);
+    printk(".");
+    printk_uint256_int(shell, &mod, 18, FMT_FIXED | FMT_NO_TRAIL_ZERO);
+    printk("\n");
     return 0;
 }
 
@@ -215,6 +230,7 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_wallet) {
     SHELL_CMD(pk2addr, NULL, "convert private key to an address", wallet_pk2addr),
     SHELL_CMD(transfer, NULL, "transfer ETH", wallet_transfer),
     SHELL_CMD(sync, NULL, "sync account nonce", wallet_sync),
+    SHELL_CMD(balance, NULL, "account balance", wallet_balance),
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(wallet, &sub_wallet, "crypto eth", NULL);

@@ -37,7 +37,6 @@ static int web3_shell_blockNumber(const struct shell *shell, size_t argc, char *
 
 static int web3_shell_getBalance(const struct shell *shell, size_t argc, char *argv[])
 {
-    ARG_UNUSED(shell);
     if(argc < 1) {
         printk("missing argument: address\n");
         return 0;
@@ -49,13 +48,12 @@ static int web3_shell_getBalance(const struct shell *shell, size_t argc, char *a
     }
     uint256_t out;
     web3_eth_getBalance(&address, &out);
-    printk_uint256(&out);
+    printk_uint256(shell, &out);
     return 0;
 }
 
 static int web3_shell_getTransactionCount(const struct shell *shell, size_t argc, char *argv[])
 {
-    ARG_UNUSED(shell);
     if(argc < 1) {
         printk("missing argument: address\n");
         return 0;
@@ -67,13 +65,12 @@ static int web3_shell_getTransactionCount(const struct shell *shell, size_t argc
     }
     uint256_t out;
     web3_eth_getTransactionCount(&address, &out);
-    printk_uint256(&out);
+    printk_uint256(shell, &out);
     return 0;
 }
 
 static int web3_shell_sendRawTransaction(const struct shell *shell, size_t argc, char *argv[])
 {
-    ARG_UNUSED(shell);
     ARG_UNUSED(argv);
     ARG_UNUSED(argc);
 
@@ -92,7 +89,7 @@ static int web3_shell_sendRawTransaction(const struct shell *shell, size_t argc,
         printk("eth_sendRawTransaction failed\n");
         return 0;
     }
-    printk_uint256(&tx_hash);
+    printk_uint256(shell, &tx_hash);
 
     return 0;
 }

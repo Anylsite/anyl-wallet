@@ -3,6 +3,7 @@
 /* system includes */
 #include <stdint.h>
 /* local includes */
+#include "eth/address.h"
 
 
 #ifdef  __cplusplus
@@ -17,6 +18,7 @@ typedef uint32_t nonce_t;
 
 typedef struct {
     privkey_t   privkey;
+    address_t   address;
     nonce_t     nonce;
     uint32_t    gas_price;
     uint32_t    gas_limit;
