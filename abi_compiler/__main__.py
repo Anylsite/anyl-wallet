@@ -14,8 +14,7 @@ from .test_data import compile_contract_test
 def generate_extern_c(data):
     return '''
 #include "eth/data.h"
-
-typedef uint256_t address_t;
+#include "eth/address.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -140,7 +139,10 @@ def compile_method_definition(contract_name, method_name, method):
     return ret + f'''
 {{
     // {signature}
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
     uint32_t data_len = {data_len} + 4; // basic size of the arguments = len(args) * 32 + 4
+#pragma GCC diagnostic pop
     size_t dyn_idx = {data_len // 32}; // index of first dynamic item
 
     {data_asserts}

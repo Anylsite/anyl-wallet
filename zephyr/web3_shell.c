@@ -35,6 +35,17 @@ static int web3_shell_blockNumber(const struct shell *shell, size_t argc, char *
     return 0;
 }
 
+static int web3_shell_estimateGas(const struct shell *shell, size_t argc, char *argv[])
+{
+    ARG_UNUSED(shell);
+    ARG_UNUSED(argv);
+    ARG_UNUSED(argc);
+
+
+    shell_fprintf(shell, SHELL_WARNING, "not implemented\n");
+    return 0;
+}
+
 static int web3_shell_getBalance(const struct shell *shell, size_t argc, char *argv[])
 {
     if(argc < 1) {
@@ -95,9 +106,10 @@ static int web3_shell_sendRawTransaction(const struct shell *shell, size_t argc,
 }
 
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_web3) {
-    SHELL_CMD(eth_getTransactionCount, NULL, "", web3_shell_getTransactionCount),
-    SHELL_CMD(eth_getBalance, NULL, "", web3_shell_getBalance),
     SHELL_CMD(eth_blockNumber, NULL, "", web3_shell_blockNumber),
+    SHELL_CMD(eth_estimateGas, NULL, "", web3_shell_estimateGas),
+    SHELL_CMD(eth_getBalance, NULL, "", web3_shell_getBalance),
+    SHELL_CMD(eth_getTransactionCount, NULL, "", web3_shell_getTransactionCount),
     SHELL_CMD(eth_sendRawTransaction, NULL, "", web3_shell_sendRawTransaction),
 	SHELL_SUBCMD_SET_END
 };

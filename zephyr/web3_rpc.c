@@ -139,3 +139,63 @@ int web3_eth_getTransactionCount(const address_t *address, uint256_t *out)
 {
     return web3_eth_address_block_hex("eth_getTransactionCount", address, out);
 }
+
+int web3_eth_estimateGas(const address_t *from, const transaction_t *tx, uint256_t *out)
+{
+    if(eth_estimateGas(&web3_ctx, from, tx) < 0) {
+        printk("error encoding eth_getTransactionCount() JSON\n");
+        return 0;
+    }
+    uint8_t *body = NULL;
+    size_t content_len = 0;
+    if(http_send_data(NULL, web3_ctx.buf, web3_ctx.buf_used, &body, &content_len) < 0) {
+        printk("error: HTTP send\n");
+        return -1;
+    }
+    jsonrpc_result_t res;
+    int ret = jsonrpc_decode_hexencoded(body, content_len, &res);
+    if(ret < 0) {
+        printk("error: decode result\n");
+        return -1;
+    }
+    if(res.error.code < 0) {
+        printk("error: JSONRPC error: %s\n", res.error.message);
+        return -1;
+    }
+    if(fromstring256(res.result, out) < 0) {
+        printk("error: invalid result field - expected hexstring");
+        return -1;
+    }
+
+    return 0;
+}
+
+int web3_eth_call(const address_t *from, const transaction_t *tx, uint256_t *out, uint8_t tx_flags)
+{
+    if(eth_call(&web3_ctx, from, tx, tx_flags) < 0) {
+        printk("error encoding eth_getTransactionCount() JSON\n");
+        return 0;
+    }
+    uint8_t *body = NULL;
+    size_t content_len = 0;
+    if(http_send_data(NULL, web3_ctx.buf, web3_ctx.buf_used, &body, &content_len) < 0) {
+        printk("error: HTTP send\n");
+        return -1;
+    }
+    jsonrpc_result_t res;
+    int ret = jsonrpc_decode_hexencoded(body, content_len, &res);
+    if(ret < 0) {
+        printk("error: decode result\n");
+        return -1;
+    }
+    if(res.error.code < 0) {
+        printk("error: JSONRPC error: %s\n", res.error.message);
+        return -1;
+    }
+    if(fromstring256(res.result, out) < 0) {
+        printk("error: invalid result field - expected hexstring");
+        return -1;
+    }
+
+    return 0;
+}
