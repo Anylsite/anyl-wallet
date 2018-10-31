@@ -5,6 +5,7 @@
 #include <string.h>
 /* local includes */
 #include "helpers/uint256.h"
+#include "eth/address.h"
 
 #define DATA_ITEM_LEN   32
 #define SELECTOR_LEN    4
@@ -28,8 +29,9 @@ void item_clear(data_block_t *blk, size_t idx);
 // encode various ints. These are right-padded
 int encode_uint(data_block_t *blk, size_t idx, uint64_t val);
 int encode_int(data_block_t *blk, size_t idx, int64_t val);
-int encode_uint256(data_block_t *blk, size_t idx, uint256_t val);
-int encode_uint128(data_block_t *blk, size_t idx, uint128_t val);
+int encode_uint256(data_block_t *blk, size_t idx, uint256_t *val);
+int encode_uint128(data_block_t *blk, size_t idx, uint128_t *val);
+int encode_address(data_block_t *blk, size_t idx, address_t *val);
 
 // decode item at @idx as an uint64_t
 uint64_t decode_uint(data_block_t *blk, size_t idx);

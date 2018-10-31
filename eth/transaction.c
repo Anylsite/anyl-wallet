@@ -40,7 +40,7 @@ int tx_encode(const transaction_t *tx, const signature_t *sig, uint8_t *buf, siz
     data_p += data_len;
     total_data_len += data_len;
     // 5) data
-    if(tx->data == NULL) {
+    if((tx->data == NULL) || (tx->data_len == 0)) {
         data_len = rlp_encode_item(data_p, (uint8_t*)&tx->data, 1);
     } else {
         data_len = rlp_encode_item(data_p, tx->data, tx->data_len);

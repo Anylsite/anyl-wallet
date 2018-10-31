@@ -32,13 +32,11 @@ static int __web3_printbuf(web3_ctx_t *web3, const char *fmt, ...)
     return 0;
 }
 
-#if 0
 // will be used later
 static int __web3_printhex(web3_ctx_t *web3, uint64_t val)
 {
-    return __web3_printbuf(web3, "\"%x\"", val);
+    return __web3_printbuf(web3, "\"0x%x\"", val);
 }
-#endif
 
 // print binary data as a hex string to the buffer
 static int __web3_printdata(web3_ctx_t *web3, const uint8_t *buf, size_t buf_size)
@@ -75,6 +73,53 @@ static int __web3_printaddr(web3_ctx_t *web3, const address_t *addr)
     ret = __web3_printbuf(web3, "\"");
     if(ret < 0) { return ret; }
 
+    return 0;
+}
+
+static int __web3_printuint256(web3_ctx_t *web3, const uint256_t *val)
+{
+    int ret = __web3_printbuf(web3, "\"0x");
+    if(ret < 0) { return ret; }
+    if(tostring256(val, 16, (char*)web3->buf + web3->buf_used, web3->buf_size - web3->buf_used) == false) {
+        return -1;
+    }
+    web3->buf_used += strlen((const char *)web3->buf + web3->buf_used);
+
+    ret = __web3_printbuf(web3, "\"");
+    if(ret < 0) { return ret; }
+
+    return 0;
+}
+
+static int __web3_printtxparam(web3_ctx_t *web3, const address_t *from, const transaction_t *tx, uint8_t tx_flags)
+{
+    if(__web3_printbuf(web3, "{") < 0) { return -1; }
+    if(__web3_printbuf(web3, "\"to\":") < 0)                       { return -1; }
+    if(__web3_printaddr(web3, &tx->to) < 0)                         { return -1; }
+    if((tx_flags & TX_NO_FROM) == 0) {
+        if(__web3_printbuf(web3, ",\"from\":") < 0)                      { return -1; }
+        if(__web3_printaddr(web3, from) < 0)                            { return -1; }
+    }
+    if((tx_flags & TX_NO_GAS) == 0) {
+        if(__web3_printbuf(web3, ",\"gas\":") < 0)                      { return -1; }
+        if(__web3_printhex(web3, tx->gas_limit) < 0)                    { return -1; }
+    }
+    if((tx_flags & TX_NO_GASPRICE) == 0) {
+        if(__web3_printbuf(web3, ",\"gasPrice\":") < 0)                 { return -1; }
+        if(__web3_printhex(web3, tx->gas_price) < 0)                    { return -1; }
+    }
+    if((tx_flags & TX_NO_VALUE) == 0) {
+        if(__web3_printbuf(web3, ",\"value\":") < 0) { return -1; }
+        if(__web3_printuint256(web3, &tx->value) < 0) { return -1; }
+    }
+    if((tx->data != NULL) && (tx->data_len != 0) && ((tx_flags & TX_NO_DATA) == 0)) {
+        if(__web3_printbuf(web3, ",\"data\":") < 0)                      { return -1; }
+        if(__web3_printdata(web3, tx->data, tx->data_len) < 0)            { return -1; }
+    }
+    if(__web3_printbuf(web3, "}") < 0) { return -1; }
+    if(__web3_printbuf(web3, ",\"latest\"") < 0) {
+        return -1;
+    }
     return 0;
 }
 
@@ -162,5 +207,21 @@ int eth_getBalance(web3_ctx_t *web3, const address_t *addr)
 
     WEB3_TERMINATOR()
 
+    return 0;
+}
+
+int eth_call(web3_ctx_t *web3, const address_t *from, const transaction_t *tx, uint8_t tx_flags)
+{
+    WEB3_PREAMBLE();
+    if(__web3_printtxparam(web3, from, tx, tx_flags) < 0) { return -1; }
+    WEB3_TERMINATOR();
+    return 0;
+}
+
+int eth_estimateGas(web3_ctx_t *web3, const address_t *from, const transaction_t *tx)
+{
+    WEB3_PREAMBLE();
+    if(__web3_printtxparam(web3, from, tx, 0) < 0) { return -1; }
+    WEB3_TERMINATOR();
     return 0;
 }
