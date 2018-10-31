@@ -16,8 +16,10 @@ typedef struct {
 typedef uint32_t nonce_t;
 
 typedef struct {
-    privkey_t privkey;
-    nonce_t nonce;
+    privkey_t   privkey;
+    nonce_t     nonce;
+    uint32_t    gas_price;
+    uint32_t    gas_limit;
 } account_t;
 
 void wallet_set_global_privkey(const privkey_t *pk);
