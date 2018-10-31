@@ -34,7 +34,7 @@ TEST(TEST_TX, TEST_TX_SET)
     
     transaction_t tx;
     
-    ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF12345678"),0);
+    ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1tests/test_tx.cpp234567890ABCDEF12345678"),0);
     ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF123456"),-1);
     ASSERT_EQ(tx_set_to(&tx,"1234567890abcdef1234567890ABCDEF123456xx"),-1);
     ASSERT_EQ(tx_set_to(&tx,"xx"),-1);
