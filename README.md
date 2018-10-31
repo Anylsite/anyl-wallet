@@ -77,3 +77,7 @@ Please make sure you can compile and flash at least blinky example before buildi
 
 3) compile & flash the firmware
 `ninja && ninja flash`
+
+## Using AnyLedger wallet
+
+To start AnyLedger wallet using a QEMU virtual machine, [see here](https://github.com/AnyLedger/anyledger-wallet/blob/master/BUILD-qemu.md).
