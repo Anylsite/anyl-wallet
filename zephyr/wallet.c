@@ -23,7 +23,12 @@
 #include "eth/transaction.h"
 #include "eth/address.h"
 
-static account_t _account;
+static account_t _account = {
+    .privkey = {{0}},
+    .nonce = 0,
+    .gas_price = 1e9,
+    .gas_limit = 21000
+};
 
 void wallet_set_global_privkey(const privkey_t *pk)
 {
@@ -58,21 +63,50 @@ static int wallet_set_pk(const struct shell *shell, size_t argc, char *argv[])
     return 0;
 }
 
+static int __convert_ulong(const char *str, const char *name, uint32_t *output)
+{
+    if(str[0] == '-') {
+        printk("invalid argument: %s\n", name);
+        return -1;
+    }
+    char *endptr = NULL;
+    unsigned long val = strtoul(str, &endptr, 10);
+    if((errno != 0) || ((endptr != NULL) && (*endptr != 0))) {
+        printk("invalid argument: %s\n", name);
+        return -1;
+    }
+    *output = val;
+    return 0;
+}
+
 static int wallet_set_nonce(const struct shell *shell, size_t argc, char *argv[])
 {
     ARG_UNUSED(shell);
     if(argc <= 1) {
-        printk("%d\n", _account.nonce);
+        printk("%u\n", _account.nonce);
         return 0;
     }
-    unsigned long nonce = strtol(argv[1], NULL, 10);
-    if(errno != 0) {
-        printk("Invalid nonce.\n");
-        return 0;
-    }
-   _account.nonce = nonce;
+    return __convert_ulong(argv[1], "set_nonce", &_account.nonce);
+}
 
-    return 0;
+static int wallet_set_gas_price(const struct shell *shell, size_t argc, char *argv[])
+{
+    ARG_UNUSED(shell);
+    if(argc <= 1) {
+        printk("%u\n", _account.gas_price);
+        return 0;
+    }
+    return __convert_ulong(argv[1], "gas_price", &_account.gas_price);
+}
+
+static int wallet_set_gas_limit(const struct shell *shell, size_t argc, char *argv[])
+{
+    ARG_UNUSED(shell);
+    if(argc <= 1) {
+        printk("%u\n", _account.gas_limit);
+        return 0;
+    }
+    return __convert_ulong(argv[1], "gas_limit", &_account.gas_limit);
 }
 
 static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
@@ -81,18 +115,31 @@ static int wallet_transfer(const struct shell *shell, size_t argc, char *argv[])
     ARG_UNUSED(argc);
     ARG_UNUSED(argv);
     transaction_t tx;
-    tx.nonce = _account.nonce;
-    tx.gas_price = 1 * 1000000000;
-    tx.gas_limit = 21000;
+    // first parameter is recipient address
     if(argc < 2) {
         printk("missing argument: address\n");
-        return 0;
+        return -1;
     }
     if(hextobin(argv[1], (uint8_t*)&tx.to, sizeof(tx.to)) < 0) {
         printk("invalid argument: address\n");
-        return 0;
+        return -1;
     }
-    tx_set_value_u64(&tx, 0);
+    // amount to send
+    if(argc < 3) {
+        printk("missing argument: transfer amount\n");
+        return -1;
+    }
+    char *endptr = NULL;
+    uint64_t tx_value = strtoul(argv[2], &endptr, 10);
+    if((errno != 0) || ((endptr != NULL) && (*endptr != 0))) {
+        printk("invalid argument: amount\n");
+        return -1;
+    }
+    // build the transaction
+    tx.nonce = _account.nonce;
+    tx.gas_price = 1 * 1000000000;
+    tx.gas_limit = 21000;
+    tx_set_value_u64(&tx, tx_value);
     tx.data = NULL;
     tx.data_len = 0;
 
@@ -162,10 +209,12 @@ static int wallet_sync(const struct shell *shell, size_t argc, char *argv[])
 
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_wallet) {
     SHELL_CMD(nonce, NULL, "nonce", wallet_set_nonce),
-    SHELL_CMD(pk, NULL, "pk", wallet_set_pk),
-    SHELL_CMD(pk2addr, NULL, "pk2addr", wallet_pk2addr),
-    SHELL_CMD(transfer, NULL, "transfer", wallet_transfer),
-    SHELL_CMD(sync, NULL, "sync", wallet_sync),
+    SHELL_CMD(gas_price, NULL, "gas price", wallet_set_gas_price),
+    SHELL_CMD(gas_limit, NULL, "gas limit", wallet_set_gas_limit),
+    SHELL_CMD(pk, NULL, "private key", wallet_set_pk),
+    SHELL_CMD(pk2addr, NULL, "convert private key to an address", wallet_pk2addr),
+    SHELL_CMD(transfer, NULL, "transfer ETH", wallet_transfer),
+    SHELL_CMD(sync, NULL, "sync account nonce", wallet_sync),
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(wallet, &sub_wallet, "crypto eth", NULL);
