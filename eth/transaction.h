@@ -9,13 +9,12 @@
 #include <stddef.h>
 #include "helpers/uint256.h"
 #include "eth/sign.h"
+#include "eth/address.h"
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
 #define SIGNATURE_LENGTH 64
-
-typedef uint8_t address_t[20];
 
 typedef struct {
     uint32_t nonce;

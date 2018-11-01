@@ -6,23 +6,27 @@
 */
 
 /* system includes */
-#include <net/lwm2m.h>
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include <zephyr.h>
+#include <net/lwm2m.h>
 #include <board.h>
 #include <gpio.h>
+#pragma GCC diagnostic pop
 
 /* local includes */
 #include "lwm2m_client.h"
 #include "zephyr/config.h"
+#include "zephyr/sensor_service.h"
 
 static struct lwm2m_ctx client;
-#define WAIT_TIME	K_SECONDS(10)
+#define WAIT_TIME	    K_SECONDS(10)
 #define CONNECT_TIME	K_SECONDS(10)
+#define SLEEP_TIME      K_SECONDS(5)
 
 static int lwm2m_setup(void)
 {
-	struct float32_value float_value;
-
 	lwm2m_engine_set_res_data("3/0/0", CLIENT_MANUFACTURER,
 				  sizeof(CLIENT_MANUFACTURER),
 				  LWM2M_RES_DATA_FLAG_RO);
@@ -44,10 +48,6 @@ static int lwm2m_setup(void)
 
 	/* setup TEMP SENSOR object */
 	lwm2m_engine_create_obj_inst("3303/0");
-	/* dummy temp data in C*/
-	float_value.val1 = 25;
-	float_value.val2 = 0;
-	lwm2m_engine_set_float32("3303/0/5700", &float_value);
 
 
 	return 0;
@@ -131,3 +131,19 @@ int lwm2m_init()
 
     return 0;
 }
+
+
+static void lwm2m_main(void)
+{
+	struct float32_value float_temp = {0,0}, float_humidity = {0,0};
+    while(1) {
+        get_sensor_data(&float_temp.val1, &float_humidity.val1);
+        lwm2m_engine_set_float32("3303/0/5700", &float_temp);
+        // humidity object is not supported yet
+/*        lwm2m_engine_set_float32("3304/0/5700", &float_humidity);*/
+		k_sleep(SLEEP_TIME);
+    }
+}
+
+K_THREAD_DEFINE(_lwm2m_id, 1024, lwm2m_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
+

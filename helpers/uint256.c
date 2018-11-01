@@ -20,7 +20,9 @@
 #include "uint256.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "hextobin.h"
 
 
 static const char HEXDIGITS[] = "0123456789abcdef";
@@ -583,4 +585,29 @@ void set256_uint64(uint256_t *target, uint64_t val)
 {
     clear256(target);
     LOWER(LOWER_P(target)) = val;
+}
+
+// connect hexencoded ASCII to an uint256
+int fromstring256(const char *hexencoded, uint256_t *out)
+{
+    if(((strlen(hexencoded) > 2)) && (hexencoded[0] == '0') && (hexencoded[1] == 'x')) {
+        hexencoded += 2;
+    }
+    if((strlen(hexencoded) < 1) || (strlen(hexencoded) > (64))) {
+        return -1;
+    }
+
+    clear256(out);
+    uint8_t buf[32] = {0};
+    uint8_t *buf_p = buf + sizeof(buf) - (strlen(hexencoded) / 2);
+    if((strlen(hexencoded) % 2) != 0) {
+        // add one byte for odd-length hexstrings
+        buf_p -= 1;
+    }
+    if(hextobin_2(hexencoded, buf_p, sizeof(buf) - (buf_p - buf)) < 0) {
+        return -1;
+    }
+    // convert bin to uint256_t
+    readu256BE(buf, out);
+    return 0;
 }

@@ -65,21 +65,36 @@ int encode_uint(data_block_t *blk, size_t idx, uint64_t val)
     return 0;
 }
 
-int encode_uint128(data_block_t *blk, size_t idx, uint128_t val)
+int encode_uint128(data_block_t *blk, size_t idx, uint128_t *val)
 {
+    assert(val != NULL);
+    assert(blk != NULL);
     item_clear(blk, idx);
     size_t item_idx = compute_item_index(idx);
     uint128_t *u_p= (uint128_t*)(&blk->data[item_idx+sizeof(uint128_t)]);
-    *u_p = val;
+    *u_p = *val;
     return 0;
 }
 
-int encode_uint256(data_block_t *blk, size_t idx, uint256_t val)
+int encode_uint256(data_block_t *blk, size_t idx, uint256_t *val)
 {
+    assert(val != NULL);
+    assert(blk != NULL);
     item_clear(blk, idx);
     size_t item_idx = compute_item_index(idx);
     uint256_t *u_p= (uint256_t*)(&blk->data[item_idx]);
-    *u_p = val;
+    *u_p = *val;
+    return 0;
+}
+
+int encode_address(data_block_t *blk, size_t idx, address_t *val)
+{
+    assert(val != NULL);
+    assert(blk != NULL);
+    item_clear(blk, idx);
+    size_t item_idx = compute_item_index(idx);
+    address_t *a_p= (address_t*)(&blk->data[item_idx] + (sizeof(uint256_t) - sizeof(address_t)));
+    *a_p = *val;
     return 0;
 }
 

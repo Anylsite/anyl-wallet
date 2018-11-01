@@ -5,11 +5,10 @@ find_package(PkgConfig)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 
-project(anyledger-wallet-test)
 include_directories(..)
 include_directories(${PC_JSON-C_INCLUDE_DIRS})
 
-solc_compile_abi(TestContract.sol ${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json)
+solc_compile_abi(${CMAKE_CURRENT_SOURCE_DIR}/TestContract.sol ${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/contracts.h h)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/contracts.c c)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/test_abi_compiler.cpp test)
@@ -41,14 +40,12 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     )
 target_link_libraries(
     test_data
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     eth
     )
 target_link_libraries(
@@ -56,7 +53,6 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    crypto
     eth
     ${PC_JSON-C_LIBRARIES}
     )
@@ -104,4 +100,4 @@ add_test(test_helpers test_helpers)
 add_test(test_crypto test_helpers)
 add_test(test_tx test_tx)
 add_test(test_uint256 test_uint256)
-add_test(test_web3 test_tx)
+add_test(test_web3 test_web3)

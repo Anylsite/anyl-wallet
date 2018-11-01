@@ -25,12 +25,12 @@ int hextobin(const char * str, uint8_t * bytes, size_t blen)
    uint8_t  pos;
    int16_t  b0;
    int16_t  b1;
-   assert(strlen(str) <= (blen * 2));
    if(strlen(str) == 0) { return E_EMPTY_STRING; }
    if((strlen(str) % 2) != 0) { return E_INVALID_STRING_LEN; }
    if((strlen(str) > 2) && (str[0] == '0') && (str[1] == 'x')) {
        str += 2;
     }
+   assert(strlen(str) <= (blen * 2));
 
    memset(bytes, 0, blen);
    for (pos = 0; ((pos < (blen*2)) && (pos < strlen(str))); pos += 2)
@@ -44,6 +44,30 @@ int hextobin(const char * str, uint8_t * bytes, size_t blen)
       bytes[pos/2] = (uint8_t)(b0 << 4) | b1;
    };
    return strlen(str) / 2;
+}
+
+int hextobin_2(const char * str, uint8_t * bytes, size_t blen)
+{
+    uint8_t  pos = 0;
+    int16_t  b1 = -1;
+    if(strlen(str) == 0) { return E_EMPTY_STRING; }
+    if((strlen(str) > 2) && (str[0] == '0') && (str[1] == 'x')) {
+        str += 2;
+    }
+    assert(strlen(str) <= (blen * 2));
+    memset(bytes, 0, blen);
+    // sanitize odd-length string
+    if((strlen(str) % 2) != 0) {
+       b1 = map_hex(str[pos]);
+       assert((b1 >= -1) && (b1 <= 0xf));
+       if(b1 < 0)  { return E_INVALID_CHAR; }
+       bytes[0] = (uint8_t)b1;
+       str += 1;
+       bytes += 1;
+       blen -= 1;
+    }
+    if(strlen(str) == 0) { return 0; }
+    return hextobin(str, bytes, blen);
 }
 
 int bintohex_nonull(const uint8_t * bytes, size_t blen, char *out, size_t out_len)

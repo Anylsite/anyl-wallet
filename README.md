@@ -4,13 +4,18 @@
 
 🏦 AnyLedger Embedded Hardware wallet for Internet of Things
 
-C crypto libraries to safely manage, generate and store private keys, to generate blockchain addresses and to sign transactions.
+C crypto libraries to safely manage, generate and store private keys, to generate blockchain addresses and to sign transactions. 
 
-Additionally, it will contain a RTOS app (for instance [Zephyr](https://github.com/AnyLedger/zephyr)) and support for Trusted Execution Environment.
+Additionally, it contains a RTOS app ([Zephyr](https://github.com/AnyLedger/zephyr)).
+The current implementation uses Ethereum, but the same architecture will be used for all the other chains. The current implementation is using Nordic nRF52840.
 
-The current implementation uses Ethereum, but the same architecture will be used for HyperLedger and other chains in the future. The current implementation is using Nordic nRF52840.
+Any IoT device flashing the embedded wallet can safely connect to a given blockchain, do transactions and interact with smart contracts. The connection itself is given by [AnyLedger Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
 
-Any IoT device flashing the embedded wallet can safely connect to a given blockchain. The connection itself is given by [AnyLedger Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
+Future improvements in the pipeline: support for Trusted Execution Environment, FreeRTOS support, ESP32 support and more.
+
+## Contributing
+
+Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyledger-wallet/blob/master/CONTRIBUTING.md).
 
 ## Compilation
 
@@ -72,3 +77,7 @@ Please make sure you can compile and flash at least blinky example before buildi
 
 3) compile & flash the firmware
 `ninja && ninja flash`
+
+## Using AnyLedger wallet
+
+To start AnyLedger wallet using a QEMU virtual machine, [see here](https://github.com/AnyLedger/anyledger-wallet/blob/master/BUILD-qemu.md).

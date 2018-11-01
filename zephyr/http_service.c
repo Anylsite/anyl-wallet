@@ -1,13 +1,16 @@
 /**
-* @brief 
+* @brief eth node connection
 * @file http_service.c
 * @author J.H. 
 * @date 2018-10-23
 */
 
 /* system includes */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
 #include <net/http.h>
+#pragma GCC diagnostic pop
 #include <stdint.h>
 
 /* local includes */
