@@ -15,10 +15,11 @@
 
 /* local includes */
 #include "eth/web3.h"
+#include "eth/web3_jsonp.h"
 #include "helpers/hextobin.h"
 
 
-const static size_t WEB3_BUFSIZE = 1024;
+const static size_t WEB3_BUFSIZE = 2048;
 static uint8_t buf[WEB3_BUFSIZE];
 
 TEST(TEST_WEB3, eth_getTransactionCount)
@@ -73,3 +74,32 @@ TEST(TEST_WEB3, eth_call)
     eth_call(&web3, &from, &tx, 0);
     printf("%s\n", web3.buf);
 }
+
+TEST(TEST_WEB3, test_decode_hexencoded)
+{
+    jsonrpc_result_t res;
+    uint256_t out;
+    char buf[] = "{\"jsonrpc\":\"2.0\",\"result\":\"0xd004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef\",\"id\":42,\"error\":{\"code\":-32015,\"message\":\"Transaction execution error.\",\"data\":\"Internal(\"Requires higher than upper limit of 47000000\")\"}}";
+    uint256_t expected_res;
+    hextobin("d004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef", (uint8_t*)&expected_res, sizeof(expected_res));
+    memset(&res, 0, sizeof(res));
+
+    ASSERT_EQ(jsonrpc_decode_hexencoded((uint8_t*)buf, strlen(buf), &res, &out), 0);
+    ASSERT_EQ(res.id, 42);
+    ASSERT_EQ(equal256(&out, &expected_res), true);
+    ASSERT_EQ(res.error.code, -32015);
+    ASSERT_EQ(strcmp(res.error.message, "Transaction execution error."), 0);
+}
+
+TEST(TEST_WEB3, test_decode_txreceipt)
+{
+    jsonrpc_result_t res;
+    tx_receipt_t receipt;
+    char buf[] = "{\"jsonrpc\":\"2.0\",\"result\":{\"blockHash\":\"0x69164698dd4a04b07a217604abfc97022dec8f02825e839d1146744cad3abe29\",\"blockNumber\":\"0x8d1447\",\"contractAddress\":null,\"cumulativeGasUsed\":\"0x5958\",\"from\":null,\"gasUsed\":null,\"logs\":[],\"logsBloom\":\"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\",\"root\":null,\"status\":\"0x1\",\"to\":null,\"transactionHash\":\"0xd004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef\",\"transactionIndex\":\"0x0\"},\"id\":42}";
+
+    ASSERT_EQ(jsonrpc_decode_txreceipt((uint8_t*)buf, strlen(buf), &res, &receipt), 0);
+    ASSERT_EQ(res.id, 42);
+    ASSERT_EQ(receipt.status, 1);
+    ASSERT_EQ(receipt.blockNumber, 0x8d1447);
+}
+

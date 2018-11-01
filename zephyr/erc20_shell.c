@@ -20,11 +20,11 @@
 #include "eth/transaction.h"
 #include "eth/address.h"
 #include "eth/data.h"
+#include "eth/web3.h"
+#include "eth/web3_jsonp.h"
 #include "erc20_abi.h"
 #include "zephyr/utils.h"
-#include "zephyr/web3_json.h"
 #include "zephyr/web3_rpc.h"
-#include "eth/web3.h"
 
 static int erc20_balance(const struct shell *shell, size_t argc, char *argv[])
 {

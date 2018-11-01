@@ -33,6 +33,7 @@ int eth_sendRawTransaction(web3_ctx_t *web3, const uint8_t *data, size_t data_le
 int eth_getBalance(web3_ctx_t *web3, const address_t *addr);
 int eth_call(web3_ctx_t *web3, const address_t *from, const transaction_t *tx, uint8_t tx_flags);
 int eth_estimateGas(web3_ctx_t *web3, const address_t *from, const transaction_t *tx);
+int eth_getTransactionReceipt(web3_ctx_t *web3, const tx_hash_t *tx_hash);
 
 #ifdef __cplusplus
 }

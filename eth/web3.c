@@ -225,3 +225,13 @@ int eth_estimateGas(web3_ctx_t *web3, const address_t *from, const transaction_t
     WEB3_TERMINATOR();
     return 0;
 }
+
+int eth_getTransactionReceipt(web3_ctx_t *web3, const tx_hash_t *tx_hash)
+{
+    WEB3_PREAMBLE();
+    if(__web3_printdata(web3, tx_hash->h, sizeof(tx_hash->h)) < 0) {
+        return -1;
+    }
+    WEB3_TERMINATOR();
+    return 0;
+}
