@@ -102,36 +102,30 @@ TEST(TEST_HELPERS, TEST_FP2STR)
 
 TEST(TEST_HELPERS, TEST_STR2UINT256)
 {
-    uint256_t test_uint = {0,0,0,0};
+    uint256_t test_uint = {{ {{0, 0}}, {{0, 0}} }};
     const std::list<std::pair<const char *, uint256_t>> _test_data = {
-        { "0x1100", {0, 0, 0, 0x1100}},
-        { "0x1111", {0, 0, 0, 0x1111}},
-        { "0x11112222", {0, 0, 0x0, 0x11112222}},
+        { "0x1100", {{{{0, 0}}, {{0, 0x1100}}}}},
+        { "0x1111", {{{{0, 0}}, {{0, 0x1111}}}}},
+        { "0x11112222", {{{{0, 0}}, {{0x0, 0x11112222}}}}},
         { "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
-            {
-                0xffffffffffffffff,
-                0xffffffffffffffff,
-                0xffffffffffffffff,
-                0xffffffffffffffff
-            }
+            {{
+                 {{0xffffffffffffffff, 0xffffffffffffffff}},
+                 {{0xffffffffffffffff, 0xffffffffffffffff}}
+             }}
         },
         { "0x0123456789abcdef000000000000000000000000000000000000000000000000",
-            {
-                0x123456789abcdef,
-                0,
-                0,
-                0,
-            }
+            {{
+                 {{ 0x123456789abcdef, 0}},
+                 {{ 0,0 }},
+            }}
         },
         { "0x00000000000000000123456789abcdef00000000000000000000000000000000",
-            {
-                0,
-                0x123456789abcdef,
-                0,
-                0,
-            }
+            {{
+                 {{ 0, 0x123456789abcdef }},
+                 {{ 0, 0 }},
+            }}
         },
-        { "abcd", {0, 0, 0, 0xabcd}},
+        { "abcd", {{ {{0, 0}}, {{0, 0xabcd}} }}},
     };
     for(auto dta_p : _test_data) {
         ASSERT_EQ(fromstring256(dta_p.first, &test_uint), 0);
