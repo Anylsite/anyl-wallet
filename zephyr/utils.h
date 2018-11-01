@@ -3,7 +3,10 @@
 /* system includes */
 /* local includes */
 #include "helpers/uint256.h"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <shell/shell.h>
+#pragma GCC diagnostic pop
 
 
 #ifdef  __cplusplus

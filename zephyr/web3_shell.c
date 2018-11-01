@@ -16,7 +16,7 @@
 #include "web3_shell.h"
 #include "eth/web3.h"
 #include "helpers/hextobin.h"
-#include "web3_json.h"
+#include "eth/web3_jsonp.h"
 #include "utils.h"
 #include "http_service.h"
 
@@ -105,12 +105,35 @@ static int web3_shell_sendRawTransaction(const struct shell *shell, size_t argc,
     return 0;
 }
 
+static int web3_shell_getTransactionReceipt(const struct shell *shell, size_t argc, char *argv[])
+{
+
+    tx_hash_t tx_hash;
+    if(argc != 2) {
+        shell_fprintf(shell, SHELL_WARNING, "missing argument: txhash\n");
+        return 0;
+    }
+    if(hextobin(argv[1], tx_hash.h, sizeof(tx_hash.h)) != 32) {
+        shell_fprintf(shell, SHELL_WARNING, "invalid argument: txhash\n");
+        return 0;
+    }
+    tx_receipt_t tx_receipt;
+    if(web3_eth_getTransactionReceipt(&tx_hash, &tx_receipt) < 0) {
+        shell_fprintf(shell, SHELL_WARNING, "eth_getTransactionReceipt failed\n");
+        return 0;
+    }
+    shell_fprintf(shell, SHELL_NORMAL, "block: %d status: %d\n", tx_receipt.blockNumber, tx_receipt.status);
+
+    return 0;
+}
+
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_web3) {
-    SHELL_CMD(eth_blockNumber, NULL, "", web3_shell_blockNumber),
-    SHELL_CMD(eth_estimateGas, NULL, "", web3_shell_estimateGas),
-    SHELL_CMD(eth_getBalance, NULL, "", web3_shell_getBalance),
-    SHELL_CMD(eth_getTransactionCount, NULL, "", web3_shell_getTransactionCount),
-    SHELL_CMD(eth_sendRawTransaction, NULL, "", web3_shell_sendRawTransaction),
+    SHELL_CMD(eth_blockNumber, NULL, "most recent block number", web3_shell_blockNumber),
+    SHELL_CMD(eth_estimateGas, NULL, "estimate gas of a transaction", web3_shell_estimateGas),
+    SHELL_CMD(eth_getBalance, NULL, "balance of an address", web3_shell_getBalance),
+    SHELL_CMD(eth_getTransactionCount, NULL, "numbers of transactions sent by an address ", web3_shell_getTransactionCount),
+    SHELL_CMD(eth_getTransactionReceipt, NULL, "get tx receipt", web3_shell_getTransactionReceipt),
+    SHELL_CMD(eth_sendRawTransaction, NULL, "send a raw transaction", web3_shell_sendRawTransaction),
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(web3, &sub_web3, "http upload service", NULL);

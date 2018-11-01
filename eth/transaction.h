@@ -26,6 +26,15 @@ typedef struct {
     size_t data_len;
 } transaction_t;
 
+typedef struct {
+    uint8_t h[32];
+} tx_hash_t;
+
+typedef struct {
+    uint64_t blockNumber;
+    uint8_t status;
+} tx_receipt_t;
+
 int tx_set_to(transaction_t *tx, const char *to_hex);
 void tx_set_value_u64(transaction_t *tx, uint64_t val);
 
