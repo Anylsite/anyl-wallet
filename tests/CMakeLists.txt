@@ -13,6 +13,7 @@ solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BIN
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/contracts.c c)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/test_abi_compiler.cpp test)
 
+add_library(x86_compat STATIC compat.c)
 
 add_executable(
     test_abi_compiler
@@ -39,6 +40,7 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
+    x86_compat
     )
 target_link_libraries(
     test_data
@@ -46,6 +48,7 @@ target_link_libraries(
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
     eth
+    x86_compat
     )
 target_link_libraries(
     test_abi_compiler
@@ -53,13 +56,14 @@ target_link_libraries(
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
     eth
-    ${PC_JSON-C_LIBRARIES}
+    x86_compat
     )
 target_link_libraries(
     test_helpers
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
+    x86_compat
     )
 target_link_libraries(
     test_crypto
@@ -68,6 +72,7 @@ target_link_libraries(
     helpers
     eth
     trezor-crypto
+    x86_compat
     )
 target_link_libraries(
     test_tx
@@ -76,6 +81,7 @@ target_link_libraries(
     eth
     helpers
     trezor-crypto
+    x86_compat
     )
 target_link_libraries(
     test_web3
@@ -84,6 +90,7 @@ target_link_libraries(
     eth
     helpers
     trezor-crypto
+    x86_compat
     )
 
 add_test(test_rlp test_rlp)

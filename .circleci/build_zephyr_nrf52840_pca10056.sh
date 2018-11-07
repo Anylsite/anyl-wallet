@@ -14,10 +14,10 @@ export ZEPHYR_SDK_INSTALL_DIR=/opt/sdk/zephyr-sdk
 
 cd ${Zephyr_RTOS}/zephyr/samples/
 
-# Clone the repo
-git clone https://github.com/AnyLedger/anyledger-wallet.git
+# clone the repo
+git clone /home/circleci/project anyledger-wallet
+cd anyledger-wallet
 
-cd anyledger-wallet/
 mkdir build && cd build/
-cmake -GNinja -DBOARD=nrf52840_pca10056 -DBUILD_XCOMPILE=1 ../
+cmake -DCMAKE_CXX_FLAGS="-Werror $CMAKE_CXX_FLAGS" -DCMAKE_C_FLAGS="-Werror $CMAKE_C_FLAGS" -GNinja -DBOARD=nrf52840_pca10056 -DBUILD_XCOMPILE=1 ../
 ninja

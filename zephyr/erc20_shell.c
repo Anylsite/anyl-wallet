@@ -125,9 +125,89 @@ static int erc20_transfer(const struct shell *shell, size_t argc, char *argv[])
     return 0;
 }
 
+static int erc20_decimals(const struct shell *shell, size_t argc, char *argv[])
+{
+    transaction_t tx;
+    memset(&tx, 0, sizeof(tx));
+    account_t *acc = wallet_get_account();
+    assert(acc != NULL);
+    // first parameter is recipient address
+    if(argc < 2) {
+        printk("missing argument: address\n");
+        return -1;
+    }
+    if(hextobin(argv[1], (uint8_t*)&tx.to, sizeof(tx.to)) < 0) {
+        printk("invalid argument: address\n");
+        return -1;
+    }
+    // build the transaction
+
+    data_block_t tx_data;
+    uint8_t datablk[256+4];
+    tx_data.data = datablk;
+    tx_data.data_len = sizeof(datablk);
+    int encoded_data_len = Token_decimals(&tx_data);
+    if(encoded_data_len < 0) {
+        shell_fprintf(shell, SHELL_WARNING, "Can't encode Token::decimals()\n");
+        return -1;
+    }
+    tx.data = datablk;
+    tx.data_len = encoded_data_len;
+
+    uint256_t out;
+    if(web3_eth_call(&acc->address, &tx, &out, TX_NO_FROM | TX_NO_GAS | TX_NO_GASPRICE | TX_NO_VALUE) < 0) {
+        return -1;
+    }
+
+    printk_uint256(shell, &out);
+
+    return 0;
+}
+
+static int erc20_totalSupply(const struct shell *shell, size_t argc, char *argv[])
+{
+    transaction_t tx;
+    memset(&tx, 0, sizeof(tx));
+    account_t *acc = wallet_get_account();
+    assert(acc != NULL);
+    // first parameter is recipient address
+    if(argc < 2) {
+        printk("missing argument: address\n");
+        return -1;
+    }
+    if(hextobin(argv[1], (uint8_t*)&tx.to, sizeof(tx.to)) < 0) {
+        printk("invalid argument: address\n");
+        return -1;
+    }
+    // build the transaction
+
+    data_block_t tx_data;
+    uint8_t datablk[256+4];
+    tx_data.data = datablk;
+    tx_data.data_len = sizeof(datablk);
+    int encoded_data_len = Token_totalSupply(&tx_data);
+    if(encoded_data_len < 0) {
+        shell_fprintf(shell, SHELL_WARNING, "Can't encode Token::totalSupply()\n");
+        return -1;
+    }
+    tx.data = datablk;
+    tx.data_len = encoded_data_len;
+
+    uint256_t out;
+    if(web3_eth_call(&acc->address, &tx, &out, TX_NO_FROM | TX_NO_GAS | TX_NO_GASPRICE | TX_NO_VALUE) < 0) {
+        return -1;
+    }
+
+    printk_uint256(shell, &out);
+
+    return 0;
+}
+
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_erc20) {
     SHELL_CMD(balance, NULL, "balance", erc20_balance),
+    SHELL_CMD(decimals, NULL, "decimals", erc20_decimals),
     SHELL_CMD(transfer, NULL, "transfer", erc20_transfer),
+    SHELL_CMD(totalSupply, NULL, "total supply", erc20_totalSupply),
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(erc20, &sub_erc20, "erc20 utils", NULL);

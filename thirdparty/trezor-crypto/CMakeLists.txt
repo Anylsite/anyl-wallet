@@ -14,6 +14,7 @@ set_target_properties(trezor-crypto PROPERTIES LINKER_LANGUAGE C)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 target_compile_definitions(trezor-crypto PRIVATE USE_ETHEREUM=1)
 target_compile_definitions(trezor-crypto PRIVATE USE_KECCAK=1)
+target_compile_definitions(trezor-crypto PRIVATE RAND_PLATFORM_INDEPENDENT=1)
 
 install(TARGETS trezor-crypto ARCHIVE DESTINATION lib)
 install(FILES ${HEADERS} DESTINATION include/trezor-crypto)

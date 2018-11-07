@@ -6,14 +6,22 @@
 */
 
 /* system includes */
+#include <zephyr.h>
 
 /* local includes */
 #include <misc/byteorder.h>
 
 void srand(unsigned int seed)
-{}
+{
+    ARG_UNUSED(seed);
+}
 
 int rand()
+{
+    return sys_rand32_get();
+}
+
+uint32_t random32()
 {
     return sys_rand32_get();
 }

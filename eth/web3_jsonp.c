@@ -74,7 +74,7 @@ static int __json_uint256_hex(const uint8_t *buf, const jsmntok_t *tok, uint256_
     // yes this is ugly. hextobin should support limit on buf
     char tmp[68] = {0};
     memcpy(tmp, buf + tok->start, tok->end - tok->start);
-    return (hextobin(tmp, (uint8_t*)out, sizeof(uint256_t)) > 0) ? 0 : -1;
+    return fromstring256(tmp, out);
 }
 
 static int __jsonrpc_error_obj(uint8_t *buf, const jsmntok_t *toks, jsonrpc_error_t *out)

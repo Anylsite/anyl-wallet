@@ -6,7 +6,6 @@
 
 #include <assert.h>
 
-#include "helpers/byte_converter.h"
 #include "helpers/rlp_encoder.h"
 #include "helpers/hextobin.h"
 #include "helpers/macros.h"

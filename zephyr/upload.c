@@ -72,7 +72,7 @@ static int _send_data_eth(const address_t *addr, int32_t temperature, int32_t hu
 
 static void upload_main(const address_t *addr)
 {
-    int ret = k_sem_take(&upload_thread_sem, K_MSEC(1));
+    int ret __attribute__((unused)) = k_sem_take(&upload_thread_sem, K_MSEC(1));
     assert(ret == 0);
     address_t upload_addr = *addr;
     while(k_sem_count_get(&upload_thread_exit_sem) == 0) {
