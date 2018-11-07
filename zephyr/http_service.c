@@ -8,6 +8,7 @@
 /* system includes */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include <zephyr.h>
 #include <net/http.h>
 #pragma GCC diagnostic pop

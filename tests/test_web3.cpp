@@ -57,6 +57,8 @@ TEST(TEST_WEB3, eth_call)
 {
     web3_ctx_t web3;
     web3_init(&web3, buf, WEB3_BUFSIZE);
+    char buf[] = "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"eth_call\",\"params\":[{\"to\":\"0x7E5F4552091A69125D5DFCB7B8C2659029395BDF\",\"from\":\"0x2E83B5AE698E1F1AB5B6F4BB0732D72F0C74D049\",\"gas\":\"0x5208\",\"gasPrice\":\"0xf4240\",\"value\":\"0x499602d2\",\"data\":\"0x000102030405\"},\"latest\"]}";
+
     transaction_t tx;
     memset(&tx, 0, sizeof(tx));
 
@@ -72,7 +74,7 @@ TEST(TEST_WEB3, eth_call)
     hextobin("2e83b5Ae698E1f1ab5b6F4bb0732D72F0c74D049", from.a, sizeof(from.a));
 
     eth_call(&web3, &from, &tx, 0);
-    printf("%s\n", web3.buf);
+    ASSERT_EQ(strcmp(buf, (char*)web3.buf), 0);
 }
 
 TEST(TEST_WEB3, test_decode_hexencoded)
@@ -81,7 +83,7 @@ TEST(TEST_WEB3, test_decode_hexencoded)
     uint256_t out;
     char buf[] = "{\"jsonrpc\":\"2.0\",\"result\":\"0xd004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef\",\"id\":42,\"error\":{\"code\":-32015,\"message\":\"Transaction execution error.\",\"data\":\"Internal(\"Requires higher than upper limit of 47000000\")\"}}";
     uint256_t expected_res;
-    hextobin("d004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef", (uint8_t*)&expected_res, sizeof(expected_res));
+    fromstring256("d004a304575e176b227d40caa7aca0cfd8a60daeea88da14cb767bb87483f8ef", &expected_res);
     memset(&res, 0, sizeof(res));
 
     ASSERT_EQ(jsonrpc_decode_hexencoded((uint8_t*)buf, strlen(buf), &res, &out), 0);
