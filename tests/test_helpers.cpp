@@ -16,6 +16,7 @@
 #include "helpers/hextobin.h"
 #include "helpers/fp2str.h"
 #include "helpers/uint256.h"
+#include "helpers/math.h"
 
 #define TEST_BUF_LEN    64
 
@@ -132,4 +133,13 @@ TEST(TEST_HELPERS, TEST_STR2UINT256)
         ASSERT_EQ(equal256(&test_uint, &dta_p.second), true);
     }
 
+}
+
+TEST(TEST_HELPERS, TEST_IPOW)
+{
+    uint64_t res;
+
+    res = ipow(10, 18);
+
+    ASSERT_EQ(res, 1000000000000000000);
 }

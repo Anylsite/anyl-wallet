@@ -21,6 +21,9 @@ void printk_hex(const struct shell *shell, const uint8_t *data, size_t data_len)
 #define printk_hex_nl(shell, data, len) printk_hex(shell, data, len); shell_fprintf(shell, SHELL_NORMAL, "\n");
 void printk_uint256(const struct shell *shell, const uint256_t *v);
 void printk_uint256_int(const struct shell *shell, const uint256_t *v, uint8_t decimals, uint8_t fmt);
+
+int shell_get_uint64(const char *argval, uint64_t *out);
+void shell_print_decimal_u256(const struct shell *shell, const uint256_t *val, uint8_t decimals);
 #ifdef __cplusplus
 }
 #endif

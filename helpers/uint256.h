@@ -56,6 +56,7 @@ void writeu256BE(const uint256_t *number, uint8_t *buffer);
 void writeu128BE(const uint128_t *number, uint8_t *buffer);
 
 void set256_uint64(uint256_t *target, uint64_t val);
+void set256_uint64BE(uint256_t *target, uint64_t val);
 
 bool zero128(const uint128_t *number);
 bool zero256(const uint256_t *number);
