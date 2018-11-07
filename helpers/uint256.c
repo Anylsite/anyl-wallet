@@ -23,6 +23,7 @@
 #include <string.h>
 
 #include "hextobin.h"
+#include "endian.h"
 
 
 static const char HEXDIGITS[] = "0123456789abcdef";
@@ -56,8 +57,8 @@ void readu256BE(const uint8_t *buffer, uint256_t *target) {
 
 void writeu128BE(const uint128_t *number, uint8_t *buffer)
 {
-    *(uint64_t*)buffer = ENDIAN_SWAP_U64(LOWER_P(number));
-    *(uint64_t*)(buffer + sizeof(uint64_t)) = ENDIAN_SWAP_U64(UPPER_P(number));
+    *(uint64_t*)buffer = ENDIAN_SWAP_U64(UPPER_P(number));
+    *(uint64_t*)(buffer + sizeof(uint64_t)) = ENDIAN_SWAP_U64(LOWER_P(number));
 }
 
 void writeu256BE(const uint256_t *number, uint8_t *buffer)
@@ -585,6 +586,12 @@ void set256_uint64(uint256_t *target, uint64_t val)
 {
     clear256(target);
     LOWER(LOWER_P(target)) = val;
+}
+
+void set256_uint64BE(uint256_t *target, uint64_t val)
+{
+    clear256(target);
+    LOWER(LOWER_P(target)) = htobe64(val);
 }
 
 // connect hexencoded ASCII to an uint256
