@@ -5,14 +5,14 @@ MAINTAINER Mohit Agnihotri "mohitkumar39@gmail.com"
 WORKDIR /home/circleci
 ENV HOME /home/circleci
 
-RUN apt-get -qq update &&  apt-get -qqy upgrade
+RUN apt-get -qq update &&  apt-get -qqy upgrade --fix-missing
 
 RUN apt-get install -y --no-install-recommends git cmake ninja-build gperf \
          ccache doxygen dfu-util device-tree-compiler \
          python3-ply python3-pip python3-setuptools python3-wheel xz-utils file \
          make gcc-multilib autoconf automake libtool librsvg2-bin git python3-dev \
-         libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build libyaml-dev python3-dev python-dev
-
+         libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build libyaml-dev python3-dev python-dev \
+         protobuf-compiler
 
 RUN cd /usr/src/gtest && \
      mkdir -p build && cd build && \

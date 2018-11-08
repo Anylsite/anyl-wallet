@@ -20,6 +20,7 @@ if(BUILD_XCOMPILE)
     include_directories(helpers/zephyr)
     include(cmake/zephyr.cmake)
     include(cmake/trezor-crypto.cmake)
+    include(cmake/nanopb.cmake)
     include(cmake/wallet.cmake)
 else()
     # generic x86 build - CI etc
@@ -33,6 +34,7 @@ else()
 
     include(cmake/wallet.cmake)
     include(cmake/trezor-crypto.cmake)
+    include(cmake/nanopb.cmake)
     add_subdirectory(tests)
 
 endif()

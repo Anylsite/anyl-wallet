@@ -1,0 +1,3 @@
+void _dummy(void)
+{
+}

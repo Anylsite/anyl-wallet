@@ -39,7 +39,7 @@ void temperature_main(void)
     while(1) {
 		_last_err = sensor_sample_fetch(dev);
         if(_last_err == 0) {
-            sensor_channel_get(dev, SENSOR_CHAN_TEMP, &_temp);
+            sensor_channel_get(dev, SENSOR_CHAN_AMBIENT_TEMP, &_temp);
             sensor_channel_get(dev, SENSOR_CHAN_HUMIDITY, &_humidity);
         }
 		k_sleep(SLEEP_TIME);
