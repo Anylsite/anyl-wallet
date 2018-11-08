@@ -12,7 +12,7 @@ cd ../
 
 # Get the Zephyr SDK
 mkdir ${Zephyr_SDK} && cd ${Zephyr_SDK}
-wget https://github.com/zephyrproject-rtos/meta-zephyr-sdk/releases/download/0.9.3/zephyr-sdk-0.9.3-setup.run
-sh zephyr-sdk-0.9.3-setup.run --quiet -- -d /opt/sdk/zephyr-sdk
-rm -rf zephyr-sdk-0.9.3-setup.run
+wget https://github.com/zephyrproject-rtos/meta-zephyr-sdk/releases/download/0.9.5/zephyr-sdk-0.9.5-setup.run
+sh zephyr-sdk-0.9.5-setup.run --quiet -- -d /opt/sdk/zephyr-sdk
+rm -rf zephyr-sdk-0.9.5-setup.run
 cd ../

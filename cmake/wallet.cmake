@@ -6,6 +6,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/install/include/)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/install/include/trezor-crypto)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory(eth)
+add_subdirectory(sawtooth)
 add_subdirectory(helpers)
 
 add_library(wallet STATIC wallet/wallet.c)
