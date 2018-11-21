@@ -2,7 +2,7 @@
 
 ## Overview
 
-🏦 AnyLedger Embedded Hardware wallet for Internet of Things
+🏦 AnyLedger Embedded Wallet for Internet of Things
 
 C crypto libraries to safely manage, generate and store private keys, to generate blockchain addresses and to sign transactions. 
 
