@@ -16,6 +16,6 @@ add_custom_command(
     COMMAND ${PYTHON_EXECUTABLE} -m abi_compiler --output ${target} --abi ${input} > ${output}
     DEPENDS ${ABI_COMPILER_SOURCES} ${input}
     OUTPUT ${output}
-    COMMENT "Generating contract's ${target} file"
+    COMMENT "SOLC abi: ${input} -> ${output}"
 )
 endfunction()

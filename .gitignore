@@ -57,4 +57,9 @@ pca10056/blank/ses/Output/**
 # vendor
 build
 .nvimrc
-abi_compiler/__pycache__
+
+tags
+tools
+
+__pycache__/
+*.py[cod]

@@ -2,10 +2,15 @@
 find_package( PythonInterp 3 REQUIRED )
 # export compile commands for linter
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/install/lib/cmake)
+# update cmake path
 if ((${CMAKE_BUILD_TYPE} MATCHES "Debug"))
-    SET(CMAKE_CXX_FLAGS_DEBUG "-O0")
-    SET(CMAKE_C_FLAGS_DEBUG "-O0")
+    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+    SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
 endif()
+
+set(BUILD_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install CACHE STRING "install destination for 3rd party libs and plugins")
+
 
 if(BUILD_XCOMPILE)
     # this is a zephyr build
@@ -26,15 +31,15 @@ else()
     # generic x86 build - CI etc
     cmake_minimum_required(VERSION 3.0.0)
     project("wallet-x86")
-    include(cmake/solc.cmake)
     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 -pedantic -Wall -Wextra")
     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -pedantic -Wall -Wextra")
 # enable testing for x86 builds
     enable_testing()
 
-    include(cmake/wallet.cmake)
-    include(cmake/trezor-crypto.cmake)
+    include(cmake/solc.cmake)
     include(cmake/nanopb.cmake)
+    include(cmake/trezor-crypto.cmake)
+    include(cmake/wallet.cmake)
     add_subdirectory(tests)
 
 endif()

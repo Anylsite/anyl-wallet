@@ -31,7 +31,7 @@ RUN  curl -L ${SOLC_URL} > /tmp/solc-${SOLC_VERSION} && \
 
 #RUN wget http://pyyaml.org/download/pyyaml/PyYAML-3.13.tar.gz && tar -xvf PyYAML-3.13.tar.gz && cd PyYAML-3.13 && python setup.py install
 
-RUN  pip3 install --no-cache-dir web3 eth_abi eth_utils click pyaml
+RUN  pip3 install --no-cache-dir web3 eth_abi eth_utils click pyaml protobuf
 RUN ssh-keyscan -H github.com >> /root/.ssh/known_hosts
 
 RUN ls -laF

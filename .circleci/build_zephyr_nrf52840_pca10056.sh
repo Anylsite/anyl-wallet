@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+pip install protobuf
+
 Zephyr_RTOS=zephyr_rtos
 Zephyr_SDK=zephyr_sdk
 

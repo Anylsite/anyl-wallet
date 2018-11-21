@@ -12,6 +12,9 @@ extern "C" {
 #define MAX(X, Y) (((X) > (Y)) ? (X) : (Y))
 #define UNUSED_PARAM(x) ((void)(x));
 
+#define STRINGIZE2(s) #s
+#define STRINGIZE(s) STRINGIZE2(s)
+
 #ifdef __cplusplus
 }
 #endif
