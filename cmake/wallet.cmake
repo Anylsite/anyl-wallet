@@ -11,10 +11,17 @@ add_subdirectory(helpers)
 
 add_library(wallet STATIC wallet/wallet.c)
 set_target_properties(wallet PROPERTIES LINKER_LANGUAGE C)
+target_link_libraries(wallet
+    PUBLIC
+        trezor-crypto
+        eth
+        sawtooth
+        helpers
+        )
 target_include_directories(wallet
     PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/install/include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/install/include/trezor-crypto>
+        $<BUILD_INTERFACE:${BUILD_INSTALL_DIR}/include>
+        $<BUILD_INTERFACE:${BUILD_INSTALL_DIR}/include/trezor-crypto>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         
 )

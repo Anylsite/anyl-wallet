@@ -17,8 +17,8 @@
 
 /* local includes */
 #include "wallet.h"
-#include "zephyr/utils.h"
-#include "zephyr/web3_rpc.h"
+#include "zephyr-wallet/utils.h"
+#include "zephyr-wallet/web3_rpc.h"
 
 #include "eth/transaction.h"
 #include "eth/address.h"

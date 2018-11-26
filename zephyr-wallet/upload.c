@@ -21,9 +21,9 @@
 #include "config.h"
 #include "eth/sign.h"
 #include "eth/transaction.h"
-#include "zephyr/wallet.h"
-#include "zephyr/sensor_service.h"
-#include "zephyr/web3_rpc.h"
+#include "zephyr-wallet/wallet.h"
+#include "zephyr-wallet/sensor_service.h"
+#include "zephyr-wallet/web3_rpc.h"
 #include "helpers/hextobin.h"
 
 // thread stack

@@ -4,7 +4,6 @@ include(ExternalProject)
 set(mylib_build_dir ${CMAKE_CURRENT_BINARY_DIR}/nanopb)
 set(mylib_source_dir ${CMAKE_CURRENT_BINARY_DIR}/thirdparty/nanopb)
 
-
 ExternalProject_Add(
   nanopb
 
@@ -24,7 +23,6 @@ ExternalProject_Add(
              -DCMAKE_C_COMPILER_WORKS=1
              -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 )
-
 function(nanopb_compile input SRCS HDRS)
     # compiled file name w/o the suffix
     get_filename_component(PROTO_NAME ${input} NAME_WE)

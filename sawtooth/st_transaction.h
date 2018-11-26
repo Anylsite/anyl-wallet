@@ -1,6 +1,8 @@
 #ifndef _ST_TRANSACTION_H_
 #define _ST_TRANSACTION_H_
 /* system includes */
+#include <stdint.h>
+#include <stddef.h>
 /* local includes */
 
 

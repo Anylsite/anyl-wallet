@@ -23,7 +23,7 @@
 #include "http_service.h"
 #include "helpers/hextobin.h"
 #include "eth/web3_jsonp.h"
-#include "zephyr/utils.h"
+#include "zephyr-wallet/utils.h"
 
 #define WEB3_BUF_SIZE 512
 static uint8_t WEB3_BUF[WEB3_BUF_SIZE];

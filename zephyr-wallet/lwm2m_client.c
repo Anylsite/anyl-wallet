@@ -17,8 +17,8 @@
 
 /* local includes */
 #include "lwm2m_client.h"
-#include "zephyr/config.h"
-#include "zephyr/sensor_service.h"
+#include "zephyr-wallet/config.h"
+#include "zephyr-wallet/sensor_service.h"
 
 static struct lwm2m_ctx client;
 #define WAIT_TIME	    K_SECONDS(10)

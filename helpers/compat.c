@@ -4,11 +4,17 @@
 * @author J.H. 
 * @date 2018-11-07
 */
-
-#ifndef __ZEPHYR__
-
-/* system includes */
 #include <stdint.h>
+
+#ifdef __ZEPHYR__
+#include "random/rand32.h"
+uint32_t random32(void)
+{
+    return sys_rand32_get();
+}
+
+#else
+/* system includes */
 #include <stdlib.h>
 
 /* local includes */
