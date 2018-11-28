@@ -23,6 +23,8 @@ int eth_digest_message(const uint8_t *data, size_t data_len, uint8_t *digest);
 int eth_sign_data_rawsig(const uint8_t *privkey, const uint8_t *data, size_t data_len, uint8_t *signature);
 int eth_sign_data(const uint8_t *privkey, const uint8_t *data, size_t data_len, signature_t *out);
 
+int privkey_to_pubkey(const uint8_t *privkey, uint8_t *pubkey);
+
 #ifdef __cplusplus
 }
 #endif

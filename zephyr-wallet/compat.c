@@ -16,17 +16,13 @@ void srand(unsigned int seed)
     ARG_UNUSED(seed);
 }
 
-int rand()
+int rand(void)
 {
     return sys_rand32_get();
 }
 
-uint32_t random32()
-{
-    return sys_rand32_get();
-}
 
-uint32_t time()
+uint32_t time(void)
 {
     return 0;
 }

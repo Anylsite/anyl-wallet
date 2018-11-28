@@ -23,10 +23,10 @@
 #include "eth/web3.h"
 #include "eth/web3_jsonp.h"
 #include "erc20_abi.h"
-#include "zephyr/utils.h"
-#include "zephyr/web3_rpc.h"
-#include "zephyr/erc20_shell.h"
-#include "zephyr/wallet.h"
+#include "zephyr-wallet/utils.h"
+#include "zephyr-wallet/web3_rpc.h"
+#include "zephyr-wallet/erc20_shell.h"
+#include "zephyr-wallet/wallet.h"
 
 #define TOKEN_SYMBOL_MAX    3
 #define TOKENS_MAX          5

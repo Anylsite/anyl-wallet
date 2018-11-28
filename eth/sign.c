@@ -71,3 +71,9 @@ int eth_sign_data(const uint8_t *privkey, const uint8_t *data, size_t data_len, 
     memcpy(&out->s, signature+sizeof(uint256_t), sizeof(uint256_t));
     return 0;
 }
+
+int privkey_to_pubkey(const uint8_t *privkey, uint8_t *pubkey)
+{
+    ecdsa_get_public_key65(curve, privkey, pubkey);
+    return 0;
+}

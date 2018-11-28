@@ -76,8 +76,8 @@ int bintohex_nonull(const uint8_t * bytes, size_t blen, char *out, size_t out_le
     if(out_len < (2*blen)) { return E_INVALID_STRING_LEN; }
 
     for(size_t i=0; i<blen; i++) {
-        out[i*2]   = "0123456789ABCDEF"[bytes[i] >> 4];
-        out[i*2+1] = "0123456789ABCDEF"[bytes[i] & 0x0F];
+        out[i*2]   = "0123456789abcdef"[bytes[i] >> 4];
+        out[i*2+1] = "0123456789abcdef"[bytes[i] & 0x0F];
     }
 
     return (2*blen);

@@ -13,8 +13,6 @@ solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BIN
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/contracts.c c)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/test_abi_compiler.cpp test)
 
-add_library(x86_compat STATIC compat.c)
-
 add_executable(
     test_abi_compiler
     ${CMAKE_CURRENT_BINARY_DIR}/test_abi_compiler.cpp
@@ -29,6 +27,7 @@ add_executable(test_helpers test_helpers.cpp)
 add_executable(test_crypto test_crypto.cpp)
 add_executable(test_tx test_tx.cpp)
 add_executable(test_web3 test_web3.cpp)
+add_executable(test_sawtooth test_sawtooth.cpp)
 
 target_compile_definitions(
     test_abi_compiler
@@ -40,7 +39,6 @@ target_link_libraries(
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    x86_compat
     )
 target_link_libraries(
     test_data
@@ -48,7 +46,6 @@ target_link_libraries(
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
     eth
-    x86_compat
     )
 target_link_libraries(
     test_abi_compiler
@@ -56,32 +53,28 @@ target_link_libraries(
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
     eth
-    x86_compat
     )
 target_link_libraries(
     test_helpers
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     helpers
-    x86_compat
     )
 target_link_libraries(
     test_crypto
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
-    helpers
     eth
     trezor-crypto
-    x86_compat
+    helpers
     )
 target_link_libraries(
     test_tx
     ${GTEST_BOTH_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     eth
-    helpers
     trezor-crypto
-    x86_compat
+    helpers
     )
 target_link_libraries(
     test_web3
@@ -90,7 +83,17 @@ target_link_libraries(
     eth
     helpers
     trezor-crypto
-    x86_compat
+    )
+target_include_directories(test_sawtooth PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/../sawtooth)
+target_link_libraries(
+    test_sawtooth
+    ${GTEST_BOTH_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    helpers
+    sawtooth
+    eth
+    protobuf-nanopb
+    trezor-crypto
     )
 
 add_test(test_rlp test_rlp)
@@ -100,3 +103,4 @@ add_test(test_helpers test_helpers)
 add_test(test_crypto test_helpers)
 add_test(test_tx test_tx)
 add_test(test_web3 test_web3)
+add_test(test_sawtooth test_sawtooth)

@@ -52,6 +52,7 @@ int do_sync_http_req(struct http_ctx *ctx,
 			    const char *headers,
 			    const char *content_type,
 			    const char *payload,
+                size_t      payload_size,
                 uint8_t *result,
                 size_t result_size)
 {
@@ -64,7 +65,7 @@ int do_sync_http_req(struct http_ctx *ctx,
     req.header_fields = headers;
     req.content_type_value = content_type;
     req.payload = payload;
-    req.payload_size = strlen(payload);
+    req.payload_size = payload_size;
 
 	ret = http_client_send_req(ctx, &req, NULL, result, result_size,
 				   NULL, APP_REQ_TIMEOUT);

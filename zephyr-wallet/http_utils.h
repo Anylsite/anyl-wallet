@@ -15,12 +15,13 @@ void http_received(struct http_ctx *ctx,
 			  void *user_data);
 int do_sync_http_req(struct http_ctx *ctx,
 			    enum http_method method,
-			    const char *url,
-			    const char *headers,
-			    const char *content_type,
-			    const char *payload,
-                uint8_t *result,
-                size_t result_size
+			    const char  *url,
+			    const char  *headers,
+			    const char  *content_type,
+			    const char  *payload,
+                size_t      payload_size,
+                uint8_t     *result,
+                size_t      result_size
                 );
 
 #ifdef __cplusplus

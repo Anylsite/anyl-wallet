@@ -27,7 +27,7 @@ TEST(TEST_WEB3, eth_getTransactionCount)
     web3_ctx_t web3;
     web3_init(&web3, buf, WEB3_BUFSIZE);
     address_t addr;
-    const char *_expected = "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"eth_getTransactionCount\",\"params\":[\"0x7E5F4552091A69125D5DFCB7B8C2659029395BDF\",\"latest\"]}";
+    const char *_expected = "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"eth_getTransactionCount\",\"params\":[\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"latest\"]}";
     hextobin("7e5f4552091a69125d5dfcb7b8c2659029395bdf", addr.a, sizeof(addr.a));
 
     ASSERT_EQ(eth_getTransactionCount(&web3, &addr), 0);
@@ -57,7 +57,7 @@ TEST(TEST_WEB3, eth_call)
 {
     web3_ctx_t web3;
     web3_init(&web3, buf, WEB3_BUFSIZE);
-    char buf[] = "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"eth_call\",\"params\":[{\"to\":\"0x7E5F4552091A69125D5DFCB7B8C2659029395BDF\",\"from\":\"0x2E83B5AE698E1F1AB5B6F4BB0732D72F0C74D049\",\"gas\":\"0x5208\",\"gasPrice\":\"0xf4240\",\"value\":\"0x499602d2\",\"data\":\"0x000102030405\"},\"latest\"]}";
+    char buf[] = "{\"jsonrpc\":\"2.0\",\"id\":0,\"method\":\"eth_call\",\"params\":[{\"to\":\"0x7e5f4552091a69125d5dfcb7b8c2659029395bdf\",\"from\":\"0x2e83b5ae698e1f1ab5b6f4bb0732d72f0c74d049\",\"gas\":\"0x5208\",\"gasPrice\":\"0xf4240\",\"value\":\"0x499602d2\",\"data\":\"0x000102030405\"},\"latest\"]}";
 
     transaction_t tx;
     memset(&tx, 0, sizeof(tx));

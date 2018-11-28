@@ -5,20 +5,23 @@
 * @date 2018-10-18
 */
 
+// build this only if LWM2M_CLIENT is configured
+#include <autoconf.h>
+#ifdef CONFIG_LWM2M
 /* system includes */
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
 #include <zephyr.h>
 #include <net/lwm2m.h>
-#include <board.h>
+/*#include <board.h>*/
 #include <gpio.h>
 #pragma GCC diagnostic pop
 
 /* local includes */
 #include "lwm2m_client.h"
-#include "zephyr/config.h"
-#include "zephyr/sensor_service.h"
+#include "zephyr-wallet/config.h"
+#include "zephyr-wallet/sensor_service.h"
 
 static struct lwm2m_ctx client;
 #define WAIT_TIME	    K_SECONDS(10)
@@ -146,4 +149,4 @@ static void lwm2m_main(void)
 }
 
 K_THREAD_DEFINE(_lwm2m_id, 1024, lwm2m_main, NULL, NULL, NULL, 7, 0, K_NO_WAIT);
-
+#endif

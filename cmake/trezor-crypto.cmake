@@ -10,14 +10,12 @@ ExternalProject_Add(
   PREFIX     ${mylib_build_dir} # Root dir for entire project
   GIT_REPOSITORY "https://github.com/trezor/trezor-crypto.git"
   GIT_TAG "master"
-  
   UPDATE_COMMAND ""
   PATCH_COMMAND ${CMAKE_COMMAND} -E copy
   "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/trezor-crypto/CMakeLists.txt" ${mylib_source_dir}/CMakeLists.txt
   
   SOURCE_DIR ${mylib_source_dir}
   
-  TEST_COMMAND ""
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/install
              -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
              -DCMAKE_RANLIB=${CMAKE_RANLIB}
