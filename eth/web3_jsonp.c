@@ -14,15 +14,9 @@
 /* local includes */
 #include "web3_jsonp.h"
 #include "helpers/jsmn.h"
+#include "helpers/jsmn_utils.h"
 #include "helpers/hextobin.h"
 
-static int jsoneq(const char *json, const jsmntok_t *tok, const char *s) {
-	if (tok->type == JSMN_STRING && (int) strlen(s) == tok->end - tok->start &&
-			strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
-		return 0;
-	}
-	return -1;
-}
 
 static int __json_uint10(const uint8_t *buf, const jsmntok_t *tok, unsigned long *out)
 {

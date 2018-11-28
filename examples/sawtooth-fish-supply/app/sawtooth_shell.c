@@ -15,6 +15,7 @@
 
 /* local includes */
 #include "sawtooth/st_transaction.h"
+#include "sawtooth/error_parser.h"
 #include "payload/payload.h"
 #include "zephyr-wallet/http_service.h"
 #include "zephyr-wallet/config.h"
@@ -99,7 +100,7 @@ static int sub_record_print(const struct shell *shell, size_t argc, char *argv[]
 	return 0;
 }
 
-static int __sign_and_send(const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size)
+static int __sign_and_send(const struct shell *shell, const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size)
 {
     account_t *acc = wallet_get_account();
     assert(acc != NULL);
@@ -113,8 +114,16 @@ static int __sign_and_send(const uint8_t *payload, size_t payload_size, uint8_t 
     size_t content_len = 0;
     http_client_nfo.payload = buf;
     http_client_nfo.payload_size = tx_written;
-    if(http_send_data(&http_client_nfo, &body, &content_len) < 0) {
-        printk("error: HTTP send\n");
+    int ret = http_send_data(&http_client_nfo, &body, &content_len);
+    if((ret < 0) || (ret != 200)) {
+        if((body != NULL) && (content_len > 0)) {
+            const char *err_msg = NULL;
+            size_t err_msg_len = 0;
+            st_parse_error_reply(body, content_len, &err_msg, &err_msg_len);
+            shell_error(shell, "error: %.*s", err_msg_len, err_msg);
+        } else {
+            shell_error(shell, "error: HTTP send");
+        }
         return -1;
     }
     return 0;
@@ -130,7 +139,7 @@ static int sub_create_agent(const struct shell *shell, size_t argc, char *argv[]
     if(payload_written <= 0) {
         return -1;
     }
-    return __sign_and_send(_buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
+    return __sign_and_send(shell, _buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
 }
 
 static int sub_create_record(const struct shell *shell, size_t argc, char *argv[])
@@ -139,7 +148,7 @@ static int sub_create_record(const struct shell *shell, size_t argc, char *argv[
     if(payload_written <= 0) {
         return -1;
     }
-    return __sign_and_send(_buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
+    return __sign_and_send(shell, _buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
 }
 
 static int sub_update_record(const struct shell *shell, size_t argc, char *argv[])
@@ -148,7 +157,7 @@ static int sub_update_record(const struct shell *shell, size_t argc, char *argv[
     if(payload_written <= 0) {
         return -1;
     }
-    return __sign_and_send(_buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
+    return __sign_and_send(shell, _buf, payload_written, _buf+payload_written, PAYLOAD_BUF_SIZE-payload_written);
 }
 
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_st_record) {
