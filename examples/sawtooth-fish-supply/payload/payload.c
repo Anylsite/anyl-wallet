@@ -6,7 +6,9 @@
 */
 
 /* system includes */
+#include <assert.h>
 #include "pb_encode.h"
+#include <posix/time.h>
 
 /* local includes */
 #include "fish_encoders.h"
@@ -15,16 +17,13 @@
 #include "eth/sign.h"
 #include "payload.h"
 
-static int32_t time(void *x)
-{
-    return 0;
-}
-
 static void init_payload(SCPayload *payload, SCPayload_Action action)
 {
     payload->action = action;
     SCPayload_init_encoder(payload);
-    payload->timestamp = time(NULL);
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    payload->timestamp = tv.tv_sec;
 }
 
 int encode_create_agent(const char *agent_name, uint8_t *buf, size_t buf_size)
@@ -40,31 +39,37 @@ int encode_create_agent(const char *agent_name, uint8_t *buf, size_t buf_size)
     return stream.bytes_written;
 }
 
-int encode_properties(uint8_t *buf, size_t buf_size)
+static void fish_record_set_properties(const fish_record_t *rec, PropertyValue *properties, size_t properties_len)
 {
-    SCPayload payload = SCPayload_init_default;
-    init_payload(&payload, SCPayload_Action_CREATE_RECORD);
-
-    PropertyValue properties[4] = { 0 };
-    PropertyValue_lst_t property_lst = { properties, 4 };
-
+    assert(properties_len >= 4);
     PropertyValue_init_encoder(&properties[0], PropertySchema_DataType_NUMBER);
     PropertyValue_init_encoder(&properties[1], PropertySchema_DataType_NUMBER);
     PropertyValue_init_encoder(&properties[2], PropertySchema_DataType_STRING);
     PropertyValue_init_encoder(&properties[3], PropertySchema_DataType_LOCATION);
 
     properties[0].name.arg = (void*)&"weight";
-    properties[0].number_value = 0x4142;
+    properties[0].number_value = rec->weight;
     properties[1].name.arg = (void*)&"length";
-    properties[1].number_value = 0xabcd;
+    properties[1].number_value = rec->length;
     properties[2].name.arg = (void*)&"species";
-    properties[2].string_value.arg = (void*)&"BTT";
+    properties[2].string_value.arg = (void*)rec->species;
     properties[3].name.arg = (void*)&"location";
     properties[3].location_value.latitude = 0x1;
     properties[3].location_value.longitude = 0x2;
+}
+
+int encode_createRecord(const fish_record_t *rec, uint8_t *buf, size_t buf_size)
+{
+    assert(rec != NULL);
+    SCPayload payload = SCPayload_init_default;
+    init_payload(&payload, SCPayload_Action_CREATE_RECORD);
+
+    PropertyValue properties[4] = { 0 };
+    PropertyValue_lst_t property_lst = { properties, 4 };
+    fish_record_set_properties(rec, properties, 4);
 
     payload.create_record.properties.arg        = &property_lst;
-    payload.create_record.record_id.arg         = (void*)&"TEST";
+    payload.create_record.record_id.arg         = (void*)rec->id;
     payload.create_record.record_type.arg       = (void*)&"fish";
 
     pb_ostream_t stream = pb_ostream_from_buffer(buf, buf_size);
@@ -74,31 +79,17 @@ int encode_properties(uint8_t *buf, size_t buf_size)
     return stream.bytes_written;
 }
 
-int encode_updateProperties(uint8_t *buf, size_t buf_size)
+int encode_updateProperties(const fish_record_t *rec, uint8_t *buf, size_t buf_size)
 {
     SCPayload payload = SCPayload_init_default;
     init_payload(&payload, SCPayload_Action_UPDATE_PROPERTIES);
 
     PropertyValue properties[4] = { 0 };
     PropertyValue_lst_t property_lst = { properties, 4 };
-
-    PropertyValue_init_encoder(&properties[0], PropertySchema_DataType_NUMBER);
-    PropertyValue_init_encoder(&properties[1], PropertySchema_DataType_NUMBER);
-    PropertyValue_init_encoder(&properties[2], PropertySchema_DataType_STRING);
-    PropertyValue_init_encoder(&properties[3], PropertySchema_DataType_LOCATION);
-
-    properties[0].name.arg = (void*)&"weight";
-    properties[0].number_value = 0x1234;
-    properties[1].name.arg = (void*)&"length";
-    properties[1].number_value = 0x8080;
-    properties[2].name.arg = (void*)&"species";
-    properties[2].string_value.arg = (void*)&"BTT";
-    properties[3].name.arg = (void*)&"location";
-    properties[3].location_value.latitude = 0x2;
-    properties[3].location_value.longitude = 0x3;
+    fish_record_set_properties(rec, properties, 4);
 
     payload.update_properties.properties.arg        = &property_lst;
-    payload.update_properties.record_id.arg         = (void*)&"TEST";
+    payload.update_properties.record_id.arg             = (void*)rec->id;
 
     pb_ostream_t stream = pb_ostream_from_buffer(buf, buf_size);
     if (pb_encode(&stream, SCPayload_fields, &payload) == false) {
@@ -107,14 +98,12 @@ int encode_updateProperties(uint8_t *buf, size_t buf_size)
     return stream.bytes_written;
 }
 
-int sign_and_encode(const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size)
+int sign_and_encode(const st_privkey_t *privkey, const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size)
 {
     st_tx_t tx;
-    st_privkey_t privkey;
     st_pubkey_t pubkey;
     st_address_t input, output;
-    hextobin("0d641308facb799b08a59287815bfaf54318f2657905ede1291c9b2d3a1bded3", privkey.k, sizeof(privkey.k));
-    privkey_to_pubkey(privkey.k, pubkey.k);
+    privkey_to_pubkey(privkey->k, pubkey.k);
 
     memset(&tx, 0, sizeof(tx));
     const char *family_name = "supply_chain";
@@ -141,7 +130,7 @@ int sign_and_encode(const uint8_t *payload, size_t payload_size, uint8_t *buf, s
 
     tx.payload.buf = (const uint8_t *)payload;
     tx.payload.size = payload_size;
-    st_sign_tx(&tx, &privkey, buf, buf_size);
+    st_sign_tx(&tx, privkey, buf, buf_size);
     return st_encode_tx_list(
             &tx, 1,
             buf, buf_size);

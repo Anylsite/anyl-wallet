@@ -17,7 +17,6 @@
 /* local includes */
 #include "http_service.h"
 #include "http_utils.h"
-#include "config.h"
 
 // HTTP
 static struct http_ctx http_ctx;
@@ -32,11 +31,19 @@ K_MUTEX_DEFINE(http_client_mutex);
 // WEB3
 static u8_t result[RESULT_BUF_SIZE];
 
-int http_send_data(const uint8_t *headers, const uint8_t *payload, size_t payload_size, uint8_t **body, size_t *content_len)
+static void __assert_nfo(const http_nfo_t *nfo)
+{
+    assert(nfo->host != NULL);
+    assert(nfo->port != NULL);
+    assert(nfo->url != NULL);
+    assert(nfo->content_type != NULL);
+}
+
+int http_send_data(const http_nfo_t *nfo, uint8_t **body, size_t *content_len)
 {
     k_mutex_lock(&http_client_mutex, K_FOREVER);
-    ARG_UNUSED(payload_size);
-	int ret = http_client_init(&http_ctx, SERVER_ADDR, 8545, NULL,
+    __assert_nfo(nfo);
+	int ret = http_client_init(&http_ctx, nfo->host, nfo->port, NULL,
 			       K_FOREVER);
     if(ret < 0) {
         NET_ERR("Can't initialize http client");
@@ -48,9 +55,10 @@ int http_send_data(const uint8_t *headers, const uint8_t *payload, size_t payloa
 
 	http_set_cb(&http_ctx, NULL, http_received, NULL, NULL);
     ret = do_sync_http_req(
-            &http_ctx, HTTP_POST, "/",
-            headers,
-            "application/json", payload,
+            &http_ctx, HTTP_POST, nfo->url,
+            nfo->headers,
+            nfo->content_type,
+            nfo->payload, nfo->payload_size,
             result, RESULT_BUF_SIZE);
     if (ret < 0) {
         NET_ERR("Send failed: %d", ret);

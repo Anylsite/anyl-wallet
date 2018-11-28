@@ -24,6 +24,7 @@ endfunction()
 set(APP_KEYFILE "${CMAKE_CURRENT_BINARY_DIR}/keyfile.c")
 generate_zephyr_keyfile(${APP_KEYFILE})
 
-add_library(al-zephyr STATIC ${SOURCES} ${APP_KEYFILE} ${CMAKE_CURRENT_BINARY_DIR}/erc20_abi.c ${CMAKE_CURRENT_BINARY_DIR}/erc20_abi.h)
+zephyr_library_named(al-zephyr)
+target_sources(al-zephyr PRIVATE ${SOURCES} ${APP_KEYFILE} ${CMAKE_CURRENT_BINARY_DIR}/erc20_abi.c ${CMAKE_CURRENT_BINARY_DIR}/erc20_abi.h)
 target_link_libraries(al-zephyr PUBLIC eth trezor-crypto helpers)
 target_include_directories(al-zephyr PUBLIC ${CMAKE_CURRENT_BINARY_DIR})

@@ -9,10 +9,22 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+#define RECORD_SPECIES_LEN    4
+#define RECORD_ID_LEN         16
+
+typedef struct {
+    uint64_t    weight;
+    uint64_t    length;
+    char        species[RECORD_SPECIES_LEN];
+    char        id[RECORD_ID_LEN];
+} fish_record_t;
+
+
 int encode_create_agent(const char *agent_name, uint8_t *buf, size_t buf_size);
-int encode_properties(uint8_t *buf, size_t buf_size);
-int encode_updateProperties(uint8_t *buf, size_t buf_size);
-int sign_and_encode(const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size);
+int encode_createRecord(const fish_record_t *rec, uint8_t *buf, size_t buf_size);
+int encode_updateProperties(const fish_record_t *rec, uint8_t *buf, size_t buf_size);
+int sign_and_encode(const st_privkey_t *privkey, const uint8_t *payload, size_t payload_size, uint8_t *buf, size_t buf_size);
 
 #ifdef __cplusplus
 }

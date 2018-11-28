@@ -40,8 +40,9 @@ typedef struct {
     size_t size;
 } st_payload_t;
 
+// sawtooth uses 256bit ECDSA key
 typedef struct {
-    uint8_t k[128];
+    uint8_t k[32];
 } st_privkey_t;
 
 typedef struct {

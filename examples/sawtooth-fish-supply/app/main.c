@@ -7,13 +7,17 @@
 
 /* system includes */
 #include <stdint.h>
+#include <string.h>
 
 /* local includes */
-#include "payload/fish_encoders.h"
+#include "zephyr-wallet/wallet.h"
 
-#define PAYLOAD_BUF_SIZE    2048
+extern uint8_t g_zephyr_private_key[32];
+
 void main(void)
 {
-    uint8_t buf[PAYLOAD_BUF_SIZE];
-    size_t payload_written = encode_create_agent("POKUS", buf, sizeof(buf));
+    privkey_t pk;
+    memcpy(&pk.k, g_zephyr_private_key, 32);
+
+    wallet_set_global_privkey(&pk);
 }
