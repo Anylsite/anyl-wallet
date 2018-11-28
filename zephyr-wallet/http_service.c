@@ -39,12 +39,40 @@ static void __assert_nfo(const http_nfo_t *nfo)
     assert(nfo->content_type != NULL);
 }
 
+// by default http client skips body of E500 responses. We want to keep it 
+//  because Sawtooth sends error message in it
+static int on_headers_complete(struct http_parser *parser)
+{
+	struct http_ctx *ctx = CONTAINER_OF(parser,
+					    struct http_ctx,
+					    http.parser);
+
+	if ((ctx->http.req.method == HTTP_HEAD ||
+	     ctx->http.req.method == HTTP_OPTIONS)
+	    && ctx->http.rsp.content_length > 0) {
+		NET_DBG("No body expected");
+		return 1;
+	}
+
+	if ((ctx->http.req.method == HTTP_PUT ||
+	     ctx->http.req.method == HTTP_POST)
+	    && ctx->http.rsp.content_length == 0) {
+		NET_DBG("No body expected");
+		return 1;
+	}
+
+	NET_DBG("Headers complete");
+
+	return 0;
+}
+
 int http_send_data(const http_nfo_t *nfo, uint8_t **body, size_t *content_len)
 {
     k_mutex_lock(&http_client_mutex, K_FOREVER);
     __assert_nfo(nfo);
 	int ret = http_client_init(&http_ctx, nfo->host, nfo->port, NULL,
 			       K_FOREVER);
+	http_ctx.http.parser_settings.on_headers_complete = on_headers_complete;
     if(ret < 0) {
         NET_ERR("Can't initialize http client");
         goto out;
@@ -64,9 +92,10 @@ int http_send_data(const http_nfo_t *nfo, uint8_t **body, size_t *content_len)
         NET_ERR("Send failed: %d", ret);
         goto out;
     }
+
     *body = http_ctx.http.rsp.body_start;
     *content_len = http_ctx.http.rsp.content_length;
-
+    ret = http_ctx.http.parser.status_code;
 out:
     http_release(&http_ctx);
     k_mutex_unlock(&http_client_mutex);
