@@ -1,6 +1,10 @@
 #set(BUILD_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install CACHE STRING "install destination for 3rd party libs and plugins")
 set(BUILD_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install CACHE STRING "")
 set(WALLET_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE STRING "")
+if ((${CMAKE_BUILD_TYPE} MATCHES "Debug"))
+    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+    SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
+endif()
 
 include(cmake/solc.cmake)
 if(BUILD_XCOMPILE)

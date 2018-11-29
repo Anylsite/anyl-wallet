@@ -9,14 +9,14 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #include <zephyr.h>
-#include <helpers/hextobin.h>
-#include <string.h>
-#include <stdlib.h>
 #include <shell/shell.h>
 #pragma GCC diagnostic pop
+#include <string.h>
+#include <stdlib.h>
 
 /* local includes */
 #include "wallet.h"
+#include "helpers/hextobin.h"
 #include "zephyr-wallet/utils.h"
 #include "zephyr-wallet/web3_rpc.h"
 
@@ -234,4 +234,3 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_wallet) {
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(wallet, &sub_wallet, "crypto eth", NULL);
-

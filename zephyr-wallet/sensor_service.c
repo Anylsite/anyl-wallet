@@ -80,3 +80,6 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_sensor) {
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(sensor, &sub_sensor, "temperature sensor", NULL);
+
+void sensor_shell_register()
+{}

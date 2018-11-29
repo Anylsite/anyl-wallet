@@ -144,3 +144,5 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_upload) {
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(upload, &sub_upload, "http upload service", NULL);
+
+void upload_shell_register() {}

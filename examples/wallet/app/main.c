@@ -6,13 +6,13 @@
 
 /* system includes */
 #include <zephyr.h>
-#include <board.h>
 #include <device.h>
 #include <gpio.h>
 #include <string.h>
 
 /* local includes */
 #include "zephyr-wallet/wallet.h"
+#include "zephyr-wallet/shell_modules.h"
 
 #include "zephyr-wallet/lwm2m_client.h"
 /* 1000 msec = 1 sec */
@@ -54,11 +54,12 @@ void main(void)
 {
 	int cnt = 0;
     struct device *dev = init_led();
-    lwm2m_init();
+/*    lwm2m_init();*/
     privkey_t pk;
     memcpy(&pk.k, g_zephyr_private_key, 32);
 
     wallet_set_global_privkey(&pk);
+    wallet_register_shell_modules();
 
 	while (1) {
 		/* Set pin to HIGH/LOW every 1 second */

@@ -6,6 +6,7 @@
 */
 
 /* system includes */
+#define LOG_MODULE_NAME http_service
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 #pragma GCC diagnostic ignored "-Wignored-qualifiers"
@@ -54,18 +55,15 @@ static int on_headers_complete(struct http_parser *parser)
 	if ((ctx->http.req.method == HTTP_HEAD ||
 	     ctx->http.req.method == HTTP_OPTIONS)
 	    && ctx->http.rsp.content_length > 0) {
-		NET_DBG("No body expected");
 		return 1;
 	}
 
 	if ((ctx->http.req.method == HTTP_PUT ||
 	     ctx->http.req.method == HTTP_POST)
 	    && ctx->http.rsp.content_length == 0) {
-		NET_DBG("No body expected");
 		return 1;
 	}
 
-	NET_DBG("Headers complete");
 
 	return 0;
 }
