@@ -18,6 +18,9 @@
 #include "http_service.h"
 #include "http_utils.h"
 
+typedef struct {
+    struct k_mutex  *mtx;
+} http_nfo_priv_t;
 // HTTP
 static struct http_ctx http_ctx;
 // bufsize for the reply
@@ -37,6 +40,7 @@ static void __assert_nfo(const http_nfo_t *nfo)
     assert(nfo->port != NULL);
     assert(nfo->url != NULL);
     assert(nfo->content_type != NULL);
+    assert(nfo->_priv == NULL);
 }
 
 // by default http client skips body of E500 responses. We want to keep it 
@@ -66,10 +70,12 @@ static int on_headers_complete(struct http_parser *parser)
 	return 0;
 }
 
-int http_send_data(const http_nfo_t *nfo, uint8_t **body, size_t *content_len)
+int http_send_data(http_nfo_t *nfo)
 {
     k_mutex_lock(&http_client_mutex, K_FOREVER);
     __assert_nfo(nfo);
+    nfo->_priv = NULL;
+
 	int ret = http_client_init(&http_ctx, nfo->host, nfo->port, NULL,
 			       K_FOREVER);
 	http_ctx.http.parser_settings.on_headers_complete = on_headers_complete;
@@ -93,12 +99,26 @@ int http_send_data(const http_nfo_t *nfo, uint8_t **body, size_t *content_len)
         goto out;
     }
 
-    *body = http_ctx.http.rsp.body_start;
-    *content_len = http_ctx.http.rsp.content_length;
+    nfo->content = http_ctx.http.rsp.body_start;
+    nfo->content_size = http_ctx.http.rsp.content_length;
+    nfo->_priv = &http_client_mutex;
     ret = http_ctx.http.parser.status_code;
+    assert(ret > 0);
 out:
+    // in case of error the mutex can be released - no shared data access is possible
+    if(ret < 0) {
+        k_mutex_unlock(&http_client_mutex);
+    }
     http_release(&http_ctx);
-    k_mutex_unlock(&http_client_mutex);
 
     return ret;
+}
+
+void http_nfo_free(http_nfo_t *nfo)
+{
+    if(nfo->_priv != NULL) {
+        nfo->content = NULL;
+        nfo->content_size = 0;
+        k_mutex_unlock((struct k_mutex*)nfo->_priv);
+    }
 }

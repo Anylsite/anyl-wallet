@@ -80,6 +80,8 @@ static int sub_record_##item(const struct shell *shell, size_t argc, char *argv[
 }
 CREATE_SUB_RECORD_INT(weight)
 CREATE_SUB_RECORD_INT(length)
+CREATE_SUB_RECORD_INT(latitude)
+CREATE_SUB_RECORD_INT(longitude)
 
 
 static int sub_record_print(const struct shell *shell, size_t argc, char *argv[])
@@ -91,6 +93,8 @@ static int sub_record_print(const struct shell *shell, size_t argc, char *argv[]
     shell_print(shell, "species\t%s", _rec.species);
     shell_print(shell, "weight\t%x", _rec.weight);
     shell_print(shell, "length\t%x", _rec.length);
+    shell_print(shell, "latitude\t%x", _rec.latitude);
+    shell_print(shell, "longitude\t%x", _rec.longitude);
 
 	if (shell_help_requested(shell)) {
 		shell_help_print(shell, NULL, 0);
@@ -114,7 +118,7 @@ static int __sign_and_send(const struct shell *shell, const uint8_t *payload, si
     size_t content_len = 0;
     http_client_nfo.payload = buf;
     http_client_nfo.payload_size = tx_written;
-    int ret = http_send_data(&http_client_nfo, &body, &content_len);
+    int ret = http_send_data(&http_client_nfo);
     if((ret < 0) || (ret != 200)) {
         if((body != NULL) && (content_len > 0)) {
             const char *err_msg = NULL;
@@ -124,9 +128,9 @@ static int __sign_and_send(const struct shell *shell, const uint8_t *payload, si
         } else {
             shell_error(shell, "error: HTTP send");
         }
-        return -1;
     }
-    return 0;
+    http_nfo_free(&http_client_nfo);
+    return ret;
 }
 
 static int sub_create_agent(const struct shell *shell, size_t argc, char *argv[])
@@ -162,7 +166,9 @@ static int sub_update_record(const struct shell *shell, size_t argc, char *argv[
 
 SHELL_CREATE_STATIC_SUBCMD_SET(sub_st_record) {
     SHELL_CMD(id, NULL, "", sub_record_id),
+    SHELL_CMD(latitude, NULL, "", sub_record_latitude),
     SHELL_CMD(length, NULL, "", sub_record_length),
+    SHELL_CMD(longitude, NULL, "", sub_record_longitude),
     SHELL_CMD(species, NULL, "", sub_record_species),
     SHELL_CMD(weight, NULL, "", sub_record_weight),
 	SHELL_SUBCMD_SET_END

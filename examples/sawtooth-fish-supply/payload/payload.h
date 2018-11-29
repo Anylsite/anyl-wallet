@@ -18,6 +18,8 @@ typedef struct {
     uint64_t    length;
     char        species[RECORD_SPECIES_LEN];
     char        id[RECORD_ID_LEN];
+    int64_t     latitude;
+    int64_t     longitude;
 } fish_record_t;
 
 
