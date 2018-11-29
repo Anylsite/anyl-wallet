@@ -54,8 +54,8 @@ static void fish_record_set_properties(const fish_record_t *rec, PropertyValue *
     properties[2].name.arg = (void*)&"species";
     properties[2].string_value.arg = (void*)rec->species;
     properties[3].name.arg = (void*)&"location";
-    properties[3].location_value.latitude = 0x1;
-    properties[3].location_value.longitude = 0x2;
+    properties[3].location_value.latitude = rec->latitude;
+    properties[3].location_value.longitude = rec->longitude;
 }
 
 int encode_createRecord(const fish_record_t *rec, uint8_t *buf, size_t buf_size)
