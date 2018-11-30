@@ -7,6 +7,7 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+void erc20_shell_register();
 
 #ifdef __cplusplus
 }

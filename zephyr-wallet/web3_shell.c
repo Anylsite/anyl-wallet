@@ -136,4 +136,6 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_web3) {
     SHELL_CMD(eth_sendRawTransaction, NULL, "send a raw transaction", web3_shell_sendRawTransaction),
 	SHELL_SUBCMD_SET_END
 };
-SHELL_CMD_REGISTER(web3, &sub_web3, "http upload service", NULL);
+SHELL_CMD_REGISTER(web3, &sub_web3, "web3 utils", NULL);
+
+void web3_shell_register() {}

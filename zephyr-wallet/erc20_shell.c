@@ -305,3 +305,6 @@ SHELL_CREATE_STATIC_SUBCMD_SET(sub_erc20) {
 	SHELL_SUBCMD_SET_END
 };
 SHELL_CMD_REGISTER(erc20, &sub_erc20, "erc20 utils", NULL);
+
+void erc20_shell_register()
+{}
