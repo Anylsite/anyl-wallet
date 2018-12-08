@@ -104,3 +104,16 @@ add_test(test_crypto test_helpers)
 add_test(test_tx test_tx)
 add_test(test_web3 test_web3)
 add_test(test_sawtooth test_sawtooth)
+
+
+# run tests with valgrind
+find_program(VALGRIND_FOUND valgrind)
+
+SET(TESTS_LIST test_rlp test_data test_abi_compiler test_helpers test_crypto test_tx test_web3 test_sawtooth)
+if(VALGRIND_FOUND)
+    foreach(test_name IN LISTS TESTS_LIST)
+        add_test(${test_name}_valgrind valgrind --leak-check=full --show-leak-kinds=all ${CMAKE_BINARY_DIR}/src/${test_name})
+    endforeach(test_name)
+else(VALGRIND_FOUND)
+    message(WARNING "valgrind executable not found! Disabling memory leaks tests.")
+endif(VALGRIND_FOUND)
