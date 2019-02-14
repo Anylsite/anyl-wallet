@@ -7,9 +7,9 @@
 C crypto libraries to safely manage, generate and store private keys, to generate blockchain addresses and to sign transactions. 
 
 Additionally, it contains a RTOS app ([Zephyr](https://github.com/AnyLedger/zephyr)).
-The current implementation uses Ethereum and HyperLedger, but the same architecture will be used for all the other chains. The current implementation is using Nordic nRF52840.
+The current implementation uses Ethereum and HyperLedger, but the same architecture will be used for all the other chains. The current implementation supports [100+ hardware platforms](https://docs.zephyrproject.org/latest/boards/index.html) and is mainly bug tested on Nordic nRF52840.
 
-Any IoT device flashing the embedded wallet can safely connect to a given blockchain, do transactions and interact with smart contracts. The connection itself is given by [AnyLedger Hub](https://github.com/AnyLedger/anyledger-hub) which, among the many functionalities, runs the blockchain nodes, the LWM2M server and gives access to storage solutions.
+Any IoT device flashing the embedded wallet can safely connect to a given blockchain, do transactions and interact with smart contracts. 
 
 Future improvements in the pipeline: support for Trusted Execution Environment, FreeRTOS support, ESP32 support and more.
 
