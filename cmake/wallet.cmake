@@ -23,6 +23,6 @@ target_include_directories(wallet
         $<BUILD_INTERFACE:${BUILD_INSTALL_DIR}/include>
         $<BUILD_INTERFACE:${BUILD_INSTALL_DIR}/include/trezor-crypto>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        
+
 )
 install(TARGETS wallet ARCHIVE DESTINATION lib)

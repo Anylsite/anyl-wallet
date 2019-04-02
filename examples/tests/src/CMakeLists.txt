@@ -3,6 +3,7 @@ find_package(GTest REQUIRED)
 find_package (Threads REQUIRED)
 find_package(PkgConfig)
 
+
 include_directories(${GTEST_INCLUDE_DIRS})
 
 include_directories(..)
@@ -28,6 +29,7 @@ add_executable(test_crypto test_crypto.cpp)
 add_executable(test_tx test_tx.cpp)
 add_executable(test_web3 test_web3.cpp)
 add_executable(test_sawtooth test_sawtooth.cpp)
+
 
 target_compile_definitions(
     test_abi_compiler

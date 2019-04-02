@@ -14,8 +14,15 @@ if(BUILD_XCOMPILE)
     include(cmake/zephyr.cmake)
     add_subdirectory(zephyr-wallet)
 else()
-    message(STATUS "x86 build")
-# enable testing for x86 builds
+    cmake_minimum_required(VERSION 3.0.0)
+    project("wallet-x86")
+    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 -pedantic -Wall -Wextra")
+    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -pedantic -Wall -Wextra")
+    message(STATUS "x86 build!")
+
+    # enable testing for x86 builds
+    enable_testing()
+    add_subdirectory(examples/tests/src)
 endif()
 include(cmake/trezor-crypto.cmake)
 include(cmake/nanopb.cmake)
