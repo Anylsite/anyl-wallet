@@ -12,13 +12,17 @@ This document describes how to start `anyledger-wallet` project using a QEMU vir
 
 [Zephyr QEMU Networking](https://docs.zephyrproject.org/1.13.0/subsystems/networking/qemu_setup.html)
 
-2) make sure your ethereum node/proxy accepts requests at `localhost:8545`
+2) start the parity ethereum node and make the JSON-RPC port listen at localhost:18545
+`parity --light --jsonrpc-port 18545`
+if you get `Provided Host header is not whitelisted.` error when you do step 3, that means you need
+`parity --light --jsonrpc-port 18545 --jsonrpc-hosts="all"`
+
+3) start the proxy with `lighttpd -f misc/lighttpd.conf`, which will forward incoming IPV6 port 8545 requests to IPV4 18545 and translate from HTTP chunked-encoding to Content-length.
 
 ```
 > curl -X POST --header "Content-Type: application/json"  --data '{"jsonrpc":"2.0","method":"web3_clientVersion","params":[],"id":987}' [::1]:8545
  
-{"jsonrpc":"2.0","result":"Parity-Ethereum//v2.1.4-beta-bee2cb8-20181028/x86_64-linux-gnu/rustc1.30.0","id":987}
-
+{"jsonrpc":"2.0","result":"Parity-Ethereum//v2.4.5-stable-76d4064-20190408/x86_64-linux-gnu/rustc1.33.0","id":987}
 ```
 
 
