@@ -21,8 +21,6 @@ Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyled
 
 ### Dependencies
 
-#### tests/x86 builds
-
 ##### Linux
 
 `apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
@@ -43,7 +41,7 @@ make install
 
 Additional dependencies (installed using [Homebrew](https://brew.sh)):
 
-`brew install gcc make cmake wget ninja`
+`brew install gcc make cmake wget ninja nanopb-generator`
 
 #### Python (this is required for ABI compiler)
 `pip3 install --user -r requirements.txt`
