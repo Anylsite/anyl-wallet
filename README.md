@@ -11,8 +11,6 @@ The current implementation uses Ethereum and HyperLedger, but the same architect
 
 Any IoT device flashing the embedded wallet can safely connect to a given blockchain, do transactions and interact with smart contracts. 
 
-Future improvements in the pipeline: support for Trusted Execution Environment, FreeRTOS support, ESP32 support and more.
-
 ## Contributing
 
 Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyledger-wallet/blob/master/CONTRIBUTING.md).
