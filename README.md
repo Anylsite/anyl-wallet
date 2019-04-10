@@ -19,7 +19,7 @@ Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyled
 
 ### Dependencies
 
-##### Ubuntu Linux 18.04
+##### Linux (Ubuntu)
 ```
 apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip -y
 
