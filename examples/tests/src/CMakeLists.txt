@@ -3,11 +3,16 @@ find_package(GTest REQUIRED)
 find_package (Threads REQUIRED)
 find_package(PkgConfig)
 
-
 include_directories(${GTEST_INCLUDE_DIRS})
 
 include_directories(..)
 include_directories(${PC_JSON-C_INCLUDE_DIRS})
+
+include_directories(${CMAKE_SOURCE_DIR})
+link_directories(${CMAKE_SOURCE_DIR})
+
+
+
 
 solc_compile_abi(${CMAKE_CURRENT_SOURCE_DIR}/TestContract.sol ${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json)
 solc_abi_to_c(${CMAKE_CURRENT_BINARY_DIR}/contracts_abi.json ${CMAKE_CURRENT_BINARY_DIR}/contracts.h h)
@@ -22,6 +27,10 @@ add_executable(
     ${CMAKE_CURRENT_BINARY_DIR}/contracts.h
 
     )
+
+
+
+
 add_executable(test_data test_data.cpp)
 add_executable(test_rlp test_rlp.cpp)
 add_executable(test_helpers test_helpers.cpp)
@@ -97,6 +106,8 @@ target_link_libraries(
     protobuf-nanopb
     trezor-crypto
     )
+
+message("---------------")
 
 add_test(test_rlp test_rlp)
 add_test(test_data test_data)

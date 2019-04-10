@@ -22,7 +22,9 @@ else()
 
     # enable testing for x86 builds
     enable_testing()
-    add_subdirectory(examples/tests/src)
+    add_subdirectory(examples/tests)
+    include_directories( ${CMAKE_SOURCE_DIR}/helpers )
+
 endif()
 include(cmake/trezor-crypto.cmake)
 include(cmake/nanopb.cmake)
