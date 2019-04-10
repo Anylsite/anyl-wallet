@@ -1,7 +1,7 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.5;
 
 contract TestContract {
-    function foo(uint16 a, uint8 b, uint32 c) returns (uint64) {
+    function foo(uint16 a, uint8 b, uint32 c) public returns (uint64) {
         return a +b + c;
     }
 //     function function_int(uint8 a, uint16 b, uint32 c, uint64 d, uint128 e, uint256 f) public view returns (uint256) {

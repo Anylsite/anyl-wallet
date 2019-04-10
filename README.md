@@ -19,9 +19,13 @@ Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyled
 
 ### Dependencies
 
-##### Linux
+##### Ubuntu Linux 18.04
+```
+apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip -y
 
-`apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy-3.8 ninja-build`
+# Ubuntu's libgtest-dev is only the source. You have to compile them manually.
+cd /usr/src/gtest; cmake .; cmake --build . --target install
+```
 
 ##### macOS
 

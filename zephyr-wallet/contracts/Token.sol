@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.5;
 
 interface Token {
 
@@ -37,5 +37,5 @@ interface Token {
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     // Optionally implemented function to show the number of decimals for the token
-    function decimals() external view returns (uint8 decimals);
+    function decimals() external view returns (uint8 d);
 }
