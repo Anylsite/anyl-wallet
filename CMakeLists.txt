@@ -1,6 +1,10 @@
 #set(BUILD_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install CACHE STRING "install destination for 3rd party libs and plugins")
 set(BUILD_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/install CACHE STRING "")
 set(WALLET_ROOT_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE STRING "")
+
+# P3 is required
+find_package( PythonInterp 3 REQUIRED )
+
 if ((${CMAKE_BUILD_TYPE} MATCHES "Debug"))
     SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
     SET(CMAKE_C_FLAGS_DEBUG "-O0 -g")
