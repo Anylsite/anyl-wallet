@@ -21,11 +21,13 @@ Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyled
 
 ##### Linux (Ubuntu)
 ```
-apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip -y
+apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip python-protobuf -y
 
 # Ubuntu's libgtest-dev is only the source. You have to compile them manually.
 cd /usr/src/gtest; cmake .; cmake --build . --target install
+
 ```
+Install [protobuf](https://askubuntu.com/questions/1072683/how-can-i-install-protoc-on-ubuntu-16-04)
 
 ##### macOS
 
