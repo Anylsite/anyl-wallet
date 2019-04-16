@@ -49,7 +49,7 @@ Additional dependencies (installed using [Homebrew](https://brew.sh)):
 `pip3 install --user -r requirements.txt`
 
 #### solidity compiler
-A working `solc` should be available in your `$PATH`. See the [Installation instructions](https://solidity.readthedocs.io/en/v0.4.21/installing-solidity.html).
+A working `solc` should be available in your `$PATH`. See the [Installation instructions](https://solidity.readthedocs.io/en/v0.5.7/installing-solidity.html).
 
 ### x86 build
 
