@@ -20,14 +20,28 @@ Have a look at our [contribution guidelines](https://github.com/AnyLedger/anyled
 ### Dependencies
 
 ##### Linux (Ubuntu)
+On a fresh Ubuntu:18.04 docker image. Adapt as appropriate to your distro.
 ```
-apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip python-protobuf -y
+apt-get update
+apt-get install libgtest-dev g++ make cmake wget build-essential clang clang-tidy ninja-build git python3-pip protobuf-compiler python-protobuf -y
 
 # Ubuntu's libgtest-dev is only the source. You have to compile them manually.
-cd /usr/src/gtest; cmake .; cmake --build . --target install
+cd /usr/src/gtest; cmake .; cmake --build . --target install 
 
+# Install Ethereum Solidity compiler
+apt-get install software-properties-common -y && add-apt-repository ppa:ethereum/ethereum -y && apt-get update
+apt-get install solc -y
+
+# without this, you will get a Python 3 ASCII/UTF8 error on Ubuntu
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+cd /
+git clone https://github.com/AnyLedger/anyledger-wallet
+
+alias build='rm -rf build; mkdir build; cd build; cmake -GNinja ../; ninja; cd ..'
+
+cd anyledger-wallet; pip3 install --user -r requirements.txt; build
 ```
-Install [protobuf](https://askubuntu.com/questions/1072683/how-can-i-install-protoc-on-ubuntu-16-04)
 
 ##### macOS
 
