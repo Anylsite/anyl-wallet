@@ -27,12 +27,8 @@ function(nanopb_compile input SRCS HDRS)
     # compiled file name w/o the suffix
     get_filename_component(PROTO_NAME ${input} NAME_WE)
     get_filename_component(PROTO_PATH ${input} DIRECTORY)
-    execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c
-        "from distutils import sysconfig; print(sysconfig.get_python_lib(prefix='${BUILD_INSTALL_DIR}')+'/nanopb/');"
-            OUTPUT_VARIABLE NANOPB_INST_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
+    
+    set (NANOPB_INST_DIR ${mylib_source_dir}/generator)
     add_custom_command(
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
         COMMAND protoc --plugin=${NANOPB_INST_DIR}/protoc-gen-nanopb
