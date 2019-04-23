@@ -3,6 +3,7 @@
 # https://github.com/zephyrproject-rtos/zephyr/blob/master/samples/application_development/external_lib/CMakeLists.txt#L17
 set_property(GLOBAL PROPERTY CSTD c11)
 include(ExternalProject)
+include($ENV{ZEPHYR_BASE}/cmake/app/boilerplate.cmake NO_POLICY_SCOPE)
 
 zephyr_get_include_directories_for_lang_as_string(       C includes)
 zephyr_get_system_include_directories_for_lang_as_string(C system_includes)
