@@ -56,3 +56,7 @@ parity --light --jsonrpc-port 18545 --jsonrpc-hosts="all"
 4) send a transaction and check etherscan if it did go through (value of the transaction will be 0)
 
 `uart:~$ wallet transfer <to_address>`
+
+5) check other wallet functionalities
+
+`uart:~$ wallet`
