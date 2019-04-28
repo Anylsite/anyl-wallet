@@ -26,6 +26,7 @@ $ parity --light --jsonrpc-port 18545 --jsonrpc-hosts="all"
 
 ```
 $ lighttpd -f misc/lighttpd.conf
+(log.c.217) server started 
 ```
 
 , which will forward incoming IPV6 port 8545 requests to IPV4 18545 and translate from HTTP chunked-encoding to Content-length. Then execute:
