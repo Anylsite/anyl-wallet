@@ -32,7 +32,7 @@ parity --light --jsonrpc-port 18545 --jsonrpc-hosts="all"
 
 
 ## part two: build the QEMU target
-1) create an empty file `pk.txt` in the root of the `anyledger-wallet` repository and paste your hex-encoded private key to it.
+1) create an empty file `pk.txt` in the root of the `anyledger-wallet` repository and paste your [hex-encoded private](https://theethereum.wiki/w/index.php/Accounts,_Addresses,_Public_And_Private_Keys,_And_Tokens#Private_Key) key to it.
 
 2) build the wallet
 
