@@ -59,7 +59,7 @@ make install
 
 Additional dependencies (installed using [Homebrew](https://brew.sh)):
 
-`brew install gcc make cmake wget ninja nanopb-generator protobuf`
+`brew install gcc make cmake wget ninja nanopb-generator protobuf pkgconfig`
 
 #### Python (this is required for ABI compiler)
 `pip3 install --user -r requirements.txt`
