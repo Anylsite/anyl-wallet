@@ -108,7 +108,7 @@ static int web3_eth_address_block_hex(const char *method, const address_t *addre
     rpc_call_fp rpc_call = NULL;
 
     for(size_t i = 0; i < sizeof(call_map); i++) {
-        assert(call_map[i]->call != NULL);
+        assert(call_map[i].call != NULL);
         if(strcmp(call_map[i].name, method) == 0) {
             rpc_call = call_map[i].call;
             break;

@@ -4,11 +4,19 @@ set -e
 Zephyr_RTOS=zephyr_rtos
 Zephyr_SDK=zephyr_sdk
 
-# Clone the Zephyr and install required dependencies
+# Clone the Zephyr
 mkdir ${Zephyr_RTOS} && cd ${Zephyr_RTOS}
 git clone https://github.com/zephyrproject-rtos/zephyr.git
-pip3 install -r zephyr/scripts/requirements.txt
-cd ../
+
+# until Zephyr fixes http client, we work with this revision
+cd zephyr
+git checkout bec74121f6
+
+# install requirements
+pip3 install -r scripts/requirements.txt
+
+# go back to the source root
+cd ../../
 
 # Get the Zephyr SDK
 mkdir ${Zephyr_SDK} && cd ${Zephyr_SDK}

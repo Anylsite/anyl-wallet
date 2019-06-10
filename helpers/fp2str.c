@@ -15,7 +15,7 @@
 int fp2str(uint32_t val, uint8_t digits, char *buf, size_t buf_len)
 {
     char *buf_p = buf;
-    int ret = snprintf(buf_p, buf_len, "%d", val >> digits);
+    int ret = snprintf(buf_p, buf_len, "%lu", val >> digits);
     if(ret < 0) {
         return ret;
     }

@@ -38,7 +38,7 @@ static u8_t result[RESULT_BUF_SIZE];
 static void __assert_nfo(const http_nfo_t *nfo)
 {
     assert(nfo->host != NULL);
-    assert(nfo->port != NULL);
+    assert(nfo->port != 0);
     assert(nfo->url != NULL);
     assert(nfo->content_type != NULL);
     assert(nfo->_priv == NULL);

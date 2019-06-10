@@ -83,7 +83,7 @@ static int wallet_set_nonce(const struct shell *shell, size_t argc, char *argv[]
 {
     ARG_UNUSED(shell);
     if(argc <= 1) {
-        printk("%u\n", _account.nonce);
+        printk("%lu\n", _account.nonce);
         return 0;
     }
     return __convert_ulong(argv[1], "set_nonce", &_account.nonce);
@@ -93,7 +93,7 @@ static int wallet_set_gas_price(const struct shell *shell, size_t argc, char *ar
 {
     ARG_UNUSED(shell);
     if(argc <= 1) {
-        printk("%u\n", _account.gas_price);
+        printk("%lu\n", _account.gas_price);
         return 0;
     }
     return __convert_ulong(argv[1], "gas_price", &_account.gas_price);
@@ -103,7 +103,7 @@ static int wallet_set_gas_limit(const struct shell *shell, size_t argc, char *ar
 {
     ARG_UNUSED(shell);
     if(argc <= 1) {
-        printk("%u\n", _account.gas_limit);
+        printk("%lu\n", _account.gas_limit);
         return 0;
     }
     return __convert_ulong(argv[1], "gas_limit", &_account.gas_limit);

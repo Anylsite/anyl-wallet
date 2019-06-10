@@ -3,6 +3,8 @@ include(ExternalProject)
 
 set(mylib_build_dir ${CMAKE_CURRENT_BINARY_DIR}/nanopb)
 set(mylib_source_dir ${CMAKE_CURRENT_BINARY_DIR}/thirdparty/nanopb)
+#set(NANOPB_C_FLAGS "${CMAKE_C_FLAGS} -DPB_SYSTEM_HEADER=\\\"pb_syshdr.h\\\" -I${mylib_source_dir}/extra")
+#list(REMOVE_ITEM ${NANOPB_C_FLAGS} "-Werror")
 
 ExternalProject_Add(
   nanopb

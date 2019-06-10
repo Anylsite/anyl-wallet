@@ -1,6 +1,7 @@
+#
+# this image installs all necessary requirements to build zephyr 
+#
 FROM phusion/baseimage:0.11
-
-MAINTAINER Mohit Agnihotri "mohitkumar39@gmail.com"
 
 WORKDIR /home/circleci
 ENV HOME /home/circleci
@@ -28,8 +29,6 @@ RUN  curl -L ${SOLC_URL} > /tmp/solc-${SOLC_VERSION} && \
      chmod 775 /tmp/solc-${SOLC_VERSION} && \
      mv /tmp/solc-${SOLC_VERSION} /usr/local/bin/ && \
      ln -s /usr/local/bin/solc-${SOLC_VERSION} /usr/local/bin/solc
-
-#RUN wget http://pyyaml.org/download/pyyaml/PyYAML-3.13.tar.gz && tar -xvf PyYAML-3.13.tar.gz && cd PyYAML-3.13 && python setup.py install
 
 RUN  pip3 install --no-cache-dir web3 eth_abi eth_utils click pyaml protobuf
 RUN ssh-keyscan -H github.com >> /root/.ssh/known_hosts
