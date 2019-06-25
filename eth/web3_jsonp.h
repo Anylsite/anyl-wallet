@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+// JSON-RPC reply decoder
+
 typedef struct {
     long code;
     const char *message;
@@ -22,7 +24,9 @@ typedef struct {
     jsonrpc_error_t error;
 } jsonrpc_result_t;
 
+// decode 'hexencoded' result (i.e. result of a eth_blockNumber call)
 int jsonrpc_decode_hexencoded(uint8_t *buf, size_t buf_size, jsonrpc_result_t *result, uint256_t *out);
+// decode transaction receipt
 int jsonrpc_decode_txreceipt(uint8_t *buf, size_t buf_size, jsonrpc_result_t *result, tx_receipt_t *out);
 
 #ifdef __cplusplus

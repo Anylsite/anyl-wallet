@@ -7,6 +7,8 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+// shell module for data-to-chain uploader service
 void upload_shell_register();
 
 #ifdef __cplusplus

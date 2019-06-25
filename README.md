@@ -53,13 +53,14 @@ A working `solc` should be available in your `$PATH`. See the [Installation inst
 
 ### x86 build
 
-This build is used to develop and test the wallet library on your desktop.
+This build is used to develop and test the wallet library on your desktop. It does not include any working application - its purpose is to provide a compileable framework
+for unit testing of the individual components on POSIX system. You should always start with this build if you plan to do any changes to the core components.
 
 1) clone wallet repo
 `git clone git@github.com:AnyLedger/anyledger-wallet.git && cd anyledger-wallet`
 
 2) create build directory and generate build targets
-`mkdir build && cd build && cmake -GNinja ../`
+`mkdir build && cd build && cmake -GNinja ../examples/tests`
 
 3) compile the library & run the tests
 `ninja && ctest`
@@ -69,15 +70,29 @@ This build is used to develop and test the wallet library on your desktop.
 Prerequisites: a working zephyr SDK (at least v0.9.5), see [here](https://docs.zephyrproject.org/latest/getting_started/getting_started.html) for instructions. 
 Please make sure you can compile and flash at least blinky example before building the wallet.
 
+Before using the actual hardware, you will probably want to test the functionality using the zephyr's QEMU image. (Use `-DBOARD=x86_qemu` when running `cmake`)
+
 1) clone wallet repo to the zephyr's `samples` directory
 `mkdir samples/anyledger/ && git clone git@github.com:AnyLedger/anyledger-wallet.git`
 
 2) create build directory and generate build targets
-`cd samples/anyledger/anyledger-wallet/build && cmake -GNinja  -DBOARD=nrf52840_pca10056 -DBUILD_XCOMPILE=1  ../`
+`mkdir -p samples/anyledger/anyledger-wallet/build && cd samples/anyledger/anyledger-wallet/build && cmake -GNinja  -DBOARD=nrf52840_pca10056 -DBUILD_XCOMPILE=1  ../examples/wallet`
 
-3) compile & flash the firmware
+3) for hardware builds, compile & flash the firmware
 `ninja && ninja flash`
 
 ## Using AnyLedger wallet
 
 To start AnyLedger wallet using a QEMU virtual machine, [see here](https://github.com/AnyLedger/anyledger-wallet/blob/master/BUILD-qemu.md).
+
+## Project structure
+
+- `abi_compiler` - python tool for compiling Ethereum ABI definition into a C code
+- `eth` - ethereum transaction utilities
+- `utils` - string manipulation, JSON en+de-coding, run-length encoding, uint256 manipulators
+- `examples` - examples of the actual apps
+- `sawtooth` - Hyperledger sawtooth utilities
+- `thirdparty` - CMakeFiles for 3rd party modules
+- `tools` - random helper scripts
+- `wallet` - MacOs compatibility hack
+- `zephyr-wallet` - Zephyr-specific code for the AnyLedger wallet

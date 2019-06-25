@@ -23,14 +23,15 @@ RUN cd /usr/src/gtest && \
 
 RUN  pip3 install --no-cache-dir --upgrade pip
 
-ARG SOLC_URL=https://github.com/ethereum/solidity/releases/download/v0.4.23/solc-static-linux
-ARG SOLC_VERSION=v0.4.23
+ARG SOLC_VERSION=v0.5.10
+ARG SOLC_URL=https://github.com/ethereum/solidity/releases/download/${SOLC_VERSION}/solc-static-linux
 RUN  curl -L ${SOLC_URL} > /tmp/solc-${SOLC_VERSION} && \
      chmod 775 /tmp/solc-${SOLC_VERSION} && \
      mv /tmp/solc-${SOLC_VERSION} /usr/local/bin/ && \
      ln -s /usr/local/bin/solc-${SOLC_VERSION} /usr/local/bin/solc
 
-RUN  pip3 install --no-cache-dir web3 eth_abi eth_utils click pyaml protobuf
+# TODO: this should use real requirements.txt
+RUN  pip3 install --no-cache-dir web3 eth_utils click pyaml protobuf
 RUN ssh-keyscan -H github.com >> /root/.ssh/known_hosts
 
 RUN ls -laF

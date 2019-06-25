@@ -1,7 +1,6 @@
 /*
- * Copyright (c) 2017 Intel Corporation
- *
  * SPDX-License-Identifier: Apache-2.0
+ * Zephyr configuration
  */
 
 #define APP_REQ_TIMEOUT K_SECONDS(10)
@@ -19,6 +18,7 @@
 #define SERVER_ADDR CONFIG_NET_CONFIG_PEER_IPV4_ADDR
 #endif
 
+// LWM2M settings
 #define CLIENT_MANUFACTURER	    "AnyLedger"
 #define CLIENT_MODEL_NUMBER	    "AnyLedger Wallet 0.1"
 #define CLIENT_SERIAL_NUMBER	"0001"

@@ -27,7 +27,7 @@ This document describes how to start `anyledger-wallet` project using a QEMU vir
 
 2) build the wallet
 
-`$ mkdir build && cd build && cmake -GNinja  -DBOARD=qemu_x86 -DBUILD_XCOMPILE=1 ../ && ninja`
+`$ mkdir build && cd build && cmake -GNinja  -DBOARD=qemu_x86 -DBUILD_XCOMPILE=1 ../examples/wallet && ninja`
 
 ## part three: play with the wallet
 1) run the emulator (the wallet prompt should appear immediately)

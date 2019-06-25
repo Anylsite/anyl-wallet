@@ -17,13 +17,18 @@ extern "C" {
 #define FMT_FIXED           1 << 0   // use fixed integer length (0 is used as a prefix)
 #define FMT_NO_TRAIL_ZERO   1 << 1   // remove trailing zeros
 
+// printk() helpers
+// hex-encoded data
 void printk_hex(const struct shell *shell, const uint8_t *data, size_t data_len);
 #define printk_hex_nl(shell, data, len) printk_hex(shell, data, len); shell_fprintf(shell, SHELL_NORMAL, "\n");
+// uint256
 void printk_uint256(const struct shell *shell, const uint256_t *v);
+// uint256 as fixed point int
 void printk_uint256_int(const struct shell *shell, const uint256_t *v, uint8_t decimals, uint8_t fmt);
-
-int shell_get_uint64(const char *argval, uint64_t *out);
 void shell_print_decimal_u256(const struct shell *shell, const uint256_t *val, uint8_t decimals);
+
+// read uint64_t from a ascii buffer
+int shell_get_uint64(const char *argval, uint64_t *out);
 #ifdef __cplusplus
 }
 #endif

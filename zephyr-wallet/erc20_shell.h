@@ -7,6 +7,8 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+// Shell module for ERC20 token functionality
 void erc20_shell_register();
 
 #ifdef __cplusplus

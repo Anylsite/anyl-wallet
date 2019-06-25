@@ -12,7 +12,11 @@ extern "C" {
 typedef struct {
     uint8_t a[20];
 } address_t;
+
+// ETH privkey to address conversion
 int privkey_to_ethereum_address(const uint8_t *privkey, address_t *addr_out);
+
+// derive address from a signature (ecrecover)
 int address_from_signature(const uint8_t *data, size_t data_len, const signature_t *signature, address_t *addr_out);
 
 #ifdef __cplusplus

@@ -2,8 +2,8 @@
 
 set -e
 set -x
-SOLC_URL_LINUX='https://github.com/ethereum/solidity/releases/download/v0.4.23/solc-static-linux'
-SOLC_VERSION='v0.4.23'
+SOLC_VERSION='v0.5.10'
+SOLC_URL_LINUX="https://github.com/ethereum/solidity/releases/download/${SOLC_VERSION}/solc-static-linux"
 
 fail() {
     if [[ $- == *i* ]]; then

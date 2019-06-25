@@ -7,12 +7,18 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+// helper functions for the http service
+
+// callback for HTTP replies
 void http_received(struct http_ctx *ctx,
 			  struct net_pkt *pkt,
 			  int status,
 			  u32_t flags,
 			  const struct sockaddr *dst,
 			  void *user_data);
+
+// do a synchronous HTTP request
 int do_sync_http_req(struct http_ctx *ctx,
 			    enum http_method method,
 			    const char  *url,

@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+// wallet manipulation functions
+
 typedef struct {
     uint8_t k[32];
 } privkey_t;

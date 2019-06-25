@@ -9,6 +9,8 @@
 extern "C" {
 #endif
 
+// shell utilities for the DHT sensor queries
+
 void sensor_shell_register();
 int get_sensor_data(int32_t *temperature, int32_t *humidity);
 

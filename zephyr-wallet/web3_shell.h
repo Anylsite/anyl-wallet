@@ -7,6 +7,9 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+// shell module for calling web3 JSON-RPC
+
 void web3_shell_register();
 
 #ifdef __cplusplus

@@ -8,6 +8,8 @@
 extern "C" {
 #endif
 
+// call this to register all AL shell modules
+
 void wallet_register_shell_modules();
 
 #ifdef __cplusplus

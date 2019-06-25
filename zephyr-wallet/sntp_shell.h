@@ -7,6 +7,8 @@
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+// NTP queries from the shell
 void sntp_shell_register();
 
 #ifdef __cplusplus

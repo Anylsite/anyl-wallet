@@ -11,6 +11,8 @@
 extern "C" {
 #endif
 
+// Module that generates JSON-RPC strings for querying the state of an ethereum network
+
 typedef struct {
     uint8_t *buf;
     size_t buf_size;
@@ -18,9 +20,13 @@ typedef struct {
     uint32_t req_id;
 } web3_ctx_t;
 
+// initialize the web3 module
+// @param web3: web3 context to use
+// @param buf: buffer to use for the outgoing requests
+// @param buf_size: buffer size
 void web3_init(web3_ctx_t *web3, uint8_t *buf, size_t buf_size);
 
-// what to filter out when assembling tx JSON
+// tx flags: what to filter out when assembling tx JSON
 #define TX_NO_FROM      1 << 0
 #define TX_NO_GAS       1 << 1
 #define TX_NO_GASPRICE  1 << 2
