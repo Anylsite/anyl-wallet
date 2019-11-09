@@ -35,6 +35,24 @@ int eth_call(web3_ctx_t *web3, const address_t *from, const transaction_t *tx, u
 int eth_estimateGas(web3_ctx_t *web3, const address_t *from, const transaction_t *tx);
 int eth_getTransactionReceipt(web3_ctx_t *web3, const tx_hash_t *tx_hash);
 
+#define DECIMAL_POINT 1
+#define LEADING_ZERO  1
+
+enum ETH_UNIT {
+    ETH_UNIT_WEI    = 0,
+    ETH_UNIT_KWEI   = 3,
+    ETH_UNIT_MWEI   = 6,
+    ETH_UNIT_GWEI   = 9,
+    ETH_UNIT_SZABO  = 12,
+    ETH_UNIT_FINNEY = 15,
+    ETH_UNIT_ETHER  = 18,
+    ETH_UNIT_KETHER = 21,
+    ETH_UNIT_METHER = 24,
+    ETH_UNIT_GETHER = 27,
+    ETH_UNIT_TETHER = 30
+};
+int eth_convert(const uint256_t *amount, enum ETH_UNIT from, enum ETH_UNIT to, char *buf, size_t buf_size);
+
 #ifdef __cplusplus
 }
 #endif

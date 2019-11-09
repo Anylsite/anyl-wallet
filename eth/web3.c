@@ -235,3 +235,68 @@ int eth_getTransactionReceipt(web3_ctx_t *web3, const tx_hash_t *tx_hash)
     WEB3_TERMINATOR();
     return 0;
 }
+
+int eth_convert(const uint256_t *amount, enum ETH_UNIT from, enum ETH_UNIT to, char *buf, size_t buf_size)
+{
+    assert(amount != NULL);
+    size_t shift = from > to ? from - to : to - from;
+
+    if(tostring256(amount, 10, buf, buf_size) == false) {
+        return -1;
+    }
+
+    // special case '0'
+    if(buf[0] == '0') return 0;
+
+    // finish if the unit doesn't change
+    if (shift == 0) {
+        return 0;
+    // conversion to smaller unit, add '0'
+    } else if (from > to) {
+        size_t i;
+        size_t len = strlen(buf);
+        // check buffer size
+        if (len + shift > buf_size) {
+            return -1;
+        }
+        // add zeros
+        for (i = len; i < len + shift; ++i) {
+            buf[i] = '0';
+        }
+        buf[len + shift] = '\0';
+    // conversion to bigger unit add '.'
+    } else {
+        size_t i;
+        size_t len = strlen(buf);
+        size_t skip = LEADING_ZERO + DECIMAL_POINT;
+        if (len  > shift) {
+            // check buffer size
+            if (len + DECIMAL_POINT > buf_size) {
+                return -1;
+            }
+            // move numbers
+            for (i = len + skip; i > len - shift; --i) {
+                buf[i] = buf[i - 1];
+            }
+            buf[len - shift] = '.';
+        } else {
+            // check buffer size
+            if (shift + skip > buf_size) {
+                return -1;
+            }
+            // move numbers
+            for (i = len; (int) i >= 0; --i) {
+                buf[i + shift + skip - len] = buf[i];
+            }
+            // add '0.' at the beggining
+            buf[0] = '0';
+            buf[1] = '.';
+            // fill the rest with zeros
+            for (i = skip; i < shift - len + skip; ++i) {
+                buf[i] = '0';
+            }
+        }
+    }
+
+    return 0;
+}
